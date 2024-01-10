@@ -41,7 +41,9 @@ git add (ur file name)
 After adding your file(s)
 
 We then commit the changes to the branch
-**git commit -m "(The title of ur request)"**
+
+git commit -m "(The title of ur request)"
+**e.g. git commit -m "(Edits on the homepage)"**
 
 # Uploading
 now we push it back to Github
