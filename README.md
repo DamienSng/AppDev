@@ -20,19 +20,21 @@ cd AppDev
 
 Create a new branch:
 enter in this command:
-git switch -c <your-new-branch-name>
+git switch -c (your-new-branch-name)
 e.g. git switch -c Homepage-Changes
 
 now you can start coding
 
 after ur done, add the file to ur branch
 enter in this command:
-git add <ur file name>
+git add (ur file name)
+
 e.g. git add Home.html
 
 now we push it back to Github
 enter in this command:
-git push -u origin <your-branch-name>
+git push -u origin (your-branch-name)
+
 e.g. git switch -c Homepage-Changes
 
 now on the repository page, you should see a "compare & pull" button
