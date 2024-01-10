@@ -4,7 +4,7 @@ you basically have to read https://github.com/firstcontributions/first-contribut
 this is just a summary if you somewhat know how to do it already
 
 
-# Set-up:
+# Prerequisite:
 If you don't have git on your machine, install it. (https://git-scm.com/downloads)
 
 # Cloning repository (downloading the code):
@@ -14,6 +14,7 @@ enter in this command:
 
 
 # Change the directory of ur GitHub command prompt
+(to clear directory just type **cd**)
 enter in this command:
 
 **cd AppDev**
@@ -37,8 +38,10 @@ git add (ur file name)
 
 **e.g. git add Home.html**
 
-now we commit the changes to the branch
-*git commit -m "(The title of ur request)"*
+After adding your file(s)
+
+We then commit the changes to the branch
+**git commit -m "(The title of ur request)"**
 
 # Uploading
 now we push it back to Github
