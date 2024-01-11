@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}Eco-Eats - Recipes{% endblock %}
+
+{% block content %}
+{% from "includes/_formHelper.html" import render_field %}
+
+<style>
+    .single_recepie {
+        max-width: 300px;
+        margin: 0 auto;
+        margin-bottom: 30px;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .rounded-image-container {
+        overflow: hidden;
+        height: 40%;
+    }
+    .rounded-image-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+    .line_btn {
+        display: inline-block;
+        padding: 10px 20px;
+        margin-top: 10px;
+        font-size: 1em;
+        text-align: center;
+        text-decoration: none;
+        color: #000;
+        border: 2px solid #ffc000;
+        border-radius: 20px;
+        transition: background-color 0.3s;
+    }
+    .line_btn:hover {
+        background-color: #ffc000;
+        color: #fff;
+    }
+</style>
+
+<link rel="stylesheet" href="{{url_for('static',filename='css/bootstrap.min.css')}}">
+<link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}">
+
+{% if results %}
+<div class="container" style="margin-top: 20px;">
+    <div class="row">
+        {% for result in results %}
+        <div class="col-xl-4 col-lg-4 col-md-6">
+            <div class="single_recepie text-center">
+                <div class="rounded-image-container">
+                    <img src="{{ url_for('static', filename='uploads/' + result[9]) }}" alt="{{ result[1] }}"
+                         width="400px">
+                </div>
+                <h3 style="margin-top: 20px;">{{ result[1] }}</h3>
+                <span>Skill Level: {{ result[3] }}</span>
+                <p>Time Needed: {{ result[4] }}</p>
+                <a href="{{ url_for('view_recipe', recipe_id=result[0]) }}" class="line_btn">View Full Recipe</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% else %}
+<p style="margin-top: 20px; text-align: center;">No results found.</p>
+{% endif %}
+<div class="col-xl-12 text-center mt-4">
+    <a href="{{ url_for('recipes') }}" class="btn btn-primary">Back to Recipe List</a>
+</div>
+{% endblock %}

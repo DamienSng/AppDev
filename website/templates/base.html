@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"/>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+      crossorigin="anonymous"/>
+
+    <script src="https://kit.fontawesome.com/496736106d.js" crossorigin="anonymous"></script>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+    <script>
+        function onSubmit(token) {
+        document.getElementById("auth-form").submit();
+        }
+    </script>
+
+    <title>{% block title %}Home{% endblock %}</title>
+         <!-- Bootstrap 5.1.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <button class="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbar">
+            <ul class="navbar-nav ml auto">
+
+                <!----YC NAVBAR----->
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Manage Recipes</a>
+                  <ul class="dropdown-menu">
+                   <li><a class="dropdown-item" href="/createRecipe">Create Recipe</a></li>
+                   <li><a class="dropdown-item" href="/retrieveRecipes">Retrieve Recipes</a></li>
+                   <li><a class="dropdown-item" href="/Recipes">View Recipes</a></li>
+                   </ul>
+
+                 </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/contactUs">Contact Us</a>
+                </li>
+                <!----YC NAVBAR----->
+
+                {% if current_user.is_authenticated and not verifying and not staff %}
+                    <li class="nav-link">
+                        <a class="nav-link" href="/landing-page">Home</a>
+                    </li>
+                    <li class="nav-link dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="manageAccountDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Manage Account
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="manageAccountDropdown">
+                            <a class="dropdown-item" href="/update-profile">Update Profile</a>
+                            <a class="dropdown-item" href="/logout">Logout</a>
+                            <a class="dropdown-item" href="/delete-account">Delete Account</a>
+                        </div>
+                    </li>
+                    <li class="nav-link">
+                        <a class="nav-link" href="/community-forum">Community Forum</a>
+                    </li>
+                {% elif current_user.is_authenticated and not verifying and staff %}
+                    <li class="nav-link dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="manageAccountDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Manage Account
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="manageAccountDropdown1">
+                            <a class="dropdown-item" href="/staff-update-profile">Update Profile</a>
+                            <a class="dropdown-item" href="/staff-logout">Logout</a>
+                            <a class="dropdown-item" href="/staff-delete-account">Delete Account</a>
+                        </div>
+                    </li>
+                    <li class="nav-link dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="staffDashboard" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Staff Dashboard
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="staffDashboard">
+                            <a class="dropdown-item" href="/user-accounts">User Accounts</a>
+                            <a class="dropdown-item" href="/user-preferences">User Preferences</a>
+                        </div>
+                    </li>
+                {% elif verifying and not staff %}
+                    <li class="nav-link dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="manageAccountDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Manage Account
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="manageAccountDropdown2">
+                            <a class="dropdown-item" href="/logout">Logout</a>
+                            <a class="dropdown-item" href="/delete-account">Delete Account</a>
+                        </div>
+                    </li>
+                {% elif verifying and staff %}
+                    <li class="nav-link dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="manageAccountDropdown3" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Manage Account
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="manageAccountDropdown3">
+                            <a class="dropdown-item" href="/staff-logout">Logout</a>
+                            <a class="dropdown-item" href="/staff-delete-account">Delete Account</a>
+                        </div>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/sign-up">Sign Up</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/staff-login">Staff Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/staff-sign-up">Staff Sign Up</a>
+                    </li>
+
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+        {% if category == 'error' %}
+        <div class="alert alert-danger alter-dismissible fade show" role="alert">
+           {{ message }}
+            <button type="button" class="close" data-dismiss="alert">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% else %}
+        <div class="alert alert-success alter-dismissible fade show" role="alert">
+           {{ message }}
+            <button type="button" class="close" data-dismiss="alert">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endif %}
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <div class="container">
+    {% block content %}
+    {% endblock %}
+    </div>
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous">
+    </script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous">
+    </script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous">
+    </script>
+
+    <script type="text/javascript" src="{{ url_for('static', filename='index.js') }}">
+    </script>
+
+    <!---YC JS--->
+<!-- Popper 2.10.2, Bootstrap 5.1.3 JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+<!---YC JS--->
+
+</body>
+</html>

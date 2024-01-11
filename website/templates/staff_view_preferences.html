@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}User Preferences{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">User Preferences</h1>
+    <p class="lead">Total Users: {{ users|length }}</p>
+
+    {% if preferences %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Top Preferences</th>
+                    <th>Dietary Restrictions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.preferences.top_preferences }}</td>
+                        <td>{{ user.preferences.dietary_restrictions }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No preferences found for any users.</p>
+    {% endif %}
+</div>
+{% endblock %}
+

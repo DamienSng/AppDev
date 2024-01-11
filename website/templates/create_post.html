@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Eco-Eats Home{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="text-center">Make a Post</h1>
+
+    <form method="POST" action="">
+        <div class="mb-3">
+            <label for="title" class="form-label">Post Title:</label>
+            <input type="text" id="title" name="title" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="text" class="form-label">Post Content:</label>
+            <textarea name="text" id="text" class="form-control" cols="30" rows="10" required></textarea>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-lg btn-primary">Post</button>
+        </div>
+    </form>
+
+    <div class="text-center mt-3">
+        <a href="{{ url_for('views.community_forum') }}" class="btn btn-secondary btn-lg">Back</a>
+    </div>
+</div>
+{% endblock %}

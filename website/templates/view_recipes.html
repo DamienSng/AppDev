@@ -1,0 +1,354 @@
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>{{ recipe.name }}</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- <link rel="manifest" href="site.webmanifest"> -->
+    <!-- Place favicon.ico in the root directory -->
+
+    <!-- CSS here -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+    <link rel="stylesheet" href="css/magnific-popup.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/themify-icons.css">
+    <link rel="stylesheet" href="css/nice-select.css">
+    <link rel="stylesheet" href="css/flaticon.css">
+    <link rel="stylesheet" href="css/gijgo.css">
+    <link rel="stylesheet" href="css/animate.min.css">
+    <link rel="stylesheet" href="css/slick.css">
+    <link rel="stylesheet" href="css/slicknav.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- <link rel="stylesheet" href="css/responsive.css"> -->
+
+
+    <!--CSS-->
+    <style>
+    .recipeTitle{
+        font-size: 41px;
+        text-align: center;
+        display: flex;
+        }
+    .ingredient-item {
+        margin-bottom: 10px;
+        }
+
+    .checkbox {
+        display: flex;
+        align-items: center;
+    }
+
+    .checkbox input {
+        margin-right: 10px;
+    }
+
+    /* Style for the Alternative and Optional Ingredients sections */
+    h3 {
+        font-size: 24px;
+        color: #333;
+        margin-top: 20px;
+    }
+
+    ul {
+        list-style: none;
+        margin-bottom: 20px;
+    }
+
+    li {
+        font-size: 16px;
+        color: #555;
+        margin-bottom: 8px;
+    }
+    .recepies_thumb, .brief{
+        text-align: center;
+        margin: 0;
+        }
+    .rightside{
+        display: inline-block;
+        text-align: center;
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin-right: 140px;
+        }
+    .recepies_text, {
+        text-align: left;
+        list-style-position: inside;
+        align: center;
+        margin: 0 auto;
+        max-width: 600px;
+        }
+    .resepies_details{
+        display: inline-block;
+        }
+    .col-xl-12.text-center {
+        text-align: left;
+        margin-top: 20px;
+    }
+    .col-xl-12 {
+        text-align: left;
+        margin: 10px;
+    }
+    .share-btn-container {
+        background: #fff;
+        display: flex;
+        flex-direction: column;
+        padding: 16px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        position: fixed;
+        top: 80%;
+        transform: translateY(-50%);
+        right: 20px;
+    }
+    .share-btn-container a i {
+        font-size: 32px;
+    }
+    .share-btn-container a{
+        margin: 12px 0;
+        transition: 500ms;
+    }
+    .share-btn-container a:hover {
+        transform: scale(1.2);
+    }
+    .share-btn-container .fa-facebook {
+        color: #1877f2;
+    }
+    .share-btn-container .fa-telegram {
+        color: #0088cc;
+    }
+    .share-btn-container .fa-whatsapp {
+        color: #25d366;
+    }
+    @media (max-width: 550px) {
+        body {
+            padding: 0 8px 40px 4px;
+        }
+        .share-btn-container {
+            transform: unset;
+            top: unset;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            flex-direction: row;
+            box-shadow: 4px 0 8px rgba(0, 0, 0, 0.3);
+            padding: 16px 0;
+            justify-content: center;
+        }
+        .share-btn-container a {
+            margin: 0 32px;
+        }
+        .rightside {
+            display: block;
+            text-align: left;
+            top: 0;
+            right: 0;
+            margin-right: 0;
+            position: relative;
+            margin-top: 10px;
+        }
+        .recepies_text{
+            padding-bottom: 40px;
+        }
+    </style>
+
+</head>
+
+<body style="margin: 0 auto; max-width: 600px;">
+    <div class="col-xl-12 text-center mt-4">
+        <a href="{{ url_for('recipes') }}" class="btn btn-primary">Back to Recipe List</a>
+    </div>
+
+
+    <div class="row align-items-center">
+        <div class="col-xl-6 col-md-6">
+            <div class="recepies_thumb">
+                <img src="{{ url_for('static', filename='uploads/' + recipe[9]) }}" alt="{{ recipe[1] }}" style="width: 500px; height: 300px; display: flex;">
+            </div>
+        </div>
+        <!-- bradcam_area  -->
+        <div class="bradcam_area bradcam_bg_1">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="bradcam_text text-center">
+                            <h3 class="recipeTitle">{{ recipe[1] }}</h3>
+                                <!--Social Media Buttons-->
+                                <div class="rightside">
+                                    <div class="share-btn-container">
+                                        <a href="#" class="facebook-btn">
+                                            <i class="fab fa-facebook"></i>
+                                        </a>
+                                        <a href="#" class="telegram-btn">
+                                            <i class="fab fa-telegram"></i>
+                                        </a>
+                                        <a href="#" class="whatsapp-btn">
+                                            <i class="fab fa-whatsapp"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="recepies_info">
+            <div class="resepies_details" style="margin: 0 10px;">
+                <p class="brief"><strong>Skill Level:</strong> {{ recipe[3] }} </p>
+                <p class="brief" style="margin-right: 17px;"><strong>Time:</strong> {{ recipe[4] }} </p>
+                <p class="brief" style="margin-right: 13px;"><strong>Cuisine:</strong> {{ recipe[2] }} </p>
+            </div>
+        </div>
+
+        <!-- /bradcam_area  -->
+        <div class="rightside">
+            <form>
+                <h3 style="display: inline-block; margin-right: 10px;">Servings:</h3>
+                <input type="number" step="1" value="1" name="servings" class="quantity-field border-0 text-center w-25"
+                       min="0" style="width: 50px;" id="servingsInput"> servings
+            </form>
+            <h3>Ingredients</h3>
+            <form>
+                <ul style="list-style: none">
+                    {% for ingredient in recipe[6].split(', ') %}
+                    <li class="ingredient-item">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="{{ ingredient }}">
+                                <span>{{ ingredient }}</span>
+                            </label>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </form>
+
+            <div>
+                <h3>Alternative Ingredients</h3>
+                <ul>
+                    {% for alt in recipe[7].split(', ') %}
+                    <li>{{ alt }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div>
+                <h3>Optional Ingredients</h3>
+                <ul>
+                    {% for optional in recipe[8].split(', ') %}
+                        {% if optional|length > 0 %}
+                            <li>{{ optional }}</li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- /bradcam_area  -->
+    <div class="recepie_details_area">
+        <div class="container">
+            <div class="col-xl-6 col-md-6">
+                    <div class="col-xl-12">
+                        <div class="recepies_text">
+                            <h3>Instructions</h3>
+                            <ol>
+                                {% for instruction in recipe[5].split('.') %}
+                                    {% if instruction.strip() != '' %}
+                                        <li>{{ loop.count }} {{ instruction.strip() }}{% if not loop.last %}.{% endif %}</li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ol>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- JS here -->
+    <script src="js/vendor/modernizr-3.5.0.min.js"></script>
+    <script src="js/vendor/jquery-1.12.4.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/isotope.pkgd.min.js"></script>
+    <script src="js/ajax-form.js"></script>
+    <script src="js/waypoints.min.js"></script>
+    <script src="js/jquery.counterup.min.js"></script>
+    <script src="js/imagesloaded.pkgd.min.js"></script>
+    <script src="js/scrollIt.js"></script>
+    <script src="js/jquery.scrollUp.min.js"></script>
+    <script src="js/wow.min.js"></script>
+    <script src="js/nice-select.min.js"></script>
+    <script src="js/jquery.slicknav.min.js"></script>
+    <script src="js/jquery.magnific-popup.min.js"></script>
+    <script src="js/plugins.js"></script>
+    <script src="js/gijgo.min.js"></script>
+
+    <!--contact js-->
+    <script src="js/contact.js"></script>
+    <script src="js/jquery.ajaxchimp.min.js"></script>
+    <script src="js/jquery.form.js"></script>
+    <script src="js/jquery.validate.min.js"></script>
+    <script src="js/mail-script.js"></script>
+
+    <script src="js/main.js"></script>
+
+    <script>
+        // Get the servings input element
+        var servingsInput = document.getElementById('servingsInput');
+
+        // Add an event listener to the input field
+        servingsInput.addEventListener('input', function () {
+            // Get the current servings value
+            var currentServings = parseFloat(this.value);
+
+        // Loop through each ingredient and update the displayed quantity
+        var ingredients = document.querySelectorAll('.ingredient-item input');
+        ingredients.forEach(function (ingredient) {
+            // Get the original quantity from the value attribute
+            var originalQuantity = parseFloat(ingredient.value);
+
+            // Split the value into quantity and measure
+            var parts = ingredient.value.split(' ');
+            var quantity = parseFloat(parts[0]);
+            var measure = parts.slice(1).join(' ');
+
+            // Update the displayed quantity
+            var updatedQuantity = quantity * currentServings;
+            ingredient.nextElementSibling.textContent = updatedQuantity + ' ' + measure;
+            });
+        });
+</script>
+<script>
+    /*
+    Social Share Links:
+
+    WhatsApp:
+    https://api.whatsapp.com/send?text=[post-title] [post-url]
+    Telegram:
+    https://t.me/share/url?url=${postUrl}&text=${postTitle}`
+    Facebook:
+    https://www.facebook.com/sharer.php?u=[post-url]
+    */
+    const facebookBtn = document.querySelector(".facebook-btn");
+    const telegramBtn = document.querySelector(".telegram-btn");
+    const whatsappBtn = document.querySelector(".whatsapp-btn");
+
+    function init() {
+        let postUrl = encodeURI(document.location.href);
+        let postTitle = encodeURI("Hey, please check this out: ");
+        facebookBtn.setAttribute("href", `https://www.facebook.com/sharer.php?u=${postUrl}`);
+        telegramBtn.setAttribute("href", `https://t.me/share/url?url=${postUrl}&text=${postTitle}`);
+        whatsappBtn.setAttribute("href", `https://api.whatsapp.com/send?text=${postTitle} ${postUrl}`);
+    }
+    init();
+</script>
+</body>
+
+</html>
+

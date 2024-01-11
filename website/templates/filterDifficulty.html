@@ -1,0 +1,459 @@
+{% extends "base.html" %}
+{% block title %}Eco-Eats - Recipes{% endblock %}
+
+{% block content %}
+{% from "includes/_formHelper.html" import render_field %}
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Eco-Eats - Recipes</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- <link rel="manifest" href="site.webmanifest"> -->
+    <!-- Place favicon.ico in the root directory -->
+
+    <!-- CSS here -->
+    <link rel="stylesheet" href="{{url_for('static',filename='css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/owl.carousel.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/magnific-popup.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/font-awesome.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/themify-icons.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/nice-select.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/flaticon.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/gijgo.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/animate.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/slick.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/slicknav.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}">
+    <!-- <link rel="stylesheet" href="css/responsive.css"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    .header-container {
+        text-align: left;
+        padding: 20px;
+        margin-top: 40px;
+    }
+
+    h1 {
+        margin: 0;
+        display: inline-block;
+        margin-right: 40px;
+        margin-left: 180px;
+    }
+
+    .search-bar {
+        display: inline-block;
+        margin-right: 180px;
+        float: right;
+    }
+
+    select {
+        border: 1px solid black;
+        margin-right: -160px;
+        float: right;
+        margin-top: 50px;
+    }
+
+    .rounded-image-container {
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .rounded-image-container img {
+        width: 100%;
+        height: auto;
+    }
+    .recepie_area {
+        margin-top: 80px;
+        padding-bottom: 40px;
+    }
+    .single_recepie {
+        margin-bottom: 40px;
+    }
+    .line_btn {
+        display: inline-block;
+        padding: 10px 20px;
+        margin-top: 10px;
+        font-size: 1em;
+        text-align: center;
+        text-decoration: none;
+        color: #000;
+        border: 2px solid #ffc000;
+        border-radius: 20px;
+        transition: background-color 0.3s;
+    }
+    .line_btn:hover {
+        background-color: #ffc000;
+        color: #fff;
+    }
+    .middle-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 95vh;
+    }
+    .like-button {
+      cursor: pointer;
+      border-radius: 40px;
+      padding: 0.45rem 0;
+      color: #878787;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      filter: grayscale(100%);
+      -webkit-user-select: none;
+         -moz-user-select: none;
+          -ms-user-select: none;
+              user-select: none;
+    }
+    .like-button.liked {
+      color: #ff6e6f;
+      filter: grayscale(0);
+    }
+
+    .like-icon {
+      width: 24px;
+      height: 20px;
+      font-size: 1.5rem;
+      background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjEiIGhlaWdodD0iMTgiIHZpZXdCb3g9IjAgMCAyMSAxOCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTAuMTAxIDQuNDE3UzguODk1LjIwNyA1LjExMS4yMDdjLTQuNDY1IDAtMTAuOTY3IDYuODQ2IDUuMDgyIDE3LjU5MkMyNS4yMzcgNy4wMyAxOS42NjUuMjAyIDE1LjUwMS4yMDJjLTQuMTYyIDAtNS40IDQuMjE1LTUuNCA0LjIxNXoiIGZpbGw9IiNGRjZFNkYiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==") no-repeat center;
+      background-size: 100%;
+      -webkit-animation: heartUnlike 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+              animation: heartUnlike 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+    }
+
+    .liked .like-icon {
+      -webkit-animation: heartPulse 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+              animation: heartPulse 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+    }
+    .liked .like-icon [class^=heart-animation-] {
+      background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjEiIGhlaWdodD0iMTgiIHZpZXdCb3g9IjAgMCAyMSAxOCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTAuMTAxIDQuNDE3UzguODk1LjIwNyA1LjExMS4yMDdjLTQuNDY1IDAtMTAuOTY3IDYuODQ2IDUuMDgyIDE3LjU5MkMyNS4yMzcgNy4wMyAxOS42NjUuMjAyIDE1LjUwMS4yMDJjLTQuMTYyIDAtNS40IDQuMjE1LTUuNCA0LjIxNXoiIGZpbGw9IiNGRjZFNkYiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==") no-repeat center;
+      background-size: 100%;
+      top: 0;
+      left: 0;
+      width: 24px;
+      height: 20px;
+      opacity: 0;
+    }
+    .liked .like-icon [class^=heart-animation-]::before, .liked .like-icon [class^=heart-animation-]::after {
+      content: "";
+      background: inherit;
+      background-size: 100%;
+      width: inherit;
+      height: inherit;
+      display: inherit;
+      position: relative;
+      top: inherit;
+      left: inherit;
+      opacity: 0;
+    }
+    .liked .like-icon .heart-animation-1 {
+      -webkit-animation: heartFloatMain-1 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+              animation: heartFloatMain-1 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+    }
+    .liked .like-icon .heart-animation-1::before, .liked .like-icon .heart-animation-1::after {
+      width: 12px;
+      height: 10px;
+      visibility: hidden;
+    }
+    .liked .like-icon .heart-animation-1::before {
+      opacity: 0.6;
+      -webkit-animation: heartFloatSub-1 1s 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+              animation: heartFloatSub-1 1s 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+    }
+    .liked .like-icon .heart-animation-1::after {
+      -webkit-animation: heartFloatSub-2 1s 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+              animation: heartFloatSub-2 1s 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+      opacity: 0.75;
+    }
+    .liked .like-icon .heart-animation-2 {
+      -webkit-animation: heartFloatMain-2 1s 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+              animation: heartFloatMain-2 1s 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+    }
+    .liked .like-icon .heart-animation-2::before, .liked .like-icon .heart-animation-2::after {
+      width: 10px;
+      height: 8px;
+      visibility: hidden;
+    }
+    @-webkit-keyframes heartPulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.5);
+      }
+    }
+
+    @keyframes heartPulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.5);
+      }
+    }
+    @-webkit-keyframes heartUnlike {
+      50% {
+        transform: scale(0.75);
+      }
+    }
+    @keyframes heartUnlike {
+      50% {
+        transform: scale(0.75);
+      }
+    }
+    @-webkit-keyframes heartFloatMain-1 {
+      0% {
+        opacity: 0;
+        transform: translate(0) rotate(0);
+      }
+      50% {
+        opacity: 1;
+        transform: translate(0, -25px) rotate(-20deg);
+      }
+    }
+    @keyframes heartFloatMain-1 {
+      0% {
+        opacity: 0;
+        transform: translate(0) rotate(0);
+      }
+      50% {
+        opacity: 1;
+        transform: translate(0, -25px) rotate(-20deg);
+      }
+    }
+    @-webkit-keyframes heartFloatMain-2 {
+      0% {
+        opacity: 0;
+        transform: translate(0) rotate(0) scale(0);
+      }
+      50% {
+        opacity: 0.9;
+        transform: translate(-10px, -38px) rotate(25deg) scale(1);
+      }
+    }
+    @keyframes heartFloatMain-2 {
+      0% {
+        opacity: 0;
+        transform: translate(0) rotate(0) scale(0);
+      }
+      50% {
+        opacity: 0.9;
+        transform: translate(-10px, -38px) rotate(25deg) scale(1);
+      }
+    }
+    @-webkit-keyframes heartFloatSub-1 {
+      0% {
+        visibility: hidden;
+        transform: translate(0) rotate(0);
+      }
+      50% {
+        visibility: visible;
+        transform: translate(13px, -13px) rotate(30deg);
+      }
+    }
+    @keyframes heartFloatSub-1 {
+      0% {
+        visibility: hidden;
+        transform: translate(0) rotate(0);
+      }
+      50% {
+        visibility: visible;
+        transform: translate(13px, -13px) rotate(30deg);
+      }
+    }
+    @-webkit-keyframes heartFloatSub-2 {
+      0% {
+        visibility: hidden;
+        transform: translate(0) rotate(0);
+      }
+      50% {
+        visibility: visible;
+        transform: translate(18px, -10px) rotate(55deg);
+      }
+    }
+    @keyframes heartFloatSub-2 {
+      0% {
+        visibility: hidden;
+        transform: translate(0) rotate(0);
+      }
+      50% {
+        visibility: visible;
+        transform: translate(18px, -10px) rotate(55deg);
+      }
+    }
+    @-webkit-keyframes heartFloatSub-3 {
+      0% {
+        visibility: hidden;
+        transform: translate(0) rotate(0);
+      }
+      50% {
+        visibility: visible;
+        transform: translate(-10px, -10px) rotate(-40deg);
+      }
+      100% {
+        transform: translate(-50px, 0);
+      }
+    }
+    @keyframes heartFloatSub-3 {
+      0% {
+        visibility: hidden;
+        transform: translate(0) rotate(0);
+      }
+      50% {
+        visibility: visible;
+        transform: translate(-10px, -10px) rotate(-40deg);
+      }
+      100% {
+        transform: translate(-50px, 0);
+      }
+    }
+    @-webkit-keyframes heartFloatSub-4 {
+      0% {
+        visibility: hidden;
+        transform: translate(0) rotate(0);
+      }
+      50% {
+        visibility: visible;
+        transform: translate(2px, -18px) rotate(-25deg);
+      }
+    }
+    @keyframes heartFloatSub-4 {
+      0% {
+        visibility: hidden;
+        transform: translate(0) rotate(0);
+      }
+      50% {
+        visibility: visible;
+        transform: translate(2px, -18px) rotate(-25deg);
+      }
+    }
+
+</style>
+
+</head>
+
+<body id="results">
+    <div class="header-container">
+        <h1>Recipes</h1>
+        <!-- searchbar -->
+        <div>
+            <form method="get" action="{{ url_for('search') }}" class="search-bar" id="searchForm">
+                <label for="search_query"></label>
+                <input type="text" name="q" id="search_query" value="{{ search_query }}">
+                <button type="submit">Search</button>
+            </form>
+            <select name="sortedlist" id="sortedlist" onclick="navigateToPage()">
+                <option value="default">Sort By Default</option>
+                <option value="favourites">Sort By Favourites</option>
+                <option value="difficulty" selected>Sort By Difficulty</option>  <!--selected is added so that difficult is chosen by default on page load-->
+            </select>
+        </div>
+    </div>
+<!--------------------------------------------same code on recipes.html-------------------------------------------->
+    <div class="recepie_area plus_padding">
+            <div class="container">
+                <div class="row">
+                    {% for recipe in recipes %}
+                        <div class="col-xl-4 col-lg-4 col-md-6">
+                            <div class="single_recepie text-center">
+                                <div class="rounded-image-container">
+                                    <img src="{{ url_for('static', filename='uploads/' + recipe[9]) }}" alt="{{ recipe[1] }}" width="400px">
+                                </div>
+                                <h4 style="margin-top: 20px; display: flex; align-items: center; justify-content: center;">{{ recipe[1] }}
+                                    <a class='like-button' style="margin-left: 10px;">
+                                        <span class='like-icon'>
+                                            <div class='heart-animation-1'></div>
+                                            <div class='heart-animation-2'></div>
+                                        </span>
+                                    </a>
+                                </h4>
+                                <span>Skill Level: {{ recipe[3] }}</span>
+                                <p>Time Needed: {{ recipe[4] }}</p>
+                                <a href="{{ url_for('view_recipe', recipe_id=recipe[0]) }}" class="line_btn">View Full Recipe</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+<!--------------------------------------------same code on recipes.html-------------------------------------------->
+
+    <!-- JS here -->
+    <script src="{{url_for('static', filename='js/vendor/modernizr-3.5.0.min.js')}}"></script>
+    <script src="{{url_for('static', filename='js/vendor/jquery-1.12.4.min.js')}}"></script>
+    <script src="{{url_for('static', filename='js/popper.min.js')}}"></script>
+    <script src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
+    <script src="{{url_for('static', filename='js/owl.carousel.min.js')}}"></script>
+    <script src="{{url_for('static', filename='js/isotope.pkgd.min.js')}}"></script>
+    <script src="{{url_for('static', filename='js/ajax-form.js')}}"></script>
+    <script src="{{url_for('static', filename='js/waypoints.min.js')}}"></script>
+    <script src="{{url_for('static', filename='js/jquery.counterup.min.js')}}"></script>
+    <script src="{{url_for('static', filename='js/imagesloaded.pkgd.min.js')}}"></script>
+    <script src="{{url_for('static', filename='js/scrollIt.js')}}"></script>
+    <script src="{{url_for('static', filename='js/jquery.scrollUp.min.js')}}"></script>
+    <script src="{{url_for('static', filename='js/wow.min.js')}}"></script>
+    <script src="{{url_for('static', filename='js/nice-select.min.js')}}"></script>
+    <script src="{{url_for('static', filename='js/jquery.slicknav.min.js')}}"></script>
+    <script src="{{url_for('static', filename='js/jquery.magnific-popup.min.js')}}"></script>
+    <script src="{{url_for('static', filename='js/plugins.js')}}"></script>
+    <script src="{{url_for('static', filename='js/gijgo.min.js')}}"></script>
+
+    <!--contact js-->
+    <script src="{{url_for('static', filename='js/contact.js')}}"></script>
+    <script src="{{url_for('static', filename='js/jquery.ajaxchimp.min.js')}}"></script>
+    <script src="{{url_for('static', filename='js/jquery.form.js')}}"></script>
+    <script src="{{url_for('static', filename='js/jquery.validate.min.js')}}"></script>
+    <script src="{{url_for('static', filename='js/mail-script.js')}}"></script>
+
+    <script src="{{url_for('static', filename='js/main.js')}}"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+    <script>
+        $('a.like-button').on('click', function(e) {
+          $(this).toggleClass('liked');
+
+          setTimeout(() => {
+            $(e.target).removeClass('liked')
+          }, 1000)
+        });
+        $('a.like-button').on('click', function(e) {
+        var recipeId = $(this).data('recipe-id');
+
+        // Use htmx to send a request to the server
+        htmx.ajax({
+            url: '/like_recipe/' + recipeId,
+            method: 'POST',
+            success: function(response) {
+                if (response.liked) {
+                    $(e.target).addClass('liked');
+                } else {
+                    $(e.target).removeClass('liked');
+                }
+            }
+        });
+    });
+    </script>
+    <!----------------------------------page redirection---------------------------------->
+    <script>
+        document.getElementById('sortedlist').addEventListener('change', function() {
+            if (this.value === 'default') {
+                window.location.href = '/Recipes'; // Replace with your correct URL
+            }
+        });
+    </script>
+    <!----------------------------------page redirection---------------------------------->
+</body>
+
+{% endblock %}
+</html>

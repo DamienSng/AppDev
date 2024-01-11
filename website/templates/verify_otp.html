@@ -1,0 +1,29 @@
+{% extends "base.html" %} {% block title %}Eco-Eats Email Verification{% endblock %}
+
+{% block content %}
+<form id="auth-form" method="POST" action="">
+    <h1 align="center">Eco-Eats Email Verification</h1>
+    <br>
+    {% if staff %}
+    <h4>Welcome, staff member {{ user.username }}!</h4>
+    {% else %}
+    <h4>Welcome, {{ user.username }}!</h4>
+    {% endif %}
+    <br>
+    <h5>To verify your Eco-Eats account, we have sent a one-time password (OTP) to {{ user.email }}. <br>
+        Please ensure you check your spam folder if you don't see it within the next few minutes.</h5>
+    <br>
+    <div class="form-group">
+        <label for="otp">One-Time Password</label>
+        <input type="text"
+               class="form-control"
+               id="otp"
+               name="otp"
+               placeholder="Enter OTP"
+        >
+    </div>
+    <br>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+{% endblock %}

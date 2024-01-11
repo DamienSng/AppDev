@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Eco-Eats Landing Page{% endblock %}
+
+{% block content %}
+  <div class="container mt-5">
+    <h1>Welcome to Eco-Eats, {{ current_user.username }}!</h1>
+
+    {% if recipes %}
+      <h2>Recommended Recipes</h2>
+      <div class="row">
+        {% for recipe in recipes %}
+          <div class="col-md-4 mb-4">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">{{ recipe['name'] }}</h5>
+                <p class="card-text">Ingredients: {{ ', '.join(recipe['ingredients']) }}</p>
+                <p class="card-text">Cuisine: {{ recipe['cuisine'] }}</p>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>No recommendations available.</p>
+    {% endif %}
+  </div>
+{% endblock %}
