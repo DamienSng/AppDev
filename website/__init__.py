@@ -68,9 +68,13 @@ def create_app():
     from werkzeug.utils import secure_filename
 
     #####################################################################################################################
-    import pandas
     from openpyxl import Workbook, load_workbook
     from openpyxl.styles import Font
+    # ---------#
+    import re
+    import openpyxl.utils
+
+    # ---------#
 
     wb = Workbook()
 
@@ -173,6 +177,59 @@ def create_app():
             ws.append(product_data)
             Recipe.recipes.append(product_data)
 
+            # --------------------------------------------------------------------------------------------------------------#
+
+            try:
+                IngredientWS = wb[str(id)]
+                print(f'found existing worksheet')
+
+
+            # if DB doesn't exist, create one
+            except (IOError, KeyError):
+                IngredientWS = wb.create_sheet(str(id))
+                IngredientHeader = ['Quantity', 'Measurement', 'Ingredient']
+                IngredientWS.append(IngredientHeader)  # adds the headers to the first row
+                for cell in IngredientWS[1]:  # '1' refers to the first row
+                    cell.font = Font(bold=True)  # makes the font bold
+                print('no worksheet found')
+                wb.save('DB.xlsx')
+
+            # The text containing various ingredients with quantities and measurements
+            text = str(create_recipe_form.ingredient.data)
+
+            # Regex pattern to handle ingredients with optional measurements and exclude bracketed words
+            # first line captures digits (including decimals)
+            # second line captures if 'g' or 'ml' is present
+            # third line discards any brackets
+            pattern = r'(\d*\.?\d+)' \
+                      r'\s*(g|ml)?' \
+                      r'\s*([^,(]+)'
+
+            # Find matches using the pattern
+            matches = re.findall(pattern, text)
+
+            # Create a list to hold the split sections
+            SplitSections = []
+
+            # Loop through the matches and structure them into Quantity, Measurement, Ingredient
+            for match in matches:
+                quantity, measurement, ingredient = match
+                measurement = measurement if measurement else "N/A"  # Assign "N/A" if measurement is missing
+                ingredient = ingredient.strip()  # Trim any whitespace from the ingredient
+                SplitSections.append([quantity, measurement, ingredient])
+
+            # Write each nested list in the big list to the rows, starting from the second row
+            for row_index, sublist in enumerate(SplitSections, start=2):  # Starting at row 2
+                for col_index, item in enumerate(sublist, start=1):  # Starting from the first column
+                    try:
+                        item = float(item)
+                    except ValueError:
+                        pass
+                    cell_ref = f"{openpyxl.utils.get_column_letter(col_index)}{row_index}"
+                    IngredientWS[cell_ref] = item
+
+            # --------------------------------------------------------------------------------------------------------------#
+
             wb.save('website/DB.xlsx')
             ###################################################################################################################
             return redirect(url_for('retrieve_recipes'))
@@ -256,6 +313,56 @@ def create_app():
                                 value=new_value)  # this line just tells the program which cells should be updated
                         # it does this through getting which row and column the cell is located at
                     break
+            # --------------------------------------------------------------------------------------------------------------#
+            try:
+                IngredientWS = wb[str(data_to_find)]
+                print(f'found existing worksheet')
+
+
+            # if DB doesn't exist, create one
+            except (IOError, KeyError):
+                IngredientWS = wb.create_sheet(str(data_to_find))
+                IngredientHeader = ['Quantity', 'Measurement', 'Ingredient']
+                IngredientWS.append(IngredientHeader)  # adds the headers to the first row
+                for cell in IngredientWS[1]:  # '1' refers to the first row
+                    cell.font = Font(bold=True)  # makes the font bold
+                print('no worksheet found')
+                wb.save('DB.xlsx')
+
+            # The text containing various ingredients with quantities and measurements
+            text = str(update_recipe_form.ingredient.data)
+
+            # Regex pattern to handle ingredients with optional measurements and exclude bracketed words
+            # first line captures digits (including decimals)
+            # second line captures if 'g' or 'ml' is present
+            # third line discards any brackets
+            pattern = r'(\d*\.?\d+)' \
+                      r'\s*(g|ml)?' \
+                      r'\s*([^,(]+)'
+
+            # Find matches using the pattern
+            matches = re.findall(pattern, text)
+
+            # Create a list to hold the split sections
+            SplitSections = []
+
+            # Loop through the matches and structure them into Quantity, Measurement, Ingredient
+            for match in matches:
+                quantity, measurement, ingredient = match
+                measurement = measurement if measurement else "N/A"  # Assign "N/A" if measurement is missing
+                ingredient = ingredient.strip()  # Trim any whitespace from the ingredient
+                SplitSections.append([quantity, measurement, ingredient])
+
+            # Write each nested list in the big list to the rows, starting from the second row
+            for row_index, sublist in enumerate(SplitSections, start=2):  # Starting at row 2
+                for col_index, item in enumerate(sublist, start=1):  # Starting from the first column
+                    try:
+                        item = float(item)
+                    except ValueError:
+                        pass
+                    cell_ref = f"{openpyxl.utils.get_column_letter(col_index)}{row_index}"
+                    IngredientWS[cell_ref] = item
+            # --------------------------------------------------------------------------------------------------------------#
             wb.save('website/DB.xlsx')
             #####################################################################################################################
 
@@ -306,6 +413,11 @@ def create_app():
         db.close()'''
 
         data_to_find = int(id)
+
+        # ---------------------#
+        wb.remove(wb[str(id)])
+
+        # ---------------------#
 
         for cell in ws['A']:
             if cell.value == data_to_find:
