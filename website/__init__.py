@@ -73,6 +73,7 @@ def create_app():
     # ---------#
     import re
     import openpyxl.utils
+    from flask_login import login_required
 
     # ---------#
 
@@ -571,6 +572,32 @@ def create_app():
 
         return render_template('view_recipes.html', recipe=recipe_details)
 
+    @app.route("/cart")
+    @login_required  # This decorator ensures that only logged-in users can access this route
+    def cart():
+        price = 0  # Initialize total price
+        price_ids = []  # List to store price IDs for Stripe
+        items = []  # List to store items in the cart
+        quantity = []  # List to store quantity of each item
+
+        # Loop through each item in the user's cart
+        for cart_item in auth.current_user.cart:
+            items.append(cart_item.item)  # Add the item object to the items list
+            quantity.append(cart_item.quantity)  # Add the item quantity to the quantity list
+
+            # Create a dictionary with price ID and quantity, add to the price_ids list
+            price_id_dict = {
+                "price": cart_item.item.price_id,
+                "quantity": cart_item.quantity,
+            }
+            price_ids.append(price_id_dict)
+
+            # Update the total price
+            price += cart_item.item.price * cart_item.quantity
+
+        # Render the cart template with the items, total price, price IDs, and quantities
+        return render_template('cart.html', items=items, price=price,
+                               price_ids=price_ids, quantity=quantity)
 
     return app
 
