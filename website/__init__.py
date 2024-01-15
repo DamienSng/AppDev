@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import SQLAlchemyError
 from os import path
@@ -535,6 +535,21 @@ def create_app():
         # -----------------------------------------------------------------------------------------------------#
 
         return render_template("filterDifficulty.html", recipes=ordered_list_b)
+
+    # PROBLEM PART FOR ME TO SOLVE.
+    @app.route('/like_recipe/<int:recipe_id>', methods=['POST'])
+    def like_recipe(recipe_id):
+        # Toggle the like status for the current user and recipe
+        # Update your database accordingly
+        # Return the updated like status
+        liked = True  # Replace with your actual logic
+        return jsonify({'liked': liked})
+
+    @app.route("/filterFavourites")
+    def like():
+        liked_recipes = []  # Implement this to fetch liked recipes
+        # for i in Recipes:
+        return render_template("filterFavourites.html", liked_recipes=liked_recipes)
 
     # Search fn
     @app.route("/search")

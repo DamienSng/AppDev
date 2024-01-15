@@ -371,7 +371,7 @@
                                     <img src="{{ url_for('static', filename='uploads/' + recipe[9]) }}" alt="{{ recipe[1] }}" width="400px">
                                 </div>
                                 <h4 style="margin-top: 20px; display: flex; align-items: center; justify-content: center;">{{ recipe[1] }}
-                                    <a class='like-button' style="margin-left: 10px;">
+                                    <a class='like-button' style="margin-left: 10px;" data-recipe-id="{{ recipe[0] }}">
                                         <span class='like-icon'>
                                             <div class='heart-animation-1'></div>
                                             <div class='heart-animation-2'></div>
@@ -418,30 +418,66 @@
     <script src="{{url_for('static', filename='js/main.js')}}"></script>
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
     <script src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+    <!----------------------------------making like button persistent---------------------------------->
     <script>
-        $('a.like-button').on('click', function(e) {
-          $(this).toggleClass('liked');
+        // Function to check if a recipe is liked (fetching from local storage)
+        function isRecipeLiked(recipeId) {
+            const likedRecipes = JSON.parse(localStorage.getItem('likedRecipes')) || [];
+            return likedRecipes.includes(recipeId);
+        }
 
-          setTimeout(() => {
-            $(e.target).removeClass('liked')
-          }, 1000)
-        });
-        $('a.like-button').on('click', function(e) {
-        var recipeId = $(this).data('recipe-id');
+        // Function to save liked recipe to local storage
+        function saveLikedRecipe(recipeId) {
+            let likedRecipes = JSON.parse(localStorage.getItem('likedRecipes')) || [];
+            likedRecipes.push(recipeId);
+            localStorage.setItem('likedRecipes', JSON.stringify(likedRecipes));
+        }
 
-        // Use htmx to send a request to the server
-        htmx.ajax({
-            url: '/like_recipe/' + recipeId,
-            method: 'POST',
-            success: function(response) {
-                if (response.liked) {
-                    $(e.target).addClass('liked');
-                } else {
-                    $(e.target).removeClass('liked');
-                }
+        // Function to remove liked recipe from local storage
+        function removeLikedRecipe(recipeId) {
+            let likedRecipes = JSON.parse(localStorage.getItem('likedRecipes')) || [];
+            likedRecipes = likedRecipes.filter(id => id !== recipeId);
+            localStorage.setItem('likedRecipes', JSON.stringify(likedRecipes));
+        }
+
+        $('a.like-button').each(function() {
+            const recipeId = $(this).data('recipe-id');
+
+            // Check if the recipe is liked and update the button's appearance
+            if (isRecipeLiked(recipeId)) {
+                $(this).addClass('liked');
             }
+
+            // Attach click event handler
+            $(this).on('click', function(e) {
+                $(this).toggleClass('liked');
+
+                if ($(this).hasClass('liked')) {
+                    saveLikedRecipe(recipeId);
+                } else {
+                    removeLikedRecipe(recipeId);
+                }
+
+                // Use htmx to send a request to the server
+                htmx.ajax({
+                    url: '/like_recipe/' + recipeId,
+                    method: 'POST',
+                    success: function(response) {
+                        // The server can respond with the updated like status
+                        if (response.liked) {
+                            $(e.target).addClass('liked');
+                        } else {
+                            $(e.target).removeClass('liked');
+                        }
+                    }
+                });
+
+                // Delay the removal of 'liked' class for better visual feedback
+                setTimeout(() => {
+                    $(this).removeClass('liked');
+                }, 1000);
+            });
         });
-    });
     </script>
 <!----------------------------------page redirection---------------------------------->
     <script>
