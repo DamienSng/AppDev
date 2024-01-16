@@ -264,3 +264,5 @@ def like(post_id):
         db.session.commit()
 
     return redirect(url_for('views.community_forum'))
+
+# ignore this comment

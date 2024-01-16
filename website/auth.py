@@ -377,4 +377,4 @@ def update_profile():
 
     return render_template('update_profile.html', user=current_user)
 
-
+# ignore this comment

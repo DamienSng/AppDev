@@ -61,3 +61,5 @@ def aggregate_chart_data(preferences, category):
                     data[cat] = 1
     print(data)
     return data
+
+# ignore this comment
