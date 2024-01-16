@@ -489,6 +489,13 @@
         });
     </script>
     <!----------------------------------page redirection---------------------------------->
+    <script>
+        document.getElementById('sortedlist').addEventListener('change', function() {
+            if (this.value === 'favourites') {
+                window.location.href = '/FilterFavourites'; // Replace with your correct URL
+            }
+        });
+    </script>
 </body>
 
 {% endblock %}

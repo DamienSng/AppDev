@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, session
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import SQLAlchemyError
 from os import path
@@ -536,20 +536,17 @@ def create_app():
 
         return render_template("filterDifficulty.html", recipes=ordered_list_b)
 
-    # PROBLEM PART FOR ME TO SOLVE.
-    @app.route('/like_recipe/<int:recipe_id>', methods=['POST'])
-    def like_recipe(recipe_id):
-        # Toggle the like status for the current user and recipe
-        # Update your database accordingly
-        # Return the updated like status
-        liked = True  # Replace with your actual logic
-        return jsonify({'liked': liked})
-
-    @app.route("/filterFavourites")
-    def like():
-        liked_recipes = []  # Implement this to fetch liked recipes
-        # for i in Recipes:
-        return render_template("filterFavourites.html", liked_recipes=liked_recipes)
+    @app.route('/retrieveFavourites')
+    def retrieve_favourites():
+        #####################################################################################################################
+        liked_recipes = request.args.get('liked_recipes', '')
+        liked_recipes_list = liked_recipes.split(',')
+        wb = load_workbook('website/DB.xlsx')
+        ws = wb['Fav']
+        all_recipes = [[{'id': row[0].value, 'title': row[1].value} for row in ws.iter_rows(min_row=2, values_only=True)]]
+        favourites_list = [recipe for recipe in all_recipes if str(recipe['id']) in liked_recipes_list]
+        #####################################################################################################################
+        return render_template('retrieveFavourites.html', count=len(favourites_list), recipes_list=favourites_list)
 
     # Search fn
     @app.route("/search")

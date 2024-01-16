@@ -353,18 +353,18 @@
                 <input type="text" name="q" id="search_query" value="{{ search_query }}">
                 <button type="submit">Search</button>
             </form>
-            <select name="sortedlist" id="sortedlist">
+            <select name="sortedlist" id="sortedlist" onclick="navigateToPage()">
                 <option value="default">Sort By Default</option>
                 <option value="favourites">Sort By Favourites</option>
-                <option value="difficulty">Sort By Difficulty</option>
+                <option value="difficulty" selected>Sort By Difficulty</option>  <!--selected is added so that difficult is chosen by default on page load-->
             </select>
         </div>
     </div>
-
+<!--------------------------------------------same code on recipes.html-------------------------------------------->
     <div class="recepie_area plus_padding">
             <div class="container">
                 <div class="row">
-                    {% for recipe in recipes %}
+                    {% for recipes in likedRecipes %}
                         <div class="col-xl-4 col-lg-4 col-md-6">
                             <div class="single_recepie text-center">
                                 <div class="rounded-image-container">
@@ -387,6 +387,7 @@
                 </div>
             </div>
         </div>
+<!--------------------------------------------same code on recipes.html-------------------------------------------->
 
     <!-- JS here -->
     <script src="{{url_for('static', filename='js/vendor/modernizr-3.5.0.min.js')}}"></script>
@@ -479,19 +480,19 @@
             });
         });
     </script>
-<!----------------------------------page redirection---------------------------------->
+    <!----------------------------------page redirection---------------------------------->
     <script>
         document.getElementById('sortedlist').addEventListener('change', function() {
-            if (this.value === 'difficulty') {
-                window.location.href = '/filterDifficulty'; // Replace with your correct URL
+            if (this.value === 'default') {
+                window.location.href = '/Recipes'; // Replace with your correct URL
             }
         });
     </script>
-<!----------------------------------page redirection---------------------------------->
+    <!----------------------------------page redirection---------------------------------->
     <script>
         document.getElementById('sortedlist').addEventListener('change', function() {
             if (this.value === 'favourites') {
-                window.location.href = '/FilterFavourites'; // Replace with your correct URL
+                window.location.href = '/filterFavourites'; // Replace with your correct URL
             }
         });
     </script>
