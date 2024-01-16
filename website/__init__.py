@@ -541,10 +541,31 @@ def create_app():
         #####################################################################################################################
         liked_recipes = request.args.get('liked_recipes', '')
         liked_recipes_list = liked_recipes.split(',')
+
+        # Load the Excel workbook
         wb = load_workbook('website/DB.xlsx')
-        ws = wb['Fav']
-        all_recipes = [[{'id': row[0].value, 'title': row[1].value} for row in ws.iter_rows(min_row=2, values_only=True)]]
-        favourites_list = [recipe for recipe in all_recipes if str(recipe['id']) in liked_recipes_list]
+
+        # Check if 'Fav' sheet exists; create it if not
+        if 'Fav' not in wb.sheetnames:
+            ws = wb.create_sheet('Fav')
+            ws.title = 'Fav'  # rename sheet 2 to 'Fav'
+            Head = ['ID', 'Title']
+            ws.append(Head)
+            for cell in ws[1]:  # '1' refers to the first row
+                cell.font = Font(bold=True)
+
+        else:
+            ws = wb['Fav']
+
+
+        favourites_list = []
+
+        for key in ws.iter_rows(min_row=2, values_only=True):  # start reading from row 2 onwards
+            Fav = [cell for cell in key]  # look through every cell
+            favourites_list.append(Fav)  # add the data from the cell into a list
+        print(favourites_list)
+
+
         #####################################################################################################################
         return render_template('retrieveFavourites.html', count=len(favourites_list), recipes_list=favourites_list)
 
