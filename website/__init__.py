@@ -465,7 +465,6 @@ def create_app():
 
     @app.route('/Recipes', methods=['GET', 'POST'])
     def recipes():
-        print(current_user.username)
         # right before the page load, look in the Excel and extract all the data into a list
         if request.method == 'POST':
             # Create an instance of the form
