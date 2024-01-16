@@ -242,7 +242,7 @@
                             <li>{{ optional }}</li>
                         {% endif %}
                     {% endfor %}
-                    <input type="submit" value="Add to Cart" name="add">
+                    <button id="addToCartButton">Add to Cart</button>
                 </ul>
             </div>
         </div>
@@ -349,6 +349,26 @@
     }
     init();
 </script>
+
+    <!--add to cart-->
+<script>
+    document.getElementById('addToCartButton').addEventListener('click', function() {
+    var form = document.getElementById('recipeForm');
+    var checkedIngredients = [];
+    var checkboxes = form.querySelectorAll('input[name="ingredient"]:checked');
+
+    for (var checkbox of checkboxes) {
+        checkedIngredients.push(checkbox.value);
+    }
+
+    // Here, handle the checkedIngredients as before
+    // ...
+
+    // Redirect to home page
+    window.location.href = '/Recipes';
+});
+</script>
+    <!--add to cart-->
 </body>
 
 </html>

@@ -4,7 +4,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from os import path
 from flask_login import LoginManager
 from flask_mail import Mail
-
+from flask_login import current_user
 db = SQLAlchemy()
 mail = Mail()
 
@@ -466,6 +466,7 @@ def create_app():
 
     @app.route('/Recipes', methods=['GET', 'POST'])
     def recipes():
+        print(current_user.username)
         # right before the page load, look in the Excel and extract all the data into a list
         if request.method == 'POST':
             # Create an instance of the form
