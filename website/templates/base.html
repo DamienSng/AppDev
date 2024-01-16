@@ -43,6 +43,7 @@
                   <ul class="dropdown-menu">
                    <li><a class="dropdown-item" href="/createRecipe">Create Recipe</a></li>
                    <li><a class="dropdown-item" href="/retrieveRecipes">Retrieve Recipes</a></li>
+                      <li><a class="dropdown-item" href="/retrieveFavourites">Retrieve Favourites</a></li>
                    <li><a class="dropdown-item" href="/Recipes">View Recipes</a></li>
                    </ul>
 
@@ -51,6 +52,21 @@
                   <a class="nav-link" href="/contactUs">Contact Us</a>
                 </li>
                 <!----YC NAVBAR----->
+
+                <!--WQ's NAVBAR-->
+                <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Customer Support</a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="/FeedbackForm">Feedback Form</a></li>
+                    <li><a class="dropdown-item" href="/retrieveFeedback">Manage Feedback Form</a></li>
+                    <li><a class="dropdown-item" href="/SurveyForm">Survey Form</a></li>
+                    <li><a class="dropdown-item" href="/retrieveSurvey">Manage Survey Form</a></li>
+                    <li><a class="dropdown-item" href="/faq">FAQ</a></li>
+                    <!--Temporary(To check if it works) -->
+                    <li><a class="dropdown-item" href="/confirmation">Confirmation</a></li>
+                </ul>
+                </li>
+                <!--WQ's NAVBAR-->
 
                 {% if current_user.is_authenticated and not verifying and not staff %}
                     <li class="nav-link">
