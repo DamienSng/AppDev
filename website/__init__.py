@@ -6,13 +6,14 @@ from flask_login import LoginManager
 from flask_mail import Mail
 from flask_login import current_user
 
-
 db = SQLAlchemy()
 mail = Mail()
 
 DB_NAME = "database.db"
 
 fav_list = []
+
+
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'abcdefg'
@@ -177,58 +178,7 @@ def create_app():
             ws.append(product_data)
             Recipe.recipes.append(product_data)
 
-            # --------------------------------------------------------------------------------------------------------------#
 
-            try:
-                IngredientWS = wb[str(id)]
-                print(f'found existing worksheet')
-
-
-            # if DB doesn't exist, create one
-            except (IOError, KeyError):
-                IngredientWS = wb.create_sheet(str(id))
-                IngredientHeader = ['Quantity', 'Measurement', 'Ingredient']
-                IngredientWS.append(IngredientHeader)  # adds the headers to the first row
-                for cell in IngredientWS[1]:  # '1' refers to the first row
-                    cell.font = Font(bold=True)  # makes the font bold
-                print('no worksheet found')
-                wb.save('DB.xlsx')
-
-            # The text containing various ingredients with quantities and measurements
-            text = str(create_recipe_form.ingredient.data)
-
-            # Regex pattern to handle ingredients with optional measurements and exclude bracketed words
-            # first line captures digits (including decimals)
-            # second line captures if 'g' or 'ml' is present
-            # third line discards any brackets
-            pattern = r'(\d*\.?\d+)' \
-                      r'\s*(g|ml)?' \
-                      r'\s*([^,(]+)'
-
-            # Find matches using the pattern
-            matches = re.findall(pattern, text)
-
-            # Create a list to hold the split sections
-            SplitSections = []
-
-            # Loop through the matches and structure them into Quantity, Measurement, Ingredient
-            for match in matches:
-                quantity, measurement, ingredient = match
-                measurement = measurement if measurement else "N/A"  # Assign "N/A" if measurement is missing
-                ingredient = ingredient.strip()  # Trim any whitespace from the ingredient
-                SplitSections.append([quantity, measurement, ingredient])
-
-            # Write each nested list in the big list to the rows, starting from the second row
-            for row_index, sublist in enumerate(SplitSections, start=2):  # Starting at row 2
-                for col_index, item in enumerate(sublist, start=1):  # Starting from the first column
-                    try:
-                        item = float(item)
-                    except ValueError:
-                        pass
-                    cell_ref = f"{openpyxl.utils.get_column_letter(col_index)}{row_index}"
-                    IngredientWS[cell_ref] = item
-
-            # --------------------------------------------------------------------------------------------------------------#
 
             wb.save('website/DB.xlsx')
             ###################################################################################################################
@@ -581,6 +531,7 @@ def create_app():
         else:
             # If it's not an AJAX request, render the HTML template
             return render_template('retrieveFavourites.html', count=len(fav_list), fav_list=fav_list)
+
     # Search fn
     @app.route("/search")
     def search():
@@ -643,6 +594,68 @@ def create_app():
         # Render the cart template with the items, total price, price IDs, and quantities
         return render_template('cart.html', items=items, price=price,
                                price_ids=price_ids, quantity=quantity)
+
+    @app.route('/add-to-cart', methods=['POST'])
+    def add_to_cart():
+        data = request.json
+        checked_ingredients = data.get('ingredients', [])
+        print(data)
+        print(checked_ingredients)
+
+        pattern = r'(\d*\.?\d+)' \
+                  r'\s*(g|ml)?' \
+                  r'\s*([^,(]+)'
+        SplitSections = []
+        for text in checked_ingredients:
+            matches = re.findall(pattern, text)
+            for match in matches:
+                quantity, measurement, ingredient = match
+                measurement = measurement if measurement else "N/A"  # Assign "N/A" if measurement is missing
+                ingredient = ingredient.strip()  # Trim any whitespace from the ingredient
+                SplitSections.append([quantity, measurement, ingredient])
+
+# ------------------------------does the Workbook exist?-------------------------------------
+        try:
+            CartWB = load_workbook('website/Cart.xlsx')
+            print(f'found existing workbook')
+        # if DB doesn't exist, create one
+        except IOError:
+            print('no workbook')
+            CartWB = Workbook()
+
+# ------------------------------does the Workbook exist?-------------------------------------
+
+        # ------------------------------does the Worksheet exist?-------------------------------------
+        try:
+            UsersCartWS = CartWB[current_user.username]
+        except KeyError:
+            CartWB.create_sheet(current_user.username)
+            UsersCartWS = CartWB[current_user.username]
+            Header = ['ID', 'Quantity', 'Measurement', 'Ingredient']
+            UsersCartWS.append(Header)  # adds the headers to the first row
+            for cell in UsersCartWS[1]:  # '1' refers to the first row
+                cell.font = Font(bold=True)  # makes the font bold
+
+        # ------------------------------does the Worksheet exist?-------------------------------------
+
+# ----------------------------------add the data to the worksheet of the respective users----------------------------
+
+        # Write each nested list in the big list to the rows, starting from the second row
+        for row_index, sublist in enumerate(SplitSections, start=2):  # Starting at row 2
+            for col_index, item in enumerate(sublist, start=1):  # Starting from the first column
+                try:
+                    item = float(item)
+                    item = item * float(data['servings'])
+                except ValueError:
+                    pass
+                cell_ref = f"{openpyxl.utils.get_column_letter(col_index + 1)}{row_index}"
+                UsersCartWS[cell_ref] = item
+        CartWB.save('website/Cart.xlsx')
+# ----------------------------------add the data to the worksheet of the respective users----------------------------
+
+
+        # Respond to the client
+        return jsonify({'status': 'success', 'message': 'Ingredients added to cart'})
 
     # ---------------------WQ's part------------------------#
     import mpld3

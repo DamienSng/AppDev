@@ -459,13 +459,13 @@
                        min="0" style="width: 50px;" id="servingsInput"> servings
             </form>
             <h3>Ingredients</h3>
-            <form>
+            <form id="ingredientsForm" data-recipe-id="{{ recipe[0] }}">
                 <ul style="list-style: none">
                     {% for ingredient in recipe[6].split(', ') %}
                     <li class="ingredient-item">
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" value="{{ ingredient }}">
+                                <input type="checkbox" value="{{ ingredient }}" name="ingredient">
                                 <span>{{ ingredient }}</span>
                             </label>
                         </div>
@@ -601,20 +601,35 @@
 
     <!--add to cart-->
 <script>
-    document.getElementById('addToCartButton').addEventListener('click', function() {
-    var form = document.getElementById('recipeForm');
-    var checkedIngredients = [];
+// listen to when add to cart is pressed and get the value of the checked boxes
+document.getElementById('addToCartButton').addEventListener('click', function() {
+    var form = document.getElementById('ingredientsForm');
+    var recipeId = form.getAttribute('data-recipe-id'); // Retrieve the recipe ID
+    var servingNumber = document.getElementById('servingsInput').value; // Retrieve the serving number
     var checkboxes = form.querySelectorAll('input[name="ingredient"]:checked');
+    var checkedIngredients = Array.from(checkboxes).map(function(checkbox) {
+        return checkbox.value;
+    });
 
-    for (var checkbox of checkboxes) {
-        checkedIngredients.push(checkbox.value);
-    }
-
-    // Here, handle the checkedIngredients as before
-    // ...
-
-    // Redirect to home page
-    window.location.href = '/Recipes';
+    fetch('/add-to-cart', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            ingredients: checkedIngredients,
+            id: recipeId,  // Include the recipe ID in the payload
+            servings: servingNumber // Include the serving number in the payload
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+        window.location.href = '/landing-page'; // Redirect to home page
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
 });
 </script>
     <!--add to cart-->
