@@ -12,7 +12,7 @@ mail = Mail()
 
 DB_NAME = "database.db"
 
-
+fav_list = []
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'abcdefg'
@@ -536,7 +536,7 @@ def create_app():
 
         return render_template("filterDifficulty.html", recipes=ordered_list_b)
 
-    @app.route('/retrieveFavourites')
+    @app.route('/retrieveFavourites', methods=['GET'])
     def retrieve_favourites():
         #####################################################################################################################
         liked_recipes = request.args.get('liked_recipes', '')
@@ -545,28 +545,42 @@ def create_app():
         # Load the Excel workbook
         wb = load_workbook('website/DB.xlsx')
 
-        # Check if 'Fav' sheet exists; create it if not
-        if 'Fav' not in wb.sheetnames:
-            ws = wb.create_sheet('Fav')
-            ws.title = 'Fav'  # rename sheet 2 to 'Fav'
-            Head = ['ID', 'Title']
-            ws.append(Head)
-            for cell in ws[1]:  # '1' refers to the first row
-                cell.font = Font(bold=True)
-
-        else:
+        try:
+            wb = load_workbook('website/DB.xlsx')
             ws = wb['Fav']
+            print(f'found existing workbook')
+            for row in ws.iter_rows(min_row=2, values_only=True):
+                row_data = [cell for cell in row]
+                Recipe.recipes.append(row_data)
 
-        favourites_list = []
+
+        # if DB doesn't exist, create one
+        except (KeyError, IOError):
+            print('no workbook')
+            wb.save('website/DB.xlsx')
+            wb = Workbook()
+            ws = wb.active
+            print('rename title')
+            ws.title = 'Fav'  # rename sheet 2 to 'Recipes'
+            Head = ['ID', 'Title']
+            ws.append(Head)  # adds the headers to the first row
+
+            print('added head')
+            for cell in ws[1]:  # '1' refers to the first row
+                cell.font = Font(bold=True)  # makes the font bold
 
         for key in ws.iter_rows(min_row=2, values_only=True):  # start reading from row 2 onwards
-            Fav = [cell for cell in key]  # look through every cell
-            favourites_list.append(Fav)  # add the data from the cell into a list
-        print(favourites_list)
+            recipe_id, title = key  # Unpack values from key
+            if str(recipe_id) in liked_recipes_list:
+                fav_list.append({'ID': recipe_id, 'Title': title})
+                print({'ID': recipe_id, 'Title': title})
 
-        #####################################################################################################################
-        return render_template('retrieveFavourites.html', count=len(favourites_list), recipes_list=favourites_list)
-
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            # If it's an AJAX request, return a JSON response
+            return jsonify({'count': len(fav_list), 'fav_list': fav_list})
+        else:
+            # If it's not an AJAX request, render the HTML template
+            return render_template('retrieveFavourites.html', count=len(fav_list), fav_list=fav_list)
     # Search fn
     @app.route("/search")
     def search():

@@ -460,8 +460,13 @@
 
                 // Use htmx to send a request to the server
                 htmx.ajax({
-                    url: '/like_recipe/' + recipeId,
-                    method: 'POST',
+                    url: '/retrieveFavourites',
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    content: JSON.stringify({ likedRecipes: [{{ recipe[0] }}] }), // Send liked recipe IDs in the request body
+                    'hx-post': '/retrieveFavourites',  // Move 'hx-post' here
                     success: function(response) {
                         // The server can respond with the updated like status
                         if (response.liked) {
