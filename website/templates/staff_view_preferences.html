@@ -1,33 +1,75 @@
 {% extends "base.html" %}
-{% block title %}User Preferences{% endblock %}
+{% block title %}Eco-Eats (Staff) User Preferences{% endblock %}
 
 {% block content %}
 <div class="container mt-5">
     <h1 class="mb-4">User Preferences</h1>
     <p class="lead">Total Users: {{ users|length }}</p>
-
-    {% if preferences %}
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Username</th>
-                    <th>Top Preferences</th>
-                    <th>Dietary Restrictions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for user in users %}
-                    <tr>
-                        <td>{{ user.username }}</td>
-                        <td>{{ user.preferences.top_preferences }}</td>
-                        <td>{{ user.preferences.dietary_restrictions }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <p>No preferences found for any users.</p>
-    {% endif %}
 </div>
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#TopIngredients">Top Ingredients</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#TopCuisines">Top Cuisines</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#DietaryRestrictions">Dietary Restrictions</a>
+    </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane container-fluid active" id="TopIngredients">
+        <canvas id="topIngredientsChart" style="width:100%; max-width:900px"></canvas>
+    </div>
+    <div class="tab-pane container-fluid" id="TopCuisines">
+        <canvas id="topCuisinesChart" style="width:100%; max-width:900px"></canvas>
+    </div>
+    <div class="tab-pane container-fluid" id="DietaryRestrictions">
+        <canvas id="dietaryRestrictionsChart" style="width:100%; max-width:900px"></canvas>
+    </div>
+</div>
+
+<script>
+const topIngredientsData = {{ topIngredientsData|safe }};
+const topCuisinesData = {{ topCuisinesData|safe }};
+const dietaryRestrictionsData = {{ dietaryRestrictionsData|safe }};
+let barColors = "blue";
+
+function createBarChart(canvasId, labels, data, title) {
+    new Chart(canvasId, {
+        type: "bar",
+        data: {
+            labels: labels,
+            datasets: [{
+                backgroundColor: barColors,
+                data: data
+            }]
+        },
+        options: {
+            legend: { display: false },
+            title: {
+                display: true,
+                text: title
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+                        stepSize: 1 // Ensure y-axis starts at 0 and has steps of 1
+                    }
+                }]
+            }
+        }
+    });
+}
+
+
+createBarChart("topIngredientsChart", topIngredientsData.labels, topIngredientsData.values, "Top Ingredients");
+createBarChart("topCuisinesChart", topCuisinesData.labels, topCuisinesData.values, "Top Cuisines");
+createBarChart("dietaryRestrictionsChart", dietaryRestrictionsData.labels, dietaryRestrictionsData.values, "Dietary Restrictions");
+</script>
+<!---ignore this comment--->
+
 {% endblock %}
 

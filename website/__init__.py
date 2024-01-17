@@ -4,6 +4,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from os import path
 from flask_login import LoginManager
 from flask_mail import Mail
+from flask_login import current_user
 
 db = SQLAlchemy()
 mail = Mail()
@@ -57,9 +58,9 @@ def create_app():
 
         return None
 
-#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@YC's part@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@YC's part@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-    from .Forms import CreateRecipeForm
+    from .YCForms import CreateRecipeForm
     import shelve
     from .Recipe import Recipe
 
@@ -105,9 +106,6 @@ def create_app():
             cell.font = Font(bold=True)  # makes the font bold
 
     #####################################################################################################################
-
-
-
 
     @app.route('/contactUs')
     def contact_us():
@@ -299,7 +297,8 @@ def create_app():
             #####################################################################################################################
             # concatenate all the updated data from the form into a list
             updated_data = [data_to_find, (update_recipe_form.title.data), (update_recipe_form.skill.data),
-                            (update_recipe_form.time.data), (update_recipe_form.cuisine.data), (update_recipe_form.instruction.data),
+                            (update_recipe_form.time.data), (update_recipe_form.cuisine.data),
+                            (update_recipe_form.instruction.data),
                             (update_recipe_form.ingredient.data), (update_recipe_form.alt.data),
                             (update_recipe_form.optional.data), (update_recipe_form.image.data)]
 
@@ -541,10 +540,29 @@ def create_app():
         #####################################################################################################################
         liked_recipes = request.args.get('liked_recipes', '')
         liked_recipes_list = liked_recipes.split(',')
+
+        # Load the Excel workbook
         wb = load_workbook('website/DB.xlsx')
-        ws = wb['Fav']
-        all_recipes = [[{'id': row[0].value, 'title': row[1].value} for row in ws.iter_rows(min_row=2, values_only=True)]]
-        favourites_list = [recipe for recipe in all_recipes if str(recipe['id']) in liked_recipes_list]
+
+        # Check if 'Fav' sheet exists; create it if not
+        if 'Fav' not in wb.sheetnames:
+            ws = wb.create_sheet('Fav')
+            ws.title = 'Fav'  # rename sheet 2 to 'Fav'
+            Head = ['ID', 'Title']
+            ws.append(Head)
+            for cell in ws[1]:  # '1' refers to the first row
+                cell.font = Font(bold=True)
+
+        else:
+            ws = wb['Fav']
+
+        favourites_list = []
+
+        for key in ws.iter_rows(min_row=2, values_only=True):  # start reading from row 2 onwards
+            Fav = [cell for cell in key]  # look through every cell
+            favourites_list.append(Fav)  # add the data from the cell into a list
+        print(favourites_list)
+
         #####################################################################################################################
         return render_template('retrieveFavourites.html', count=len(favourites_list), recipes_list=favourites_list)
 
@@ -610,6 +628,269 @@ def create_app():
         # Render the cart template with the items, total price, price IDs, and quantities
         return render_template('cart.html', items=items, price=price,
                                price_ids=price_ids, quantity=quantity)
+
+    # ---------------------WQ's part------------------------#
+    import mpld3
+    from flask import render_template, request, redirect, url_for, jsonify, session
+    from .Forms import CreateUserForm, CreateCustomerForm, CreateFeedbackForm, CreateSurveyForm
+    import shelve
+    from .Feedback import Feedback
+    from .Survey import Survey
+    from datetime import datetime
+    import os
+
+    # Important need to be included
+    app.secret_key = os.urandom(24)  # For session security
+    # Start of the Project
+
+    # Built-in function for the template of email like from, to Subject header and body
+    from email.message import EmailMessage
+    # Add security
+    import ssl
+    import smtplib
+
+    current_timestamp = datetime.now()
+    formatted_timestamp = current_timestamp.strftime("%d/%m/%Y %I:%M%p")
+    print(formatted_timestamp)
+
+    @app.route("/FeedbackForm", methods=["GET", "POST"])
+    def feedback_form():
+        # It helps ensure that the data submitted aligns with the authenticated user's information (readonly)
+        # Change the name and email to retrieve from the user that login
+        name = "abc123"
+        email = "weeqichew0316@gmail.com"
+
+        create_feedback_form = CreateFeedbackForm(request.form)
+        if request.method == "POST" and create_feedback_form.validate():
+            # Dummy Date
+            feedback_dict = {
+                1: Feedback("16/12/2023 05:56PM", "Test1", "test1123@gmail.com", "test1subject",
+                            "test1feedback"),
+                2: Feedback("16/12/2023 06:07PM", "Test2", "test2123@gmail.com", "test2subject",
+                            "test2feedback")}
+            db = shelve.open('feedback.db', "c")
+            try:
+                feedback_dict = db["Feedback"]
+            except:
+                print("Error in retrieving feedback from feedback.db")
+            feedback = Feedback(formatted_timestamp, create_feedback_form.username.data,
+                                create_feedback_form.email_address.data, create_feedback_form.subject.data,
+                                create_feedback_form.feedback.data)
+            feedback_dict[feedback.get_feedback_id()] = feedback
+            db["Feedback"] = feedback_dict
+            print(feedback_dict)
+
+            email_password = "wogwjgkvzgliubck"
+            username = feedback.get_username()
+            email_address = feedback.get_email_address()
+            subject = feedback.get_subject()
+            feedback = feedback.get_feedback()
+            combined_feedback = feedback + "\n\n" + email_address
+
+            Default_message_Subject = "Feedback"
+            Default_message_body = "Hi " + username + "\n\n" + "Thank you so much for taking the time to share your feedback! We will reply to any inquires you may have within 2-3 business days" + "\n" + "Thank you again for being a loyal customer" + "\n\n" + "Best Regards" + "\n" + "Eco-Eats Management"
+
+            print(username)
+            print(email_address)
+            print(subject)
+            print(feedback)
+
+            em = EmailMessage()
+            em["From"] = "weeqichew0316@gmail"
+            em["To"] = "weeqichew0316@gmail.com"  # Email Reciever
+            em["Subject"] = subject
+            em.set_content(combined_feedback)
+
+            context = ssl.create_default_context()
+
+            # Sending customer feedback to staff gmail
+            with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
+                smtp.login("weeqichew0316@gmail.com", email_password)
+                smtp.sendmail("weeqichew0316@gmail.com", "weeqichew0316@gmail.com", em.as_string())
+
+            em1 = EmailMessage()
+            em1["From"] = "weeqichew0316@gmail"
+            em1["To"] = email_address  # Email Reciever
+            em1["Subject"] = Default_message_Subject
+            em1.set_content(Default_message_body)
+
+            context = ssl.create_default_context()
+
+            # Sending thank you message to customer
+            with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as smtp:
+                smtp.login("weeqichew0316@gmail.com", email_password)
+                smtp.sendmail("weeqichew0316@gmail.com", email_address, em1.as_string())
+
+            db.close()
+
+            return redirect(url_for("confirmation"))
+        return render_template('feedback.html', form=create_feedback_form, name=name, email=email)
+
+    @app.route("/retrieveFeedback")
+    def retrieve_feedback():
+        feedback_dict = {1: Feedback("16/12/2023 05:56PM", "Test1", "test1123@gmail.com", "test1subject",
+                                     "test1feedback"),
+                         2: Feedback("16/12/2023 06:07PM", "Test2", "test2123@gmail.com", "test2subject",
+                                     "test2feedback")}
+        db = shelve.open("feedback.db", "r")
+        feedback_dict = db["Feedback"]
+
+        db.close()
+
+        feedback_list = []
+        for key in feedback_dict:  # Key has to be a number
+            feedback = feedback_dict.get(key)
+            feedback_list.append(feedback)
+
+        print(feedback_list)
+
+        return render_template('retrieveFeedback.html', count=len(feedback_list), feedback_list=feedback_list)
+
+    @app.route('/deleteFeedback/<int:id>', methods=['POST'])
+    def delete_feedback(id):
+        db = shelve.open("feedback.db", "w")
+        feedback_dict = db["Feedback"]
+        print(id)
+        print(feedback_dict[id])
+        print(feedback_dict[id].get_feedback())
+        feedback_dict.pop(id)
+        db["Feedback"] = feedback_dict
+        db.close()
+
+        return redirect(url_for('retrieve_feedback'))
+
+    from .chat import get_response
+
+    @app.get("/chatbot")
+    def index_get():
+        return render_template("base.html")
+
+    # chabot
+    @app.post("/predict")
+    def predict():
+        text = request.get_json().get("message")
+        # TODO: check if text is valid
+        response = get_response(text)
+        message = {"answer": response}
+        return jsonify(message)
+
+    @app.route("/SurveyForm", methods=["GET", "POST"])
+    def survey_form():
+        # Change the name and email to retrieve from the user that login"
+        name = "abc123"
+        email = "weeqichew0316@gmail.com"
+        create_survey_form = CreateSurveyForm(request.form)
+        # Limit the user to only submit 1 form
+        if session.get("form_submitted"):
+            # Change the faq.html to html that says "you have already submitted a form"
+            return render_template("already_submit.html")
+        if request.method == "POST" and create_survey_form.validate():
+            # Dummy Data
+            survey_dict = {
+                "1": Survey("16/12/2023 12.33PM", "abc123", "abc123@gmail.com", "Chinese", "Orange Chicken"),
+                "2": Survey("16/12/2023 12:45PM", "abc234", "abc234@gmail.com", "Korean", "Seaweed Soup"),
+                "3": Survey("16/12/2023 02:45PM", "Test1", "Test1@gmail.com", "Indian", "Curry Chicken Masala"),
+                "4": Survey("16/12/2023 05.25PM", "Test2", "Test2@gmail.com", "Mexican", "Tacos"),
+                "5": Survey("16/12/2023 06:20PM", "Test3", "Test3@gmail.com", "Chinese", "Hor Fun"),
+                "6": Survey("16/12/2023: 11:20PM", "Test4", "Test4@gmail.com", "Japanese", "Takoyaki"),
+                "7": Survey("18/12/2023 07:20AM", "Test5", "Test5@gmail.com", "Korean", "Kimchi Soup"),
+                "8": Survey("18/12/2023: 11:20AM", "Test6", "Test6@gmail.com", "Thai", "Pad Thai"),
+                "9": Survey("18/12/2023: 01.20PM", "Test7", "Test7@gmail.com", "Korean", "Bulgogi"),
+                "10": Survey("18/12/2023 05:20PM", "Test8", "Test8@gmail.com", "Thai", "Tom Yum Soup")
+            }
+
+            db = shelve.open("survey.db", "c")
+            try:
+                survey_dict = db["Survey"]
+            except:
+                print("Error in retrieving survey responses from survey.db")
+            survey = Survey(formatted_timestamp, create_survey_form.username.data,
+                            create_survey_form.email_address.data, create_survey_form.cuisine.data,
+                            create_survey_form.recipe_name.data)
+            survey.increment(create_survey_form.cuisine.data)
+            survey_dict[survey.get_survey_id()] = survey
+            db["Survey"] = survey_dict
+
+            print(survey_dict)
+            username = survey.get_username()
+            email_address = survey.get_email_address()
+            cuisine = survey.get_cuisine()
+            recipe_name = survey.get_recipe_name()
+            print(username)
+            print(email_address)
+            print(cuisine)
+            print(recipe_name)
+
+            db.close()
+            session["form_submitted"] = True
+
+            return redirect(url_for("confirmation"))  # The function def confirmation()
+        return render_template("survey.html", form=create_survey_form, name=name, email=email)
+
+    @app.route("/retrieveSurvey")
+    def retrieve_survey():
+        # Dummy Data
+        survey_dict = {
+            "1": Survey("16/12/2023 12.33PM", "abc123", "abc123@gmail.com", "Chinese", "Orange Chicken"),
+            "2": Survey("16/12/2023 12:45PM", "abc234", "abc234@gmail.com", "Korean", "Seaweed Soup"),
+            "3": Survey("16/12/2023 02:45PM", "Test1", "Test1@gmail.com", "Indian", "Curry Chicken Masala"),
+            "4": Survey("16/12/2023 05.25PM", "Test2", "Test2@gmail.com", "Mexican", "Tacos"),
+            "5": Survey("16/12/2023 06:20PM", "Test3", "Test3@gmail.com", "Chinese", "Hor Fun"),
+            "6": Survey("16/12/2023: 11:20PM", "Test4", "Test4@gmail.com", "Japanese", "Takoyaki"),
+            "7": Survey("18/12/2023 07:20AM", "Test5", "Test5@gmail.com", "Korean", "Kimchi Soup"),
+            "8": Survey("18/12/2023: 11:20AM", "Test6", "Test6@gmail.com", "Thai", "Pad Thai"),
+            "9": Survey("18/12/2023: 01.20PM", "Test7", "Test7@gmail.com", "Korean", "Bulgogi"),
+            "10": Survey("18/12/2023 05:20PM", "Test8", "Test8@gmail.com", "Thai", "Tom Yum Soup")
+        }
+        db = shelve.open("survey.db", "r")
+        survey_dict = db["Survey"]
+        db.close()
+
+        survey_list = []
+        for key in survey_dict:
+            survey = survey_dict.get(key)
+            survey_list.append(survey)
+
+        return render_template("retrieveSurvey.html", count=len(survey_list), survey_list=survey_list)
+
+    @app.route('/deleteSurvey/<int:id>', methods=['POST'])
+    def delete_survey(id):
+        db = shelve.open("survey.db", "w")
+        survey_dict = db["Survey"]
+        print(id)
+        print(survey_dict[id])
+        print(survey_dict[id].get_cuisine())
+        cuisine_delete = survey_dict[id].get_cuisine()
+
+        # Just placeholder so that i can use the instance
+        survey = Survey("16/12/2023 12.33PM", "abc123", "abc123@gmail.com", "Chinese", "Orange Chicken")
+        survey.decrement(cuisine_delete)
+        survey_dict.pop(id)
+        db["Survey"] = survey_dict
+        db.close()
+
+        return redirect(url_for('retrieve_survey'))
+
+    import matplotlib.pyplot as plt
+
+    @app.route("/surveyChart")
+    def display_chart():
+        fig, ax = plt.subplots(figsize=(10, 6))
+        ax.bar(["Chinese", "Korean", "Japanese", "Mexican", "Thai", "Indian"],
+               [Survey.chinese_id, Survey.korean_id, Survey.japanese_id, Survey.mexican_id,
+                Survey.thai_id, Survey.indian_id], width=0.5)
+        ax.set_xticklabels(["", "Chinese", "", "Korean", "", "Japanese", "", "Mexican", "", "Thai", "", "Indian"])
+        chart_html = mpld3.fig_to_html(fig)
+
+        return render_template("surveyChart.html", bar_chart=chart_html)
+
+    @app.route("/confirmation")
+    def confirmation():
+        return render_template("confirmation.html")
+
+    @app.route("/faq")
+    def faq():
+        return render_template("faq.html")
 
     return app
 

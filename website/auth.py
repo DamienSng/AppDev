@@ -57,6 +57,7 @@ def login():
                 send_otp_email(email, otp)
 
                 # redirect to OTP verification page
+
                 return redirect(url_for('auth.verify_otp', email=email))
             else:
                 flash('Incorrect password, try again.', category='error')
@@ -148,6 +149,7 @@ def sign_up():
                 send_otp_email(email, otp)
 
                 # redirect to OTP verification page
+
                 return redirect(url_for('auth.verify_otp', email=email))
                 # add user to database
 
@@ -375,3 +377,4 @@ def update_profile():
 
     return render_template('update_profile.html', user=current_user)
 
+# ignore this comment
