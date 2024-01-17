@@ -777,7 +777,7 @@ def create_app():
 
     @app.route("/SurveyForm", methods=["GET", "POST"])
     def survey_form():
-        # Change the name and email to retrieve from the user that login"
+        # Change the name and email to retrieve from the user that login
         name = "abc123"
         email = "weeqichew0316@gmail.com"
         create_survey_form = CreateSurveyForm(request.form)
@@ -863,7 +863,7 @@ def create_app():
         print(survey_dict[id].get_cuisine())
         cuisine_delete = survey_dict[id].get_cuisine()
 
-        # Just placeholder so that i can use the instance
+        # Just placeholder so that I can use the instance
         survey = Survey("16/12/2023 12.33PM", "abc123", "abc123@gmail.com", "Chinese", "Orange Chicken")
         survey.decrement(cuisine_delete)
         survey_dict.pop(id)
