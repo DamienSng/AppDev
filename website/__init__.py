@@ -5,6 +5,7 @@ from os import path
 from flask_login import LoginManager
 from flask_mail import Mail
 from flask_login import current_user
+# testing
 
 db = SQLAlchemy()
 mail = Mail()
