@@ -68,7 +68,7 @@
 
     .rounded-image-container img {
         width: 100%;
-        height: auto;
+        height: 250px;
     }
     .recepie_area {
         margin-top: 80px;
@@ -368,7 +368,7 @@
                         <div class="col-xl-4 col-lg-4 col-md-6">
                             <div class="single_recepie text-center">
                                 <div class="rounded-image-container">
-                                    <img src="{{ url_for('static', filename='uploads/' + recipe[9]) }}" alt="{{ recipe[1] }}" width="400px">
+                                    <img src="{{ url_for('static', filename='uploads/' + recipe[9]) }}" alt="{{ recipe[1] }}">
                                 </div>
                                 <h4 style="margin-top: 20px; display: flex; align-items: center; justify-content: center;">{{ recipe[1] }}
                                     <a class='like-button' style="margin-left: 10px;" data-recipe-id="{{ recipe[0] }}">
@@ -465,7 +465,7 @@
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    content: JSON.stringify({ likedRecipes: [{{ recipe[0] }}] }), // Send liked recipe IDs in the request body
+                    content: JSON.stringify({ likedRecipes: recipe_id }), // Send liked recipe IDs in the request body
                     'hx-post': '/retrieveFavourites',  // Move 'hx-post' here
                     success: function(response) {
                         // The server can respond with the updated like status

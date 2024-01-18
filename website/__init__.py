@@ -525,12 +525,9 @@ def create_app():
                 fav_list.append({'ID': recipe_id, 'Title': title})
                 print({'ID': recipe_id, 'Title': title})
 
-        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-            # If it's an AJAX request, return a JSON response
-            return jsonify({'count': len(fav_list), 'fav_list': fav_list})
-        else:
-            # If it's not an AJAX request, render the HTML template
-            return render_template('retrieveFavourites.html', count=len(fav_list), fav_list=fav_list)
+        return render_template('retrieveFavourites.html', count=len(fav_list), fav_list=fav_list)
+
+
 
     # Search fn
     @app.route("/search")
