@@ -371,12 +371,14 @@
                                     <img src="{{ url_for('static', filename='uploads/' + recipe[9]) }}" alt="{{ recipe[1] }}">
                                 </div>
                                 <h4 style="margin-top: 20px; display: flex; align-items: center; justify-content: center;">{{ recipe[1] }}
-                                    <a class='like-button' style="margin-left: 10px;" data-recipe-id="{{ recipe[0] }}">
-                                        <span class='like-icon'>
-                                            <div class='heart-animation-1'></div>
-                                            <div class='heart-animation-2'></div>
-                                        </span>
-                                    </a>
+                                    <form id="likeForm" method="POST" action="/retrieveFavourites">
+                                        <a class='like-button' style="margin-left: 10px;" data-recipe-id="{{ recipe[0] }}">
+                                            <span class='like-icon'>
+                                                <div class='heart-animation-1'></div>
+                                                <div class='heart-animation-2'></div>
+                                            </span>
+                                        </a>
+                                    </form>
                                 </h4>
                                 <span>Skill Level: {{ recipe[3] }}</span>
                                 <p>Time Needed: {{ recipe[4] }}</p>
@@ -483,6 +485,24 @@
                 }, 1000);
             });
         });
+    </script>
+
+    <script>
+        $(this).on('click', function(e) {
+        $(this).toggleClass('liked');
+
+        if ($(this).hasClass('liked')) {
+            saveLikedRecipe(recipeId);
+        } else {
+            removeLikedRecipe(recipeId);
+        }
+
+        // Update the likedRecipes input value
+        const likedRecipes = getLikedRecipes(); // You need to implement this function
+        $('#likedRecipesInput').val(JSON.stringify(likedRecipes));
+
+        // Submit the form
+        $('#likeForm').submit();
     </script>
 <!----------------------------------page redirection---------------------------------->
     <script>

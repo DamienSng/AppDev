@@ -63,7 +63,6 @@
         margin-bottom: 8px;
     }
     .recepies_thumb, .brief{
-        text-align: center;
         margin: 0;
         }
     .rightside{
@@ -405,7 +404,7 @@
 
 </head>
 
-<body style="margin: 0 auto; max-width: 600px;">
+<body style="margin: 0 320px; max-width: 600px;">
     <div class="col-xl-12 text-center mt-4">
         <a href="{{ url_for('recipes') }}" class="btn btn-primary">Back to Recipe List</a>
     </div>
@@ -443,56 +442,63 @@
                 </div>
             </div>
         </div>
-        <div class="recepies_info">
+        <div class="recepies_info" style="margin-top: 20px;">
             <div class="resepies_details" style="margin: 0 10px;">
                 <p class="brief"><strong>Skill Level:</strong> {{ recipe[3] }} </p>
-                <p class="brief" style="margin-right: 17px;"><strong>Time:</strong> {{ recipe[4] }} </p>
-                <p class="brief" style="margin-right: 13px;"><strong>Cuisine:</strong> {{ recipe[2] }} </p>
+                <p class="brief"><strong>Time:</strong> {{ recipe[4] }} </p>
+                <p class="brief"><strong>Cuisine:</strong> {{ recipe[2] }} </p>
             </div>
         </div>
 
         <!-- /bradcam_area  -->
         <div class="rightside">
-            <form>
-                <h3 style="display: inline-block; margin-right: 10px;">Servings:</h3>
-                <input type="number" step="1" value="1" name="servings" class="quantity-field border-0 text-center w-25"
-                       min="0" style="width: 50px;" id="servingsInput"> servings
-            </form>
-            <h3>Ingredients</h3>
-            <form id="ingredientsForm" data-recipe-id="{{ recipe[0] }}">
-                <ul style="list-style: none">
-                    {% for ingredient in recipe[6].split(', ') %}
-                    <li class="ingredient-item">
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="{{ ingredient }}" name="ingredient">
-                                <span>{{ ingredient }}</span>
-                            </label>
-                        </div>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </form>
-
-            <div>
-                <h3>Alternative Ingredients</h3>
-                <ul>
-                    {% for alt in recipe[7].split(', ') %}
-                    <li>{{ alt }}</li>
-                    {% endfor %}
-                </ul>
+            <div style="margin-top: 20px; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+                <form>
+                    <h3 style="display: inline-block; margin-right: 10px; color: #333;">Servings:</h3>
+                    <input type="number" step="1" value="1" name="servings" class="quantity-field border-0 text-center w-25"
+               min="0" style="width: 50px; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" id="servingsInput"> servings
+                </form>
+                <h3 style="margin-bottom: 0;">Ingredients</h3>
+                <p style="margin-top: 10;">Please select the ingredients that you need.<br>Upon clicking on ‘Add To Cart’, those ingredient <br> that you have selected will be added to your cart.</p>
+                <form id="ingredientsForm" data-recipe-id="{{ recipe[0] }}">
+                    <ul style="list-style: none">
+                        {% for ingredient in recipe[6].split(', ') %}
+                        <li class="ingredient-item">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" value="{{ ingredient }}" name="ingredient">
+                                    <span>{{ ingredient }}</span>
+                                </label>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </form>
             </div>
 
-            <div>
-                <h3>Optional Ingredients</h3>
-                <ul>
-                    {% for optional in recipe[8].split(', ') %}
-                        {% if optional|length > 0 %}
-                            <li>{{ optional }}</li>
-                        {% endif %}
-                    {% endfor %}
-                    <button id="addToCartButton">Add to Cart</button>
-                </ul>
+            <hr>
+
+            <div style="margin-top: 10px; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+                <div>
+                    <h2>Alternative Ingredients</h2>
+                    <ul>
+                        {% for alt in recipe[7].split(', ') %}
+                        <li>{{ alt }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div>
+                    <h2>Optional Ingredients</h2>
+                    <ul>
+                        {% for optional in recipe[8].split(', ') %}
+                            {% if optional|length > 0 %}
+                                <li>{{ optional }}</li>
+                            {% endif %}
+                        {% endfor %}
+                        <button id="addToCartButton">Add to Cart</button>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>

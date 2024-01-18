@@ -11,7 +11,7 @@ mail = Mail()
 
 DB_NAME = "database.db"
 
-fav_list = []
+fav_list = [] #for retrieve_recipes
 
 
 def create_app():
@@ -488,17 +488,9 @@ def create_app():
 
     @app.route('/retrieveFavourites', methods=['GET'])
     def retrieve_favourites():
-        #####################################################################################################################
-        liked_recipes = request.args.get('liked_recipes', '')
-        liked_recipes_list = liked_recipes.split(',')
-
-        # Load the Excel workbook
-        wb = load_workbook('website/DB.xlsx')
-
         try:
             wb = load_workbook('website/DB.xlsx')
             ws = wb['Fav']
-            print(f'found existing workbook')
             for row in ws.iter_rows(min_row=2, values_only=True):
                 row_data = [cell for cell in row]
                 Recipe.recipes.append(row_data)
@@ -506,24 +498,26 @@ def create_app():
 
         # if DB doesn't exist, create one
         except (KeyError, IOError):
-            print('no workbook')
+            print('no sheet found, creating')
             wb.save('website/DB.xlsx')
             wb = Workbook()
             ws = wb.active
             print('rename title')
-            ws.title = 'Fav'  # rename sheet 2 to 'Recipes'
-            Head = ['ID', 'Title']
-            ws.append(Head)  # adds the headers to the first row
+            ws.title = 'Fav'  # rename sheet 1 to 'Recipes'
+            words = ['ID', 'Title']
+            ws.append(words)  # adds the headers to the first row
 
-            print('added head')
+            print('added words')
             for cell in ws[1]:  # '1' refers to the first row
                 cell.font = Font(bold=True)  # makes the font bold
-
+####################################################################################################
         for key in ws.iter_rows(min_row=2, values_only=True):  # start reading from row 2 onwards
-            recipe_id, title = key  # Unpack values from key
-            if str(recipe_id) in liked_recipes_list:
-                fav_list.append({'ID': recipe_id, 'Title': title})
-                print({'ID': recipe_id, 'Title': title})
+            recipe = [cell for cell in key]  # look through every cell
+            fav_list.append(recipe)  # add the data from the cell into a list
+        print(fav_list)
+
+        if request.method == 'POST':
+            liked_recipes = request.form.get('likedRecipes')
 
         return render_template('retrieveFavourites.html', count=len(fav_list), fav_list=fav_list)
 
