@@ -655,11 +655,12 @@ def create_app():
     print(formatted_timestamp)
 
     @app.route("/FeedbackForm", methods=["GET", "POST"])
+    @login_required
     def feedback_form():
         # It helps ensure that the data submitted aligns with the authenticated user's information (readonly)
         # Change the name and email to retrieve from the user that login
-        name = "abc123"
-        email = "weeqichew0316@gmail.com"
+        name = current_user.username
+        email = current_user.email
 
         create_feedback_form = CreateFeedbackForm(request.form)
         if request.method == "POST" and create_feedback_form.validate():
@@ -776,10 +777,11 @@ def create_app():
         return jsonify(message)
 
     @app.route("/SurveyForm", methods=["GET", "POST"])
+    @login_required
     def survey_form():
         # Change the name and email to retrieve from the user that login
-        name = "abc123"
-        email = "weeqichew0316@gmail.com"
+        name = current_user.username
+        email = current_user.email
         create_survey_form = CreateSurveyForm(request.form)
         # Limit the user to only submit 1 form
         if session.get("form_submitted"):
