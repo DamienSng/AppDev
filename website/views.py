@@ -4,7 +4,7 @@ from .models import Post, User, Comment, Like, Preference
 from . import db
 import openpyxl
 from fuzzywuzzy import fuzz
-from .Kforms import UserPreferencesForm
+
 
 views = Blueprint('views', __name__)
 
