@@ -151,7 +151,6 @@ def read_recipes_from_excel(file_path='website/DB.xlsx'):
     return recipes
 
 
-@views.route('/')
 @views.route('/community-forum')
 @login_required
 def community_forum():

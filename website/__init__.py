@@ -747,6 +747,7 @@ def create_app():
         return render_template('feedback.html', form=create_feedback_form, name=name, email=email)
 
     @app.route("/retrieveFeedback")
+    @login_required
     def retrieve_feedback():
         feedback_dict = {1: Feedback("16/12/2023 05:56PM", "Test1", "test1123@gmail.com", "test1subject",
                                      "test1feedback"),
@@ -764,7 +765,7 @@ def create_app():
 
         print(feedback_list)
 
-        return render_template('retrieveFeedback.html', count=len(feedback_list), feedback_list=feedback_list)
+        return render_template('retrieveFeedback.html', count=len(feedback_list), feedback_list=feedback_list, user=current_user, staff=True)
 
     @app.route('/deleteFeedback/<int:id>', methods=['POST'])
     def delete_feedback(id):
@@ -849,6 +850,7 @@ def create_app():
         return render_template("survey.html", form=create_survey_form, name=name, email=email)
 
     @app.route("/retrieveSurvey")
+    @login_required
     def retrieve_survey():
         # Dummy Data
         survey_dict = {
@@ -872,7 +874,7 @@ def create_app():
             survey = survey_dict.get(key)
             survey_list.append(survey)
 
-        return render_template("retrieveSurvey.html", count=len(survey_list), survey_list=survey_list)
+        return render_template("retrieveSurvey.html", count=len(survey_list), survey_list=survey_list, user=current_user, staff=True)
 
     @app.route('/deleteSurvey/<int:id>', methods=['POST'])
     def delete_survey(id):
@@ -895,6 +897,7 @@ def create_app():
     import matplotlib.pyplot as plt
 
     @app.route("/surveyChart")
+    @login_required
     def display_chart():
         fig, ax = plt.subplots(figsize=(10, 6))
         ax.bar(["Chinese", "Korean", "Japanese", "Mexican", "Thai", "Indian"],
@@ -903,7 +906,7 @@ def create_app():
         ax.set_xticklabels(["", "Chinese", "", "Korean", "", "Japanese", "", "Mexican", "", "Thai", "", "Indian"])
         chart_html = mpld3.fig_to_html(fig)
 
-        return render_template("surveyChart.html", bar_chart=chart_html)
+        return render_template("surveyChart.html", bar_chart=chart_html, user=current_user, staff=True)
 
     @app.route("/confirmation")
     def confirmation():

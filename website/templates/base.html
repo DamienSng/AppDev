@@ -54,20 +54,6 @@
                 </li>
                 <!----YC NAVBAR----->
 
-                <!--WQ's NAVBAR-->
-                <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Customer Support</a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="/FeedbackForm">Feedback Form</a></li>
-                    <li><a class="dropdown-item" href="/retrieveFeedback">Manage Feedback Form</a></li>
-                    <li><a class="dropdown-item" href="/SurveyForm">Survey Form</a></li>
-                    <li><a class="dropdown-item" href="/retrieveSurvey">Manage Survey Form</a></li>
-                    <li><a class="dropdown-item" href="/faq">FAQ</a></li>
-                    <!--Temporary(To check if it works) -->
-                    <li><a class="dropdown-item" href="/confirmation">Confirmation</a></li>
-                </ul>
-                </li>
-                <!--WQ's NAVBAR-->
 
                 {% if current_user.is_authenticated and not verifying and not staff %}
                     <li class="nav-link">
@@ -82,6 +68,16 @@
                             <a class="dropdown-item" href="/process-preferences">Update Preferences</a>
                             <a class="dropdown-item" href="/logout">Logout</a>
                             <a class="dropdown-item" href="/delete-account">Delete Account</a>
+                        </div>
+                    </li>
+                    <li class="nav-link dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="customerSupportDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Customer Support
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="customerSupportDropdown">
+                            <a class="dropdown-item" href="/FeedbackForm">Feedback Form</a>
+                            <a class="dropdown-item" href="/SurveyForm">Survey Form</a>
+                            <a class="dropdown-item" href="/faq">FAQ</a>
                         </div>
                     </li>
                     <li class="nav-link">
@@ -100,11 +96,20 @@
                     </li>
                     <li class="nav-link dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="staffDashboard" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Staff Dashboard
+                            User Data
                         </a>
                         <div class="dropdown-menu" aria-labelledby="staffDashboard">
                             <a class="dropdown-item" href="/user-accounts">User Accounts</a>
                             <a class="dropdown-item" href="/user-preferences">User Preferences</a>
+                        </div>
+                    </li>
+                    <li class="nav-link dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="customerSupportDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Customer Support
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="customerSupportDropdown1">
+                            <a class="dropdown-item" href="/retrieveFeedback">Manage Feedback Form</a>
+                            <a class="dropdown-item" href="/retrieveSurvey">Manage Survey Form</a>
                         </div>
                     </li>
                 {% elif verifying and not staff %}
