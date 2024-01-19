@@ -109,9 +109,6 @@ def create_app():
 
     #####################################################################################################################
 
-    @app.route('/contactUs')
-    def contact_us():
-        return render_template('contactUs.html')
 
     @app.route('/createRecipe', methods=['GET', 'POST'])
     def create_recipe():
