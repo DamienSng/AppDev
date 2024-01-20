@@ -483,42 +483,50 @@ def create_app():
 
         return render_template("filterDifficulty.html", recipes=ordered_list_b)
 
-    @app.route('/retrieveFavourites', methods=['GET'])
+    @app.route('/retrieveFavourites', methods=['GET', 'POST'])
     def retrieve_favourites():
         try:
             wb = load_workbook('website/DB.xlsx')
             ws = wb['Fav']
+            print(f'opening')
             for row in ws.iter_rows(min_row=2, values_only=True):
                 row_data = [cell for cell in row]
                 Recipe.recipes.append(row_data)
 
-
         # if DB doesn't exist, create one
         except (KeyError, IOError):
-            print('no sheet found, creating')
+            print('no workbook')
             wb.save('website/DB.xlsx')
             wb = Workbook()
             ws = wb.active
             print('rename title')
-            ws.title = 'Fav'  # rename sheet 1 to 'Recipes'
-            words = ['ID', 'Title']
-            ws.append(words)  # adds the headers to the first row
+            ws.title = 'Fav'  # rename sheet 1 to 'Fav'
+            Head = ['ID', 'Title']
+            ws.append(Head)  # adds the headers to the first row
 
-            print('added words')
+            print('added head')
             for cell in ws[1]:  # '1' refers to the first row
                 cell.font = Font(bold=True)  # makes the font bold
-####################################################################################################
-        for key in ws.iter_rows(min_row=2, values_only=True):  # start reading from row 2 onwards
-            recipe = [cell for cell in key]  # look through every cell
-            fav_list.append(recipe)  # add the data from the cell into a list
-        print(fav_list)
+
+            wb.save('website/DB.xlsx')
 
         if request.method == 'POST':
-            liked_recipes = request.form.get('likedRecipes')
+            liked_recipes = request.args.get('liked_recipes', '')
+            liked_recipes_list = liked_recipes.split(',')
 
-        return render_template('retrieveFavourites.html', count=len(fav_list), fav_list=fav_list)
+            print('Recipe', liked_recipes_list)
 
+            if liked_recipes_list[0] not in fav_list:
+                fav_list.append(liked_recipes_list[0])
+            else:
+                fav_list.remove(liked_recipes_list[0])
 
+            print(fav_list)
+
+        fav_recipes = [recipe for recipe in Recipe.recipes if str(recipe[0]) in fav_list]
+        print(fav_recipes)
+
+        return render_template('retrieveFavourites.html', count=len(fav_recipes), fav_list=fav_recipes)
 
     # Search fn
     @app.route("/search")
@@ -641,6 +649,7 @@ def create_app():
         CartWB.save('website/Cart.xlsx')
 # ----------------------------------add the data to the worksheet of the respective users----------------------------
 
+            #print(fav_list)
 
         # Respond to the client
         return jsonify({'status': 'success', 'message': 'Ingredients added to cart'})

@@ -441,44 +441,51 @@
             localStorage.setItem('likedRecipes', JSON.stringify(likedRecipes));
         }
 
-        $('a.like-button').each(function() {
-            const recipeId = $(this).data('recipe-id');
+        document.addEventListener('DOMContentLoaded', function () {
+          // Attach a click event listener to the element triggering the request
+          document.querySelectorAll('a.like-button').forEach(function (likeButton) {
+              const recipeId = likeButton.getAttribute('data-recipe-id');
 
-            // Check if the recipe is liked and update the button's appearance
-            if (isRecipeLiked(recipeId)) {
-                $(this).addClass('liked');
-            }
+              // Check if the recipe is liked and update the button's appearance
+              if (isRecipeLiked(recipeId)) {
+                  likeButton.classList.add('liked');
+              }
 
-            // Attach click event handler
-            $(this).on('click', function(e) {
-                $(this).toggleClass('liked');
+              // Attach click event handler
+              likeButton.addEventListener('click', function (e) {
+                  likeButton.classList.toggle('liked');
 
-                if ($(this).hasClass('liked')) {
-                    saveLikedRecipe(recipeId);
-                } else {
-                    removeLikedRecipe(recipeId);
-                }
+                  if (likeButton.classList.contains('liked')) {
+                      saveLikedRecipe(recipeId);
+                  } else {
+                      removeLikedRecipe(recipeId);
+                  }
 
-                // Use htmx to send a request to the server
-                htmx.ajax({
-                    url: '/like_recipe/' + recipeId,
-                    method: 'POST',
-                    success: function(response) {
-                        // The server can respond with the updated like status
-                        if (response.liked) {
-                            $(e.target).addClass('liked');
-                        } else {
-                            $(e.target).removeClass('liked');
-                        }
-                    }
-                });
+                  // Make a fetch request
+                  fetch(`/retrieveFavourites?liked_recipes=${recipeId}`, {
+                      method: 'POST',
+                      headers: {
+                          'Content-Type': 'application/json',
+                      },
+                  })
+                  .then(response => response.json())
+                  .then(data => {
+                      // Handle the response data here
+                      console.log(data);
+                      // Update the UI based on the response
+                      if (data.liked) {
+                          likeButton.classList.add('liked');
+                      } else {
+                          likeButton.classList.remove('liked');
+                      }
+                  })
+                  .catch(error => {
+                      console.error('Error:', error);
+                  });
 
-                // Delay the removal of 'liked' class for better visual feedback
-                setTimeout(() => {
-                    $(this).removeClass('liked');
-                }, 1000);
-            });
-        });
+              });
+          });
+      });
     </script>
     <!----------------------------------page redirection---------------------------------->
     <script>
@@ -492,7 +499,7 @@
     <script>
         document.getElementById('sortedlist').addEventListener('change', function() {
             if (this.value === 'favourites') {
-                window.location.href = '/FilterFavourites'; // Replace with your correct URL
+                window.location.href = '/filterFavourites'; // Replace with your correct URL
             }
         });
     </script>

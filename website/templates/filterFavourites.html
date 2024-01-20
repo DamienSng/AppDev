@@ -425,63 +425,70 @@
 <!----------------------------------making like button persistent---------------------------------->
 <script>
     // Function to check if a recipe is liked (fetching from local storage)
-    function isRecipeLiked(recipeId) {
-        const likedRecipes = JSON.parse(localStorage.getItem('likedRecipes')) || [];
-        return likedRecipes.includes(recipeId);
-    }
-
-    // Function to save liked recipe to local storage
-    function saveLikedRecipe(recipeId) {
-        let likedRecipes = JSON.parse(localStorage.getItem('likedRecipes')) || [];
-        likedRecipes.push(recipeId);
-        localStorage.setItem('likedRecipes', JSON.stringify(likedRecipes));
-    }
-
-    // Function to remove liked recipe from local storage
-    function removeLikedRecipe(recipeId) {
-        let likedRecipes = JSON.parse(localStorage.getItem('likedRecipes')) || [];
-        likedRecipes = likedRecipes.filter(id => id !== recipeId);
-        localStorage.setItem('likedRecipes', JSON.stringify(likedRecipes));
-    }
-
-    $('a.like-button').each(function() {
-        const recipeId = $(this).data('recipe-id');
-
-        // Check if the recipe is liked and update the button's appearance
-        if (isRecipeLiked(recipeId)) {
-            $(this).addClass('liked');
+        function isRecipeLiked(recipeId) {
+            const likedRecipes = JSON.parse(localStorage.getItem('likedRecipes')) || [];
+            return likedRecipes.includes(recipeId);
         }
 
-        // Attach click event handler
-        $(this).on('click', function(e) {
-            $(this).toggleClass('liked');
+        // Function to save liked recipe to local storage
+        function saveLikedRecipe(recipeId) {
+            let likedRecipes = JSON.parse(localStorage.getItem('likedRecipes')) || [];
+            likedRecipes.push(recipeId);
+            localStorage.setItem('likedRecipes', JSON.stringify(likedRecipes));
+        }
 
-            if ($(this).hasClass('liked')) {
-                saveLikedRecipe(recipeId);
-            } else {
-                removeLikedRecipe(recipeId);
-            }
+        // Function to remove liked recipe from local storage
+        function removeLikedRecipe(recipeId) {
+            let likedRecipes = JSON.parse(localStorage.getItem('likedRecipes')) || [];
+            likedRecipes = likedRecipes.filter(id => id !== recipeId);
+            localStorage.setItem('likedRecipes', JSON.stringify(likedRecipes));
+        }
 
-            // Use htmx to send a request to the server
-            htmx.ajax({
-                url: '/like_recipe/' + recipeId,
-                method: 'POST',
-                success: function(response) {
-                    // The server can respond with the updated like status
-                    if (response.liked) {
-                        $(e.target).addClass('liked');
-                    } else {
-                        $(e.target).removeClass('liked');
-                    }
-                }
-            });
+        document.addEventListener('DOMContentLoaded', function () {
+          // Attach a click event listener to the element triggering the request
+          document.querySelectorAll('a.like-button').forEach(function (likeButton) {
+              const recipeId = likeButton.getAttribute('data-recipe-id');
 
-            // Delay the removal of 'liked' class for better visual feedback
-            setTimeout(() => {
-                $(this).removeClass('liked');
-            }, 1000);
-        });
-    });
+              // Check if the recipe is liked and update the button's appearance
+              if (isRecipeLiked(recipeId)) {
+                  likeButton.classList.add('liked');
+              }
+
+              // Attach click event handler
+              likeButton.addEventListener('click', function (e) {
+                  likeButton.classList.toggle('liked');
+
+                  if (likeButton.classList.contains('liked')) {
+                      saveLikedRecipe(recipeId);
+                  } else {
+                      removeLikedRecipe(recipeId);
+                  }
+
+                  // Make a fetch request
+                  fetch(`/retrieveFavourites?liked_recipes=${recipeId}`, {
+                      method: 'POST',
+                      headers: {
+                          'Content-Type': 'application/json',
+                      },
+                  })
+                  .then(response => response.json())
+                  .then(data => {
+                      // Handle the response data here
+                      console.log(data);
+                      // Update the UI based on the response
+                      if (data.liked) {
+                          likeButton.classList.add('liked');
+                      } else {
+                          likeButton.classList.remove('liked');
+                      }
+                  })
+                  .catch(error => {
+                      console.error('Error:', error);
+                  });
+
+              });
+          });
+      });
 </script>
 <!----------------------------------page redirection---------------------------------->
 <script>
@@ -494,8 +501,8 @@
 <!----------------------------------page redirection---------------------------------->
 <script>
     document.getElementById('sortedlist').addEventListener('change', function() {
-        if (this.value === 'favourites') {
-            window.location.href = '/filterFavourites'; // Replace with your correct URL
+        if (this.value === 'difficulty') {
+            window.location.href = '/filterDifficulty'; // Replace with your correct URL
         }
     });
 </script>
