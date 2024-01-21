@@ -387,7 +387,8 @@ def create_app():
     def allowed_file(filename):
         return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-    @app.route('/', methods=['POST'])
+
+    @app.route('/uploadImage', methods=['POST'])
     def upload_image():
         if 'file' not in request.files:
             flash('No file part')
@@ -405,6 +406,7 @@ def create_app():
         else:
             flash('Allowed image types are - png, jpg, jpeg')
             return redirect(request.url)
+
 
     @app.route('/display/<filename>')
     def display_image(filename):
