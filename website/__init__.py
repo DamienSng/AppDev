@@ -483,6 +483,11 @@ def create_app():
 
         return render_template("filterDifficulty.html", recipes=ordered_list_b)
 
+#ugh
+    @app.route('/filterFavourites')
+    def favourites():
+        fav_recipes = [recipe for recipe in Recipe.recipes if str(recipe[0]) in fav_list]
+        return render_template('filterFavourites.html', fav_recipes=fav_recipes)
     @app.route('/retrieveFavourites', methods=['GET', 'POST'])
     def retrieve_favourites():
         try:

@@ -355,41 +355,45 @@
         </form>
         <select name="sortedlist" id="sortedlist" onclick="navigateToPage()">
             <option value="default">Sort By Default</option>
-            <option value="favourites">Sort By Favourites</option>
-            <option value="difficulty" selected>Sort By Difficulty</option>
+            <option value="favourites" selected>Sort By Favourites</option>
+            <option value="difficulty">Sort By Difficulty</option>
             <!--selected is added so that difficult is chosen by default on page load-->
         </select>
     </div>
 </div>
 <!--------------------------------------------same code on recipes.html-------------------------------------------->
-<div class="recepie_area plus_padding">
-    <div class="container">
-        <div class="row">
-            {% for recipes in likedRecipes %}
-            <div class="col-xl-4 col-lg-4 col-md-6">
-                <div class="single_recepie text-center">
-                    <div class="rounded-image-container">
-                        <img src="{{ url_for('static', filename='uploads/' + recipe[9]) }}" alt="{{ recipe[1] }}"
-                             width="400px">
+{% if fav_recipes %}
+    <div class="recepie_area plus_padding">
+        <div class="container">
+            <div class="row">
+                {% for recipe in fav_recipes %}
+                <div class="col-xl-4 col-lg-4 col-md-6">
+                    <div class="single_recepie text-center">
+                        <div class="rounded-image-container">
+                            <img src="{{ url_for('static', filename='uploads/' + recipe[9]) }}" alt="{{ recipe[1] }}"
+                                 width="400px">
+                        </div>
+                        <h4 style="margin-top: 20px; display: flex; align-items: center; justify-content: center;">{{
+                            recipe[1] }}
+                            <a class='like-button' style="margin-left: 10px;" data-recipe-id="{{ recipe[0] }}">
+                                            <span class='like-icon'>
+                                                <div class='heart-animation-1'></div>
+                                                <div class='heart-animation-2'></div>
+                                            </span>
+                            </a>
+                        </h4>
+                        <span>Skill Level: {{ recipe[3] }}</span>
+                        <p>Time Needed: {{ recipe[4] }}</p>
+                        <a href="{{ url_for('view_recipe', recipe_id=recipe[0]) }}" class="line_btn">View Full Recipe</a>
                     </div>
-                    <h4 style="margin-top: 20px; display: flex; align-items: center; justify-content: center;">{{
-                        recipe[1] }}
-                        <a class='like-button' style="margin-left: 10px;" data-recipe-id="{{ recipe[0] }}">
-                                        <span class='like-icon'>
-                                            <div class='heart-animation-1'></div>
-                                            <div class='heart-animation-2'></div>
-                                        </span>
-                        </a>
-                    </h4>
-                    <span>Skill Level: {{ recipe[3] }}</span>
-                    <p>Time Needed: {{ recipe[4] }}</p>
-                    <a href="{{ url_for('view_recipe', recipe_id=recipe[0]) }}" class="line_btn">View Full Recipe</a>
                 </div>
+                {% endfor %}
             </div>
-            {% endfor %}
         </div>
     </div>
-</div>
+{% else %}
+    <p>No favorite recipes to display.</p>
+{% endif %}
 <!--------------------------------------------same code on recipes.html-------------------------------------------->
 
 <!-- JS here -->
@@ -423,8 +427,8 @@
 <script src="https://unpkg.com/htmx.org@1.9.10"></script>
 <script src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 <!----------------------------------making like button persistent---------------------------------->
-<script>
-    // Function to check if a recipe is liked (fetching from local storage)
+    <script>
+        // Function to check if a recipe is liked (fetching from local storage)
         function isRecipeLiked(recipeId) {
             const likedRecipes = JSON.parse(localStorage.getItem('likedRecipes')) || [];
             return likedRecipes.includes(recipeId);
@@ -489,7 +493,7 @@
               });
           });
       });
-</script>
+    </script>
 <!----------------------------------page redirection---------------------------------->
 <script>
     document.getElementById('sortedlist').addEventListener('change', function() {
