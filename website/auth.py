@@ -58,7 +58,7 @@ def login():
 
                 # redirect to OTP verification page
 
-                return redirect(url_for('views.landing_page', email=email))
+                return redirect(url_for('views.homepage', email=email))
                 # change to this when done
                 # return redirect(url_for('auth.verify_otp', email=email))
             else:
@@ -152,7 +152,7 @@ def sign_up():
 
                 # redirect to OTP verification page
 
-                return redirect(url_for('views.landing_page', email=email))
+                return redirect(url_for('views.homepage', email=email))
                 # change to this when done
                 # return redirect(url_for('auth.verify_otp', email=email))
                 # add user to database
@@ -185,7 +185,7 @@ def verify_otp():
                     # If preferences are set, redirect to landing page
                     login_user(user, remember=True)
                     flash('Email verification successful! You are now logged in.', category='success')
-                    return redirect(url_for('views.landing_page'))
+                    return redirect(url_for('views.homepage'))
                 else:
                     # If preferences are not set, redirect to user preferences form
                     login_user(user, remember=True)
