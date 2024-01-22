@@ -44,6 +44,37 @@ body {
     text-decoration: none;
 }
 
+/* On smaller screens, stack the logo on top of the navigation */
+@media screen and (max-width: 1200px) {
+    .topnav {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .navbar {
+        margin-top: 10px;
+    }
+}
+
+/* Add this CSS to your existing styles */
+.navbar-collapse {
+
+
+    background-color: #1b5e20; /* Match your background color */
+    width: 100%;
+
+}
+
+.navbar-collapse.show {
+    display: flex; /* Show it when the menu is open */
+    flex-direction: column;
+}
+.navbar-toggler navbar-dark {
+    position: absolute;
+}
+
+
+
 /* navigation menu */
 .topnav {
     font-family: 'Poppins', sans-serif;

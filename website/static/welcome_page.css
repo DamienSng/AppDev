@@ -226,7 +226,7 @@ body{
 
 :root {
 	--cards: 4;
-	--cardHeight: 60vh;
+	--cardHeight: 70vh;
 	--cardTopPadding: 1.5em;
 	--cardMargin: 4vw;
 }
