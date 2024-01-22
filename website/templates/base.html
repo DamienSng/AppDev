@@ -38,7 +38,7 @@
         <div class="collapse navbar-collapse" id="navbar">
             <ul class="navbar-nav ml auto">
 
-                <!----YC NAVBAR----->
+                <!----YC NAVBAR
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Manage Recipes</a>
                   <ul class="dropdown-menu">
@@ -47,14 +47,14 @@
                       <li><a class="dropdown-item" href="/retrieveFavourites">Retrieve Favourites</a></li>
                    <li><a class="dropdown-item" href="/Recipes">View Recipes</a></li>
                    </ul>
-
                  </li>
-                <!----YC NAVBAR----->
-
-
+                YC NAVBAR----->
                 {% if current_user.is_authenticated and not verifying and not staff %}
                     <li class="nav-link">
                         <a class="nav-link" href="/landing-page">Home</a>
+                    </li>
+                    <li class="nav-link">
+                        <a class="nav-link" href="/Recipes">Recipes</a>
                     </li>
                     <li class="nav-link dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="manageAccountDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -98,6 +98,15 @@
                         <div class="dropdown-menu" aria-labelledby="staffDashboard">
                             <a class="dropdown-item" href="/user-accounts">User Accounts</a>
                             <a class="dropdown-item" href="/user-preferences">User Preferences</a>
+                        </div>
+                    </li>
+                    <li class="nav-link dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="manageRecipesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Manage Recipes
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="manageRecipesDropdown">
+                            <a class="dropdown-item" href="/createRecipe">Create Recipe</a>
+                            <a class="dropdown-item" href="/retrieveRecipes">Retrieve Recipes</a>
                         </div>
                     </li>
                     <li class="nav-link dropdown">

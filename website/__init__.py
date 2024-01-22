@@ -111,6 +111,7 @@ def create_app():
 
 
     @app.route('/createRecipe', methods=['GET', 'POST'])
+    @login_required
     def create_recipe():
         create_recipe_form = CreateRecipeForm(request.form)
         if request.method == 'POST' and create_recipe_form.validate():
@@ -180,9 +181,10 @@ def create_app():
             wb.save('website/DB.xlsx')
             ###################################################################################################################
             return redirect(url_for('retrieve_recipes'))
-        return render_template('createRecipe.html', form=create_recipe_form)
+        return render_template('createRecipe.html', form=create_recipe_form, user=current_user, staff=True)
 
     @app.route('/retrieveRecipes')
+    @login_required
     def retrieve_recipes():
         '''recipes_dict = {}
         db = shelve.open('recipe.db', 'r')
@@ -207,9 +209,10 @@ def create_app():
             recipes_list.append(recipe)  # add the data from the cell into a list
         print(recipes_list)
         #####################################################################################################################
-        return render_template('retrieveRecipes.html', count=len(recipes_list), recipes_list=recipes_list)
+        return render_template('retrieveRecipes.html', count=len(recipes_list), recipes_list=recipes_list, user=current_user, staff=True)
 
     @app.route('/updateRecipe/<int:id>/', methods=['GET', 'POST'])
+    @login_required
     def update_recipe(id):
         update_recipe_form = CreateRecipeForm(request.form)
         ###################################################################################################################
@@ -347,7 +350,7 @@ def create_app():
             update_recipe_form.optional.data = recipedata[8].split(', ')
             update_recipe_form.image.data = recipedata[9]
             ###################################################################################################################
-            return render_template('updateRecipe.html', form=update_recipe_form)
+            return render_template('updateRecipe.html', form=update_recipe_form, user=current_user, staff=True)
 
     @app.route('/deleteRecipe/<int:id>', methods=['POST'])
     def delete_recipe(id):
