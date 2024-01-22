@@ -37,28 +37,47 @@
 
     .header-container {
         text-align: left;
-        padding: 20px;
+        padding: 0px;
         margin-top: 40px;
-    }
-
-    h1 {
-        margin: 0;
-        display: inline-block;
-        margin-right: 40px;
-        margin-left: 180px;
     }
 
     .search-bar {
         display: inline-block;
-        margin-right: 180px;
+        margin-right: 20px;
+        margin-top: -60px; /* Adjusted margin to move it up */
         float: right;
+        padding: 6px; /* Reduced padding for a more compact look */
     }
 
-    select {
-        border: 1px solid black;
-        margin-right: -160px;
+    /* Clearfix for float */
+    .search-bar::after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    button {
+        padding: 3px 8px; /* Adjust padding as needed */
+        background-color: #ffc000;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease; /* Smooth transition on hover */
+    }
+
+    button:hover {
+        background-color: #e0a800;
+    }
+
+    #sortedlist {
+        margin-right: 176px; /* Adjust the margin as needed */
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: #fff;
+        font-size: 18px; /* Adjust the font size as needed */
         float: right;
-        margin-top: 50px;
     }
 
     .rounded-image-container {
@@ -339,6 +358,21 @@
       }
     }
 
+    @media only screen and (max-width: 1068px) {
+    .search-bar {
+        margin-top: 0;
+        margin-left: -11px;
+        float: none;
+        text-align: center; /* Center the search bar on smaller screens */
+    }
+
+    #sortedlist {
+        margin-right: 0;
+        float: none;
+        margin-top: 10px;
+    }
+}
+
 </style>
 
 </head>
@@ -488,24 +522,6 @@
           });
       });
     </script>
-
-    <!--script>
-        $(this).on('click', function(e) {
-        $(this).toggleClass('liked');
-
-        if ($(this).hasClass('liked')) {
-            saveLikedRecipe(recipeId);
-        } else {
-            removeLikedRecipe(recipeId);
-        }
-
-        // Update the likedRecipes input value
-        const likedRecipes = getLikedRecipes(); // You need to implement this function
-        $('#likedRecipesInput').val(JSON.stringify(likedRecipes));
-
-        // Submit the form
-        $('#likeForm').submit();
-    </script-->
 <!----------------------------------page redirection---------------------------------->
     <script>
         document.getElementById('sortedlist').addEventListener('change', function() {

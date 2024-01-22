@@ -30,316 +30,351 @@
     <!-- <link rel="stylesheet" href="css/responsive.css"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-        }
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+    }
 
-        .header-container {
-            text-align: left;
-            padding: 20px;
-            margin-top: 40px;
-        }
+    .header-container {
+        text-align: left;
+        padding: 0px;
+        margin-top: 40px;
+    }
 
-        h1 {
-            margin: 0;
-            display: inline-block;
-            margin-right: 40px;
-            margin-left: 180px;
-        }
+    .search-bar {
+        display: inline-block;
+        margin-right: 20px;
+        margin-top: -60px; /* Adjusted margin to move it up */
+        float: right;
+        padding: 6px; /* Reduced padding for a more compact look */
+    }
 
-        .search-bar {
-            display: inline-block;
-            margin-right: 180px;
-            float: right;
-        }
+    /* Clearfix for float */
+    .search-bar::after {
+        content: "";
+        display: table;
+        clear: both;
+    }
 
-        select {
-            border: 1px solid black;
-            margin-right: -160px;
-            float: right;
-            margin-top: 50px;
-        }
+    button {
+        padding: 3px 8px; /* Adjust padding as needed */
+        background-color: #ffc000;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease; /* Smooth transition on hover */
+    }
 
-        .rounded-image-container {
-            border-radius: 10px;
-            overflow: hidden;
-        }
+    button:hover {
+        background-color: #e0a800;
+    }
 
-        .rounded-image-container img {
-            width: 100%;
-            height: 250px;
-        }
-        .recepie_area {
-            margin-top: 80px;
-            padding-bottom: 40px;
-        }
-        .single_recepie {
-            margin-bottom: 40px;
-        }
-        .line_btn {
-            display: inline-block;
-            padding: 10px 20px;
-            margin-top: 10px;
-            font-size: 1em;
-            text-align: center;
-            text-decoration: none;
-            color: #000;
-            border: 2px solid #ffc000;
-            border-radius: 20px;
-            transition: background-color 0.3s;
-        }
-        .line_btn:hover {
-            background-color: #ffc000;
-            color: #fff;
-        }
-        .middle-wrapper {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          width: 100%;
-          height: 95vh;
-        }
-        .like-button {
-          cursor: pointer;
-          border-radius: 40px;
-          padding: 0.45rem 0;
-          color: #878787;
-          font-weight: bold;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 1rem;
-          transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-          filter: grayscale(100%);
-          -webkit-user-select: none;
-             -moz-user-select: none;
-              -ms-user-select: none;
-                  user-select: none;
-        }
-        .like-button.liked {
-          color: #ff6e6f;
-          filter: grayscale(0);
-        }
+    #sortedlist {
+        margin-right: 176px; /* Adjust the margin as needed */
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: #fff;
+        font-size: 18px; /* Adjust the font size as needed */
+        float: right;
+    }
 
-        .like-icon {
-          width: 24px;
-          height: 20px;
-          font-size: 1.5rem;
-          background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjEiIGhlaWdodD0iMTgiIHZpZXdCb3g9IjAgMCAyMSAxOCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTAuMTAxIDQuNDE3UzguODk1LjIwNyA1LjExMS4yMDdjLTQuNDY1IDAtMTAuOTY3IDYuODQ2IDUuMDgyIDE3LjU5MkMyNS4yMzcgNy4wMyAxOS42NjUuMjAyIDE1LjUwMS4yMDJjLTQuMTYyIDAtNS40IDQuMjE1LTUuNCA0LjIxNXoiIGZpbGw9IiNGRjZFNkYiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==") no-repeat center;
-          background-size: 100%;
-          -webkit-animation: heartUnlike 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
-                  animation: heartUnlike 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
-        }
+    .rounded-image-container {
+        border-radius: 10px;
+        overflow: hidden;
+    }
 
-        .liked .like-icon {
-          -webkit-animation: heartPulse 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
-                  animation: heartPulse 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
-        }
-        .liked .like-icon [class^=heart-animation-] {
-          background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjEiIGhlaWdodD0iMTgiIHZpZXdCb3g9IjAgMCAyMSAxOCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTAuMTAxIDQuNDE3UzguODk1LjIwNyA1LjExMS4yMDdjLTQuNDY1IDAtMTAuOTY3IDYuODQ2IDUuMDgyIDE3LjU5MkMyNS4yMzcgNy4wMyAxOS42NjUuMjAyIDE1LjUwMS4yMDJjLTQuMTYyIDAtNS40IDQuMjE1LTUuNCA0LjIxNXoiIGZpbGw9IiNGRjZFNkYiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==") no-repeat center;
-          background-size: 100%;
-          top: 0;
-          left: 0;
-          width: 24px;
-          height: 20px;
-          opacity: 0;
-        }
-        .liked .like-icon [class^=heart-animation-]::before, .liked .like-icon [class^=heart-animation-]::after {
-          content: "";
-          background: inherit;
-          background-size: 100%;
-          width: inherit;
-          height: inherit;
-          display: inherit;
-          position: relative;
-          top: inherit;
-          left: inherit;
-          opacity: 0;
-        }
-        .liked .like-icon .heart-animation-1 {
-          -webkit-animation: heartFloatMain-1 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
-                  animation: heartFloatMain-1 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
-        }
-        .liked .like-icon .heart-animation-1::before, .liked .like-icon .heart-animation-1::after {
-          width: 12px;
-          height: 10px;
-          visibility: hidden;
-        }
-        .liked .like-icon .heart-animation-1::before {
-          opacity: 0.6;
-          -webkit-animation: heartFloatSub-1 1s 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
-                  animation: heartFloatSub-1 1s 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
-        }
-        .liked .like-icon .heart-animation-1::after {
-          -webkit-animation: heartFloatSub-2 1s 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
-                  animation: heartFloatSub-2 1s 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
-          opacity: 0.75;
-        }
-        .liked .like-icon .heart-animation-2 {
-          -webkit-animation: heartFloatMain-2 1s 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
-                  animation: heartFloatMain-2 1s 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
-        }
-        .liked .like-icon .heart-animation-2::before, .liked .like-icon .heart-animation-2::after {
-          width: 10px;
-          height: 8px;
-          visibility: hidden;
-        }
-        @-webkit-keyframes heartPulse {
-          0% {
-            transform: scale(1);
-          }
-          50% {
-            transform: scale(1.5);
-          }
-        }
+    .rounded-image-container img {
+        width: 100%;
+        height: 250px;
+    }
+    .recepie_area {
+        margin-top: 80px;
+        padding-bottom: 40px;
+    }
+    .single_recepie {
+        margin-bottom: 40px;
+    }
+    .line_btn {
+        display: inline-block;
+        padding: 10px 20px;
+        margin-top: 10px;
+        font-size: 1em;
+        text-align: center;
+        text-decoration: none;
+        color: #000;
+        border: 2px solid #ffc000;
+        border-radius: 20px;
+        transition: background-color 0.3s;
+    }
+    .line_btn:hover {
+        background-color: #ffc000;
+        color: #fff;
+    }
+    .middle-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 95vh;
+    }
+    .like-button {
+      cursor: pointer;
+      border-radius: 40px;
+      padding: 0.45rem 0;
+      color: #878787;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      filter: grayscale(100%);
+      -webkit-user-select: none;
+         -moz-user-select: none;
+          -ms-user-select: none;
+              user-select: none;
+    }
+    .like-button.liked {
+      color: #ff6e6f;
+      filter: grayscale(0);
+    }
 
-        @keyframes heartPulse {
-          0% {
-            transform: scale(1);
-          }
-          50% {
-            transform: scale(1.5);
-          }
-        }
-        @-webkit-keyframes heartUnlike {
-          50% {
-            transform: scale(0.75);
-          }
-        }
-        @keyframes heartUnlike {
-          50% {
-            transform: scale(0.75);
-          }
-        }
-        @-webkit-keyframes heartFloatMain-1 {
-          0% {
-            opacity: 0;
-            transform: translate(0) rotate(0);
-          }
-          50% {
-            opacity: 1;
-            transform: translate(0, -25px) rotate(-20deg);
-          }
-        }
-        @keyframes heartFloatMain-1 {
-          0% {
-            opacity: 0;
-            transform: translate(0) rotate(0);
-          }
-          50% {
-            opacity: 1;
-            transform: translate(0, -25px) rotate(-20deg);
-          }
-        }
-        @-webkit-keyframes heartFloatMain-2 {
-          0% {
-            opacity: 0;
-            transform: translate(0) rotate(0) scale(0);
-          }
-          50% {
-            opacity: 0.9;
-            transform: translate(-10px, -38px) rotate(25deg) scale(1);
-          }
-        }
-        @keyframes heartFloatMain-2 {
-          0% {
-            opacity: 0;
-            transform: translate(0) rotate(0) scale(0);
-          }
-          50% {
-            opacity: 0.9;
-            transform: translate(-10px, -38px) rotate(25deg) scale(1);
-          }
-        }
-        @-webkit-keyframes heartFloatSub-1 {
-          0% {
-            visibility: hidden;
-            transform: translate(0) rotate(0);
-          }
-          50% {
-            visibility: visible;
-            transform: translate(13px, -13px) rotate(30deg);
-          }
-        }
-        @keyframes heartFloatSub-1 {
-          0% {
-            visibility: hidden;
-            transform: translate(0) rotate(0);
-          }
-          50% {
-            visibility: visible;
-            transform: translate(13px, -13px) rotate(30deg);
-          }
-        }
-        @-webkit-keyframes heartFloatSub-2 {
-          0% {
-            visibility: hidden;
-            transform: translate(0) rotate(0);
-          }
-          50% {
-            visibility: visible;
-            transform: translate(18px, -10px) rotate(55deg);
-          }
-        }
-        @keyframes heartFloatSub-2 {
-          0% {
-            visibility: hidden;
-            transform: translate(0) rotate(0);
-          }
-          50% {
-            visibility: visible;
-            transform: translate(18px, -10px) rotate(55deg);
-          }
-        }
-        @-webkit-keyframes heartFloatSub-3 {
-          0% {
-            visibility: hidden;
-            transform: translate(0) rotate(0);
-          }
-          50% {
-            visibility: visible;
-            transform: translate(-10px, -10px) rotate(-40deg);
-          }
-          100% {
-            transform: translate(-50px, 0);
-          }
-        }
-        @keyframes heartFloatSub-3 {
-          0% {
-            visibility: hidden;
-            transform: translate(0) rotate(0);
-          }
-          50% {
-            visibility: visible;
-            transform: translate(-10px, -10px) rotate(-40deg);
-          }
-          100% {
-            transform: translate(-50px, 0);
-          }
-        }
-        @-webkit-keyframes heartFloatSub-4 {
-          0% {
-            visibility: hidden;
-            transform: translate(0) rotate(0);
-          }
-          50% {
-            visibility: visible;
-            transform: translate(2px, -18px) rotate(-25deg);
-          }
-        }
-        @keyframes heartFloatSub-4 {
-          0% {
-            visibility: hidden;
-            transform: translate(0) rotate(0);
-          }
-          50% {
-            visibility: visible;
-            transform: translate(2px, -18px) rotate(-25deg);
-          }
-        }
+    .like-icon {
+      width: 24px;
+      height: 20px;
+      font-size: 1.5rem;
+      background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjEiIGhlaWdodD0iMTgiIHZpZXdCb3g9IjAgMCAyMSAxOCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTAuMTAxIDQuNDE3UzguODk1LjIwNyA1LjExMS4yMDdjLTQuNDY1IDAtMTAuOTY3IDYuODQ2IDUuMDgyIDE3LjU5MkMyNS4yMzcgNy4wMyAxOS42NjUuMjAyIDE1LjUwMS4yMDJjLTQuMTYyIDAtNS40IDQuMjE1LTUuNCA0LjIxNXoiIGZpbGw9IiNGRjZFNkYiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==") no-repeat center;
+      background-size: 100%;
+      -webkit-animation: heartUnlike 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+              animation: heartUnlike 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+    }
 
-    </style>
+    .liked .like-icon {
+      -webkit-animation: heartPulse 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+              animation: heartPulse 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+    }
+    .liked .like-icon [class^=heart-animation-] {
+      background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjEiIGhlaWdodD0iMTgiIHZpZXdCb3g9IjAgMCAyMSAxOCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTAuMTAxIDQuNDE3UzguODk1LjIwNyA1LjExMS4yMDdjLTQuNDY1IDAtMTAuOTY3IDYuODQ2IDUuMDgyIDE3LjU5MkMyNS4yMzcgNy4wMyAxOS42NjUuMjAyIDE1LjUwMS4yMDJjLTQuMTYyIDAtNS40IDQuMjE1LTUuNCA0LjIxNXoiIGZpbGw9IiNGRjZFNkYiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==") no-repeat center;
+      background-size: 100%;
+      top: 0;
+      left: 0;
+      width: 24px;
+      height: 20px;
+      opacity: 0;
+    }
+    .liked .like-icon [class^=heart-animation-]::before, .liked .like-icon [class^=heart-animation-]::after {
+      content: "";
+      background: inherit;
+      background-size: 100%;
+      width: inherit;
+      height: inherit;
+      display: inherit;
+      position: relative;
+      top: inherit;
+      left: inherit;
+      opacity: 0;
+    }
+    .liked .like-icon .heart-animation-1 {
+      -webkit-animation: heartFloatMain-1 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+              animation: heartFloatMain-1 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+    }
+    .liked .like-icon .heart-animation-1::before, .liked .like-icon .heart-animation-1::after {
+      width: 12px;
+      height: 10px;
+      visibility: hidden;
+    }
+    .liked .like-icon .heart-animation-1::before {
+      opacity: 0.6;
+      -webkit-animation: heartFloatSub-1 1s 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+              animation: heartFloatSub-1 1s 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+    }
+    .liked .like-icon .heart-animation-1::after {
+      -webkit-animation: heartFloatSub-2 1s 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+              animation: heartFloatSub-2 1s 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+      opacity: 0.75;
+    }
+    .liked .like-icon .heart-animation-2 {
+      -webkit-animation: heartFloatMain-2 1s 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+              animation: heartFloatMain-2 1s 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+    }
+    .liked .like-icon .heart-animation-2::before, .liked .like-icon .heart-animation-2::after {
+      width: 10px;
+      height: 8px;
+      visibility: hidden;
+    }
+    @-webkit-keyframes heartPulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.5);
+      }
+    }
+
+    @keyframes heartPulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.5);
+      }
+    }
+    @-webkit-keyframes heartUnlike {
+      50% {
+        transform: scale(0.75);
+      }
+    }
+    @keyframes heartUnlike {
+      50% {
+        transform: scale(0.75);
+      }
+    }
+    @-webkit-keyframes heartFloatMain-1 {
+      0% {
+        opacity: 0;
+        transform: translate(0) rotate(0);
+      }
+      50% {
+        opacity: 1;
+        transform: translate(0, -25px) rotate(-20deg);
+      }
+    }
+    @keyframes heartFloatMain-1 {
+      0% {
+        opacity: 0;
+        transform: translate(0) rotate(0);
+      }
+      50% {
+        opacity: 1;
+        transform: translate(0, -25px) rotate(-20deg);
+      }
+    }
+    @-webkit-keyframes heartFloatMain-2 {
+      0% {
+        opacity: 0;
+        transform: translate(0) rotate(0) scale(0);
+      }
+      50% {
+        opacity: 0.9;
+        transform: translate(-10px, -38px) rotate(25deg) scale(1);
+      }
+    }
+    @keyframes heartFloatMain-2 {
+      0% {
+        opacity: 0;
+        transform: translate(0) rotate(0) scale(0);
+      }
+      50% {
+        opacity: 0.9;
+        transform: translate(-10px, -38px) rotate(25deg) scale(1);
+      }
+    }
+    @-webkit-keyframes heartFloatSub-1 {
+      0% {
+        visibility: hidden;
+        transform: translate(0) rotate(0);
+      }
+      50% {
+        visibility: visible;
+        transform: translate(13px, -13px) rotate(30deg);
+      }
+    }
+    @keyframes heartFloatSub-1 {
+      0% {
+        visibility: hidden;
+        transform: translate(0) rotate(0);
+      }
+      50% {
+        visibility: visible;
+        transform: translate(13px, -13px) rotate(30deg);
+      }
+    }
+    @-webkit-keyframes heartFloatSub-2 {
+      0% {
+        visibility: hidden;
+        transform: translate(0) rotate(0);
+      }
+      50% {
+        visibility: visible;
+        transform: translate(18px, -10px) rotate(55deg);
+      }
+    }
+    @keyframes heartFloatSub-2 {
+      0% {
+        visibility: hidden;
+        transform: translate(0) rotate(0);
+      }
+      50% {
+        visibility: visible;
+        transform: translate(18px, -10px) rotate(55deg);
+      }
+    }
+    @-webkit-keyframes heartFloatSub-3 {
+      0% {
+        visibility: hidden;
+        transform: translate(0) rotate(0);
+      }
+      50% {
+        visibility: visible;
+        transform: translate(-10px, -10px) rotate(-40deg);
+      }
+      100% {
+        transform: translate(-50px, 0);
+      }
+    }
+    @keyframes heartFloatSub-3 {
+      0% {
+        visibility: hidden;
+        transform: translate(0) rotate(0);
+      }
+      50% {
+        visibility: visible;
+        transform: translate(-10px, -10px) rotate(-40deg);
+      }
+      100% {
+        transform: translate(-50px, 0);
+      }
+    }
+    @-webkit-keyframes heartFloatSub-4 {
+      0% {
+        visibility: hidden;
+        transform: translate(0) rotate(0);
+      }
+      50% {
+        visibility: visible;
+        transform: translate(2px, -18px) rotate(-25deg);
+      }
+    }
+    @keyframes heartFloatSub-4 {
+      0% {
+        visibility: hidden;
+        transform: translate(0) rotate(0);
+      }
+      50% {
+        visibility: visible;
+        transform: translate(2px, -18px) rotate(-25deg);
+      }
+    }
+
+    @media only screen and (max-width: 1068px) {
+    .search-bar {
+        margin-top: 0;
+        margin-left: -11px;
+        float: none;
+        text-align: center; /* Center the search bar on smaller screens */
+    }
+
+    #sortedlist {
+        margin-right: 0;
+        float: none;
+        margin-top: 10px;
+    }
+}
+
+</style>
 
 </head>
 
