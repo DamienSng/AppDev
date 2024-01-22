@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='welcome_page.css') }}">
+    <title>Eco-Eats Welcome</title>
+</head>
+<body>
+    <section class="background-section1">
+        <div class="topnav">
+            <a href="#" class="logo">ECO-EATS</a>
+            <nav class="navbar">
+                <a href="#">Home</a>
+                <a href="#">FAQ</a>
+                <a href="/login">Log In</a>
+            </nav>
+        </div>
+        <div class="heading">
+            <h1>REVOLUTIONIZE COOKING WITH ECO-EATS</h1>
+            <p>
+                Craft personalized sustainable recipes, making eco-friendly cooking easy for everyone.
+            </p>
+            <div class="getstarted">
+              <button class="button"><span><a href="/sign-up">GET STARTED</a></span></button>
+            </div>
+        </div>
+    </section>
+    <section class="background-section2">
+        <div class="aboutUs">
+            <div class="image-container">
+                <img src="{{ url_for('static', filename='welcomeIMG2.jpg') }}" class="welcomeIMG2" alt="Taco dish">
+            </div>
+            <div class="paragraphContent">
+                <h2>WHAT IS ECO-EATS?</h2>
+                <p>
+                    For culinary enthusiasts of all levels, Eco-Eats is your go-to online sustainable cookbook.
+                    Discover delightful recipes tailored to your unique kitchen inventory.
+                    Setting us apart from other digital cookbooks, our product embraces and adapts to your personal ingredient list,
+                    ensuring everyone can savor the joy of sustainable cooking, regardless of their culinary background or pantry size.
+                </p>
+            </div>
+        </div>
+    </section>
+    <section class="background-section3">
+        <div class="Missions">
+            <h2>OUR MISSION</h2>
+            <div class="paragraphContent1">
+                <div class="missionContent">
+                    <div class="missionTitle">
+                       <h4>Zero Waste Recipes</h4>
+                    </div>
+                    <p>
+                        Eco-Eats helps you reduce food waste with clever recipes, turning kitchens into eco-friendly spaces.
+                    </p>
+                </div>
+                <div class="missionContent">
+                    <div class="missionTitle">
+                        <h4>
+                            Mindful Bites,
+                            <br>
+                            Meaningful Impact
+                        </h4>
+                    </div>
+                    <p>
+                        Make mindful choices with Eco-Eats, where every bite reflects sustainable and ethical living, savoring responsible flavors.
+                    </p>
+                </div>
+                <div class="missionContent">
+                    <div class="missionTitle">
+                      <h4>Cooking Sustainably</h4>
+                    </div>
+                    <p>
+                        Explore Eco-Eats' Sustainable Chef's Corner for easy guides to create delicious dishes with a light eco-footprint.
+                    </p>
+                </div>
+                <div class="missionContent">
+                    <div class="missionTitle">
+                       <h4>Breaking Green Myths</h4>
+                    </div>
+                    <p>
+                        Eco-Eats breaks green myths, guiding you to discover the truth and make informed choices for a positive impact on our world.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="background-section4">
+        <div class="container">
+            <ul id="cards">
+                <li class="card" id="card1">
+                    <div class="card-body">
+                        <div class="goalsContent">
+                            <h2>CULINARY HUB</h2>
+                            <p>
+                                Explore a treasury of over 100 recipes for breakfast, lunch, dinner, and dessert,
+                                catering to every palate. Elevate your cooking experience with a rich variety of dishes.
+                            </p>
+                        </div>
+                        <div class="goals-image-container">
+                            <img src="{{ url_for('static', filename='welcomeIMG3.png') }}" class="welcomeIMG3" alt="WELCOME IMG">
+                        </div>
+                    </div>
+                </li>
+                <li class="card" id="card2">
+                    <div class="card-body">
+                        <div class="goals-image-container">
+                            <img src="{{ url_for('static', filename='welcomeIMG5.jpg') }}" class="welcomeIMG3" alt="WELCOME IMG">
+                        </div>
+                        <div class="goalsContent">
+                            <h2>GOURMET VISUALS</h2>
+                            <p>
+                                Follow step-by-step instructions accompanied by captivating photos that guide
+                                you through each recipe. Enhance your culinary skills with an immersive cooking experience.
+                            </p>
+                        </div>
+                    </div>
+                </li>
+                <li class="card" id="card3">
+                    <div class="card-body">
+                        <div class="goalsContent">
+                            <h2>INGREDIENT MATCHMAKER</h2>
+                            <p>
+                                Save time and money with our algorithm that suggests recipes based on the
+                                ingredients you have. Let our smart recommendations inspire your next delicious creation.
+                            </p>
+                        </div>
+                        <div class="goals-image-container">
+                            <img src="{{ url_for('static', filename='welcomeIMG6.jpg') }}" class="welcomeIMG3" alt="WELCOME IMG">
+                        </div>
+                    </div>
+                </li>
+                <li class="card" id="card4">
+                    <div class="card-body">
+                        <div class="goals-image-container">
+                            <img src="{{ url_for('static', filename='welcomeIMG4.jpg') }}" class="welcomeIMG3" alt="WELCOME IMG">
+                        </div>
+                        <div class="goalsContent">
+                            <h2>DOORSTEP DELIGHTS</h2>
+                            <p>
+                                Missing ingredients? No problem! Order a meal-kit directly from us and experience
+                                the convenience of having it delivered straight to your doorstep.
+                            </p>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </section>
+    <footer>
+        <p>Contact us:</p>
+        <div class="contact-info">
+            <p>Email: <a href="mailto:connect@ecoeats.com">connect@ecoeats.com</a></p>
+            <br>
+            <p>Phone: <a href="tel:81234891">8123 4891</a></p>
+        </div>
+    </footer>
+</body>
+</html>
