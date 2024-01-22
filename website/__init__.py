@@ -603,11 +603,15 @@ def create_app():
 
     @app.route('/add-to-cart', methods=['POST'])
     def add_to_cart():
-        data = request.json
-        checked_ingredients = data.get('ingredients', [])
+        data = request.json  # data from view_recipes.html
+        checked_ingredients = data.get('ingredients', [])  # get the data from the dictionary and split it into list
         print(data)
         print(checked_ingredients)
 
+        # Regex pattern to handle ingredients with optional measurements and exclude bracketed words
+        # first line captures digits (including decimals)
+        # second line captures if 'g' or 'ml' is present
+        # third line captures data after a blank space and discards any brackets
         pattern = r'(\d*\.?\d+)' \
                   r'\s*(g|ml)?' \
                   r'\s*([^,(]+)'
@@ -619,6 +623,7 @@ def create_app():
                 measurement = measurement if measurement else "N/A"  # Assign "N/A" if measurement is missing
                 ingredient = ingredient.strip()  # Trim any whitespace from the ingredient
                 SplitSections.append([quantity, measurement, ingredient])
+        SplitSections.insert(0, data['id'])
 
 # ------------------------------does the Workbook exist?-------------------------------------
         try:
@@ -650,7 +655,7 @@ def create_app():
         if max_rows<= 1:
             # Write each nested list in the big list to the rows, starting from the second row
             for row_index, sublist in enumerate(SplitSections, start=(max_rows + 1)):  # Starting at row 2
-                for col_index, item in enumerate(sublist, start=1):  # Starting from the first column
+                for col_index, item in enumerate(sublist, start=0):  # Starting from the first column
                     try:
                         item = float(item)
                         item = item * float(data['servings'])
@@ -661,8 +666,8 @@ def create_app():
         # if it isn't empty, leave a space and start writing from the bottom
         else:
             # Write each nested list in the big list to the rows, starting from the second row
-            for row_index, sublist in enumerate(SplitSections, start=(max_rows+1)):  # Starting at row 2
-                for col_index, item in enumerate(sublist, start=1):  # Starting from the first column
+            for row_index, sublist in enumerate(SplitSections, start=(max_rows+2)):  # Starting at row 2
+                for col_index, item in enumerate(sublist, start=0):  # Starting from the first column
                     try:
                         item = float(item)
                         item = item * float(data['servings'])
@@ -672,8 +677,6 @@ def create_app():
                     UsersCartWS[cell_ref] = item
         CartWB.save('website/Cart.xlsx')
 # ----------------------------------add the data to the worksheet of the respective users----------------------------
-
-            #print(fav_list)
 
         # Respond to the client
         return jsonify({'status': 'success', 'message': 'Ingredients added to cart'})
