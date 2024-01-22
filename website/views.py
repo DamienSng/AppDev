@@ -16,7 +16,7 @@ def landing_page():
     username = current_user.username
     recipes = get_recommendations(username)
 
-    return render_template('landing_page.html', recipes=recipes)
+    return render_template('homepage.html', recipes=recipes)
 
 
 @views.route('/process-preferences', methods=['POST', 'GET'])
