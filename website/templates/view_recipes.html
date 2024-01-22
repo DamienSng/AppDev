@@ -30,11 +30,27 @@
 
     <!--CSS-->
     <style>
-
     body{
         margin: 0 320px;
         font-family: 'Poppins', sans-serif;
         }
+    .btn.btn-primary {
+        position: absolute;
+        left: 10px; /* Adjust the distance from the left edge */
+        top: 10px; /* Adjust the distance from the top edge */
+        padding: 3px 8px; /* Adjust padding as needed */
+        background-color: #ffc000;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn.btn-primary:hover {
+        background-color: #e0a800;
+    }
+
     .recipeTitle{
         font-size: 41px;
         text-align: left;
@@ -130,10 +146,14 @@
     .container{
         margin-right: 300px;
         }
+    .recepies_thumb{
+        padding-top: 20px;
+        }
     @media (max-width: 1368px) {
         body {
             padding: 0 8px 40px 4px;
             margin: 0px;
+            padding-top: 30px;
         }
         .container{
             margin: 0px;
