@@ -17,6 +17,11 @@ mail = Mail()
 otp = None
 
 
+@auth.route('/welcome-page', methods=['GET', 'POST'])
+def welcome_page():
+    return render_template('welcome_page.html')
+
+
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     global otp

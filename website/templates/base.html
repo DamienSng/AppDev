@@ -29,134 +29,140 @@
 
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <button class="navbar-toggler"
-                type="button"
-                data-toggle="collapse"
-                data-target="#navbar">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbar">
-            <ul class="navbar-nav ml auto">
+    <section class="background-section1">
+        <div class="topnav">
+            <a href="/welcome-page" class="logo">ECO-EATS</a>
+            <nav class="navbar navbar-expand-lg">
+                <button class="navbar-toggler"
+                        type="button"
+                        data-toggle="collapse"
+                        data-target="#navbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbar">
+                    <ul class="navbar-nav ml auto">
 
-                <!----YC NAVBAR
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Manage Recipes</a>
-                  <ul class="dropdown-menu">
-                   <li><a class="dropdown-item" href="/createRecipe">Create Recipe</a></li>
-                   <li><a class="dropdown-item" href="/retrieveRecipes">Retrieve Recipes</a></li>
-                      <li><a class="dropdown-item" href="/retrieveFavourites">Retrieve Favourites</a></li>
-                   <li><a class="dropdown-item" href="/Recipes">View Recipes</a></li>
-                   </ul>
-                 </li>
-                YC NAVBAR----->
-                {% if current_user.is_authenticated and not verifying and not staff %}
-                    <li class="nav-link">
-                        <a class="nav-link" href="/homepage">Home</a>
-                    </li>
-                    <li class="nav-link">
-                        <a class="nav-link" href="/Recipes">Recipes</a>
-                    </li>
-                    <li class="nav-link dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="manageAccountDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Manage Account
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="manageAccountDropdown">
-                            <a class="dropdown-item" href="/update-profile">Update Profile</a>
-                            <a class="dropdown-item" href="/process-preferences">Update Preferences</a>
-                            <a class="dropdown-item" href="/logout">Logout</a>
-                            <a class="dropdown-item" href="/delete-account">Delete Account</a>
-                        </div>
-                    </li>
-                    <li class="nav-link dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="customerSupportDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Customer Support
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="customerSupportDropdown">
-                            <a class="dropdown-item" href="/FeedbackForm">Feedback Form</a>
-                            <a class="dropdown-item" href="/SurveyForm">Survey Form</a>
-                            <a class="dropdown-item" href="/faq">FAQ</a>
-                        </div>
-                    </li>
-                    <li class="nav-link">
-                        <a class="nav-link" href="/community-forum">Community Forum</a>
-                    </li>
-                {% elif current_user.is_authenticated and not verifying and staff %}
-                    <li class="nav-link dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="manageAccountDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Manage Account
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="manageAccountDropdown1">
-                            <a class="dropdown-item" href="/staff-update-profile">Update Profile</a>
-                            <a class="dropdown-item" href="/staff-logout">Logout</a>
-                            <a class="dropdown-item" href="/staff-delete-account">Delete Account</a>
-                        </div>
-                    </li>
-                    <li class="nav-link dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="staffDashboard" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            User Data
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="staffDashboard">
-                            <a class="dropdown-item" href="/user-accounts">User Accounts</a>
-                            <a class="dropdown-item" href="/user-preferences">User Preferences</a>
-                        </div>
-                    </li>
-                    <li class="nav-link dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="manageRecipesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Manage Recipes
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="manageRecipesDropdown">
-                            <a class="dropdown-item" href="/createRecipe">Create Recipe</a>
-                            <a class="dropdown-item" href="/retrieveRecipes">Retrieve Recipes</a>
-                        </div>
-                    </li>
-                    <li class="nav-link dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="customerSupportDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Customer Support
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="customerSupportDropdown1">
-                            <a class="dropdown-item" href="/retrieveFeedback">Manage Feedback Form</a>
-                            <a class="dropdown-item" href="/retrieveSurvey">Manage Survey Form</a>
-                        </div>
-                    </li>
-                {% elif verifying and not staff %}
-                    <li class="nav-link dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="manageAccountDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Manage Account
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="manageAccountDropdown2">
-                            <a class="dropdown-item" href="/logout">Logout</a>
-                            <a class="dropdown-item" href="/delete-account">Delete Account</a>
-                        </div>
-                    </li>
-                {% elif verifying and staff %}
-                    <li class="nav-link dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="manageAccountDropdown3" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Manage Account
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="manageAccountDropdown3">
-                            <a class="dropdown-item" href="/staff-logout">Logout</a>
-                            <a class="dropdown-item" href="/staff-delete-account">Delete Account</a>
-                        </div>
-                    </li>
-                {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="/login">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/sign-up">Sign Up</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/staff-login">Staff Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/staff-sign-up">Staff Sign Up</a>
-                    </li>
+                        <!----YC NAVBAR
+                        <li class="nav-item dropdown">
+                          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Manage Recipes</a>
+                          <ul class="dropdown-menu">
+                           <li><a class="dropdown-item" href="/createRecipe">Create Recipe</a></li>
+                           <li><a class="dropdown-item" href="/retrieveRecipes">Retrieve Recipes</a></li>
+                              <li><a class="dropdown-item" href="/retrieveFavourites">Retrieve Favourites</a></li>
+                           <li><a class="dropdown-item" href="/Recipes">View Recipes</a></li>
+                           </ul>
+                         </li>
+                        YC NAVBAR----->
+                        {% if current_user.is_authenticated and not verifying and not staff %}
+                            <li class="nav-link">
+                                <a class="nav-link" href="/homepage">Home</a>
+                            </li>
+                            <li class="nav-link">
+                                <a class="nav-link" href="/Recipes">Recipes</a>
+                            </li>
+                            <li class="nav-link dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="manageAccountDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Manage Account
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="manageAccountDropdown">
+                                    <a class="dropdown-item" href="/update-profile">Update Profile</a>
+                                    <a class="dropdown-item" href="/process-preferences">Update Preferences</a>
+                                    <a class="dropdown-item" href="/logout">Logout</a>
+                                    <a class="dropdown-item" href="/delete-account">Delete Account</a>
+                                </div>
+                            </li>
+                            <li class="nav-link dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="customerSupportDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Customer Support
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="customerSupportDropdown">
+                                    <a class="dropdown-item" href="/FeedbackForm">Feedback Form</a>
+                                    <a class="dropdown-item" href="/SurveyForm">Survey Form</a>
+                                    <a class="dropdown-item" href="/faq">FAQ</a>
+                                </div>
+                            </li>
+                            <li class="nav-link">
+                                <a class="nav-link" href="/community-forum">Community Forum</a>
+                            </li>
+                        {% elif current_user.is_authenticated and not verifying and staff %}
+                            <li class="nav-link dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="manageAccountDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Manage Account
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="manageAccountDropdown1">
+                                    <a class="dropdown-item" href="/staff-update-profile">Update Profile</a>
+                                    <a class="dropdown-item" href="/staff-logout">Logout</a>
+                                    <a class="dropdown-item" href="/staff-delete-account">Delete Account</a>
+                                </div>
+                            </li>
+                            <li class="nav-link dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="staffDashboard" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    User Data
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="staffDashboard">
+                                    <a class="dropdown-item" href="/user-accounts">User Accounts</a>
+                                    <a class="dropdown-item" href="/user-preferences">User Preferences</a>
+                                </div>
+                            </li>
+                            <li class="nav-link dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="manageRecipesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Manage Recipes
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="manageRecipesDropdown">
+                                    <a class="dropdown-item" href="/createRecipe">Create Recipe</a>
+                                    <a class="dropdown-item" href="/retrieveRecipes">Retrieve Recipes</a>
+                                </div>
+                            </li>
+                            <li class="nav-link dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="customerSupportDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Customer Support
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="customerSupportDropdown1">
+                                    <a class="dropdown-item" href="/retrieveFeedback">Manage Feedback Form</a>
+                                    <a class="dropdown-item" href="/retrieveSurvey">Manage Survey Form</a>
+                                </div>
+                            </li>
+                        {% elif verifying and not staff %}
+                            <li class="nav-link dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="manageAccountDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Manage Account
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="manageAccountDropdown2">
+                                    <a class="dropdown-item" href="/logout">Logout</a>
+                                    <a class="dropdown-item" href="/delete-account">Delete Account</a>
+                                </div>
+                            </li>
+                        {% elif verifying and staff %}
+                            <li class="nav-link dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="manageAccountDropdown3" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Manage Account
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="manageAccountDropdown3">
+                                    <a class="dropdown-item" href="/staff-logout">Logout</a>
+                                    <a class="dropdown-item" href="/staff-delete-account">Delete Account</a>
+                                </div>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="/login">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/sign-up">Sign Up</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/staff-login">Staff Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/staff-sign-up">Staff Sign Up</a>
+                            </li>
 
-                {% endif %}
-            </ul>
+                        {% endif %}
+                    </ul>
+                </div>
+            </nav>
         </div>
-    </nav>
+    </section>
+
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
         {% for category, message in messages %}

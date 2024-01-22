@@ -24,13 +24,17 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- <link rel="stylesheet" href="css/responsive.css"> -->
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
 
     <!--CSS-->
     <style>
-    body{
-        margin: 0 320px;
-        }
+        body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Poppins', sans-serif;
+    }
     .recipeTitle{
         font-size: 41px;
         text-align: center;
@@ -75,7 +79,7 @@
         position: absolute;
         top: 0;
         right: 0;
-        margin-right: 100px;
+        margin-right: 140px;
         }
     .recepies_text, {
         text-align: left;
@@ -91,11 +95,10 @@
         text-align: left;
         margin-top: 20px;
     }
-    .col-xl-12.text-center,
     .col-xl-12 {
         text-align: left;
+        margin: 10px;
     }
-
     .share-btn-container {
         background: #fff;
         display: flex;
@@ -126,60 +129,290 @@
     .share-btn-container .fa-whatsapp {
         color: #25d366;
     }
-    @media (max-width: 1068px) {
+    @media (max-width: 550px) {
         body {
-        padding: 0 8px 40px 4px;
-        margin: 0;
-    }
-
-    .share-btn-container {
-        transform: unset;
-        top: unset;
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        flex-direction: row;
-        box-shadow: 4px 0 8px rgba(0, 0, 0, 0.3);
-        padding: 16px 0;
-        justify-content: center;
-    }
-
-    .share-btn-container a {
-        margin: 0 32px;
-    }
-
-    .recipeTitle {
-        font-size: 28px;
-    }
-
-    .recepies_thumb img {
-        width: 100%;
-        height: auto;
-    }
-
-    .rightside {
-        margin-right: 10px; /* Adjusted margin for better responsiveness */
-        padding-left: 70px; /* Adjusted padding as needed */
-        display: inline-block;
-        position: static;
-
-    }
-
-    .recepies_text,
-    .resepies_details {
-        max-width: 100%;
-    }
-
-    .line_btn:hover {
+            padding: 0 8px 40px 4px;
+        }
+        .share-btn-container {
+            transform: unset;
+            top: unset;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            flex-direction: row;
+            box-shadow: 4px 0 8px rgba(0, 0, 0, 0.3);
+            padding: 16px 0;
+            justify-content: center;
+        }
+        .share-btn-container a {
+            margin: 0 32px;
+        }
+        .rightside {
+            display: block;
+            text-align: left;
+            top: 0;
+            right: 0;
+            margin-right: 0;
+            position: relative;
+            margin-top: 10px;
+        }
+        .recepies_text{
+            padding-bottom: 40px;
+        }
+        .line_btn:hover {
         background-color: #ffc000;
         color: #fff;
     }
-}
+    .middle-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 95vh;
+    }
+    .like-button {
+      cursor: pointer;
+      border-radius: 40px;
+      padding: 0.45rem 0;
+      color: #878787;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      filter: grayscale(100%);
+      -webkit-user-select: none;
+         -moz-user-select: none;
+          -ms-user-select: none;
+              user-select: none;
+    }
+    .like-button.liked {
+      color: #ff6e6f;
+      filter: grayscale(0);
+    }
+
+    .like-icon {
+      width: 24px;
+      height: 20px;
+      font-size: 1.5rem;
+      background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjEiIGhlaWdodD0iMTgiIHZpZXdCb3g9IjAgMCAyMSAxOCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTAuMTAxIDQuNDE3UzguODk1LjIwNyA1LjExMS4yMDdjLTQuNDY1IDAtMTAuOTY3IDYuODQ2IDUuMDgyIDE3LjU5MkMyNS4yMzcgNy4wMyAxOS42NjUuMjAyIDE1LjUwMS4yMDJjLTQuMTYyIDAtNS40IDQuMjE1LTUuNCA0LjIxNXoiIGZpbGw9IiNGRjZFNkYiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==") no-repeat center;
+      background-size: 100%;
+      -webkit-animation: heartUnlike 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+              animation: heartUnlike 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+    }
+
+    .liked .like-icon {
+      -webkit-animation: heartPulse 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+              animation: heartPulse 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+    }
+    .liked .like-icon [class^=heart-animation-] {
+      background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjEiIGhlaWdodD0iMTgiIHZpZXdCb3g9IjAgMCAyMSAxOCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTAuMTAxIDQuNDE3UzguODk1LjIwNyA1LjExMS4yMDdjLTQuNDY1IDAtMTAuOTY3IDYuODQ2IDUuMDgyIDE3LjU5MkMyNS4yMzcgNy4wMyAxOS42NjUuMjAyIDE1LjUwMS4yMDJjLTQuMTYyIDAtNS40IDQuMjE1LTUuNCA0LjIxNXoiIGZpbGw9IiNGRjZFNkYiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==") no-repeat center;
+      background-size: 100%;
+      top: 0;
+      left: 0;
+      width: 24px;
+      height: 20px;
+      opacity: 0;
+    }
+    .liked .like-icon [class^=heart-animation-]::before, .liked .like-icon [class^=heart-animation-]::after {
+      content: "";
+      background: inherit;
+      background-size: 100%;
+      width: inherit;
+      height: inherit;
+      display: inherit;
+      position: relative;
+      top: inherit;
+      left: inherit;
+      opacity: 0;
+    }
+    .liked .like-icon .heart-animation-1 {
+      -webkit-animation: heartFloatMain-1 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+              animation: heartFloatMain-1 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+    }
+    .liked .like-icon .heart-animation-1::before, .liked .like-icon .heart-animation-1::after {
+      width: 12px;
+      height: 10px;
+      visibility: hidden;
+    }
+    .liked .like-icon .heart-animation-1::before {
+      opacity: 0.6;
+      -webkit-animation: heartFloatSub-1 1s 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+              animation: heartFloatSub-1 1s 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+    }
+    .liked .like-icon .heart-animation-1::after {
+      -webkit-animation: heartFloatSub-2 1s 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+              animation: heartFloatSub-2 1s 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+      opacity: 0.75;
+    }
+    .liked .like-icon .heart-animation-2 {
+      -webkit-animation: heartFloatMain-2 1s 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+              animation: heartFloatMain-2 1s 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+    }
+    .liked .like-icon .heart-animation-2::before, .liked .like-icon .heart-animation-2::after {
+      width: 10px;
+      height: 8px;
+      visibility: hidden;
+    }
+    @-webkit-keyframes heartPulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.5);
+      }
+    }
+
+    @keyframes heartPulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.5);
+      }
+    }
+    @-webkit-keyframes heartUnlike {
+      50% {
+        transform: scale(0.75);
+      }
+    }
+    @keyframes heartUnlike {
+      50% {
+        transform: scale(0.75);
+      }
+    }
+    @-webkit-keyframes heartFloatMain-1 {
+      0% {
+        opacity: 0;
+        transform: translate(0) rotate(0);
+      }
+      50% {
+        opacity: 1;
+        transform: translate(0, -25px) rotate(-20deg);
+      }
+    }
+    @keyframes heartFloatMain-1 {
+      0% {
+        opacity: 0;
+        transform: translate(0) rotate(0);
+      }
+      50% {
+        opacity: 1;
+        transform: translate(0, -25px) rotate(-20deg);
+      }
+    }
+    @-webkit-keyframes heartFloatMain-2 {
+      0% {
+        opacity: 0;
+        transform: translate(0) rotate(0) scale(0);
+      }
+      50% {
+        opacity: 0.9;
+        transform: translate(-10px, -38px) rotate(25deg) scale(1);
+      }
+    }
+    @keyframes heartFloatMain-2 {
+      0% {
+        opacity: 0;
+        transform: translate(0) rotate(0) scale(0);
+      }
+      50% {
+        opacity: 0.9;
+        transform: translate(-10px, -38px) rotate(25deg) scale(1);
+      }
+    }
+    @-webkit-keyframes heartFloatSub-1 {
+      0% {
+        visibility: hidden;
+        transform: translate(0) rotate(0);
+      }
+      50% {
+        visibility: visible;
+        transform: translate(13px, -13px) rotate(30deg);
+      }
+    }
+    @keyframes heartFloatSub-1 {
+      0% {
+        visibility: hidden;
+        transform: translate(0) rotate(0);
+      }
+      50% {
+        visibility: visible;
+        transform: translate(13px, -13px) rotate(30deg);
+      }
+    }
+    @-webkit-keyframes heartFloatSub-2 {
+      0% {
+        visibility: hidden;
+        transform: translate(0) rotate(0);
+      }
+      50% {
+        visibility: visible;
+        transform: translate(18px, -10px) rotate(55deg);
+      }
+    }
+    @keyframes heartFloatSub-2 {
+      0% {
+        visibility: hidden;
+        transform: translate(0) rotate(0);
+      }
+      50% {
+        visibility: visible;
+        transform: translate(18px, -10px) rotate(55deg);
+      }
+    }
+    @-webkit-keyframes heartFloatSub-3 {
+      0% {
+        visibility: hidden;
+        transform: translate(0) rotate(0);
+      }
+      50% {
+        visibility: visible;
+        transform: translate(-10px, -10px) rotate(-40deg);
+      }
+      100% {
+        transform: translate(-50px, 0);
+      }
+    }
+    @keyframes heartFloatSub-3 {
+      0% {
+        visibility: hidden;
+        transform: translate(0) rotate(0);
+      }
+      50% {
+        visibility: visible;
+        transform: translate(-10px, -10px) rotate(-40deg);
+      }
+      100% {
+        transform: translate(-50px, 0);
+      }
+    }
+    @-webkit-keyframes heartFloatSub-4 {
+      0% {
+        visibility: hidden;
+        transform: translate(0) rotate(0);
+      }
+      50% {
+        visibility: visible;
+        transform: translate(2px, -18px) rotate(-25deg);
+      }
+    }
+    @keyframes heartFloatSub-4 {
+      0% {
+        visibility: hidden;
+        transform: translate(0) rotate(0);
+      }
+      50% {
+        visibility: visible;
+        transform: translate(2px, -18px) rotate(-25deg);
+      }
+    }
     </style>
 
 </head>
 
-<body>
+<body style="margin: 0 320px; max-width: 600px;">
     <div class="col-xl-12 text-center mt-4">
         <a href="{{ url_for('recipes') }}" class="btn btn-primary">Back to Recipe List</a>
     </div>
