@@ -9,9 +9,9 @@ from fuzzywuzzy import fuzz
 views = Blueprint('views', __name__)
 
 
-@views.route('/landing-page', methods=['GET', 'POST'])
+@views.route('/homepage', methods=['GET', 'POST'])
 @login_required
-def landing_page():
+def homepage():
     # Fetch user preferences from the database
     username = current_user.username
     recipes = get_recommendations(username)
@@ -59,7 +59,7 @@ def process_preferences():
         db.session.commit()
 
         flash('Preferences updated successfully.', 'success')
-        return redirect(url_for('views.landing_page'))
+        return redirect(url_for('views.homepage'))
 
     return render_template('preferences_form.html')
 
