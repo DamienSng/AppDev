@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500&family=Poppins:wght@300;400;500&display=swap');
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -5,10 +7,13 @@
 }
 
 body {
-    font-family: 'Nunito', sans-serif;
+    /* font-family: 'Nunito', sans-serif; */
+    font-family: 'Poppins', sans-serif;
+    /*
     font-weight: 400;
     font-size: 100%;
     background: #F1F1F1;
+    */
 }
 
 *, html {
@@ -17,6 +22,94 @@ body {
     --primaryBoxShadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
     --secondaryBoxShadow: 0px -10px 15px rgba(0, 0, 0, 0.1);
     --primary: #581B98;
+}
+
+/* background section 1 */
+.background-section1 {
+    display: flex;
+    flex-direction: column;
+}
+
+/* top left logo */
+.logo {
+    font-family: 'Oswald', sans-serif;
+    font-size: 250%;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.logo:hover {
+    color: white;
+    text-decoration: none;
+}
+
+/* navigation menu */
+.topnav {
+    font-family: 'Poppins', sans-serif;
+    width: 100%;
+    background: #1b5e20;
+    padding-left: 50px;
+    margin-bottom: 50px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* navbar items */
+.navbar {
+    display: flex;
+}
+
+.navbar a {
+    display: block;
+    color: #ffffff;
+    text-align: center;
+    padding: 10px;
+    text-decoration: none;
+    font-size: 20px;
+    transition: 0.3s;
+    margin-right: 40px;
+}
+
+.navbar a:hover {
+    background-color: #388e3c;
+    color: white;
+}
+
+
+.dropdown-menu .dropdown-item {
+    color: #000;
+}
+
+
+.dropdown-menu .dropdown-item:hover {
+    background-color: #ccc;
+    color: #000;
+}
+
+
+.navbar .nav-link.dropdown-toggle {
+    color: #ffffff;
+}
+
+
+.navbar .nav-link.dropdown-toggle:hover {
+    background-color: #388e3c;
+    color: white;
+}
+
+
+.dropdown-menu .dropdown-item.active {
+    background-color: #388e3c;
+    color: white;
+}
+
+
+.navbar .nav-link.dropdown-toggle::after {
+
+    margin-left: 5px;
 }
 
 /* CHATBOX
