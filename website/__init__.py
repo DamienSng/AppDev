@@ -647,29 +647,19 @@ def create_app():
 # ----------------------------------add the data to the worksheet of the respective users----------------------------
         max_rows = UsersCartWS.max_row
         # we check if their cart is empty, if it is start writing from row 2 onwards
-        if max_rows<= 1:
-            # Write each nested list in the big list to the rows, starting from the second row
-            for row_index, sublist in enumerate(SplitSections, start=(max_rows + 1)):  # Starting at row 2
-                for col_index, item in enumerate(sublist, start=1):  # Starting from the first column
-                    try:
-                        item = float(item)
-                        item = item * float(data['servings'])
-                    except ValueError:
-                        pass
-                    cell_ref = f"{openpyxl.utils.get_column_letter(col_index + 1)}{row_index}"
-                    UsersCartWS[cell_ref] = item
-        # if it isn't empty, leave a space and start writing from the bottom
-        else:
-            # Write each nested list in the big list to the rows, starting from the second row
-            for row_index, sublist in enumerate(SplitSections, start=(max_rows+1)):  # Starting at row 2
-                for col_index, item in enumerate(sublist, start=1):  # Starting from the first column
-                    try:
-                        item = float(item)
-                        item = item * float(data['servings'])
-                    except ValueError:
-                        pass
-                    cell_ref = f"{openpyxl.utils.get_column_letter(col_index + 1)}{row_index}"
-                    UsersCartWS[cell_ref] = item
+
+        # Write each nested list in the big list to the rows, starting from the second row
+        for row_index, sublist in enumerate(SplitSections, start=(max_rows + 1)):  # Starting at row 2
+            for col_index, item in enumerate(sublist, start=1):  # Starting from the first column
+                try:
+                    item = float(item)
+                    item = item * float(data['servings'])
+                except ValueError:
+                    pass
+                cell_ref = f"{openpyxl.utils.get_column_letter(col_index + 1)}{row_index}"
+                add_to_first_col = f"{openpyxl.utils.get_column_letter(1)}{row_index}"
+                UsersCartWS[cell_ref] = item
+                UsersCartWS[add_to_first_col] = int(data['id'])
         CartWB.save('website/Cart.xlsx')
 # ----------------------------------add the data to the worksheet of the respective users----------------------------
 
