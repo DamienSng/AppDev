@@ -146,8 +146,10 @@ body {
 .chatbox {
     position: absolute;
     bottom: 30px;
-    right: 30px;
+    right: 15px;
+    top: 450px;
 }
+
 
 /* CONTENT IS CLOSE */
 .chatbox__support {
@@ -178,6 +180,11 @@ body {
 /* BUTTON */
 .chatbox__button {
     text-align: right;
+}
+
+.chatbot__button img {
+    height: 500px;
+
 }
 
 .send__button {

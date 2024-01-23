@@ -58,21 +58,22 @@
 					{{ render_field(form.recipe_name, class="input1", placeholder="e.g Seaweed Soup") }}
 					<span class="shadow-input1"></span>
 				</div>
-
 				<div class="container-contact1-form-btn">
+					<div style="align-items: left;">
 					<button class="contact1-form-btn">
 						<span>
 							Submit
 							<i class="fa fa-long-arrow-right" aria-hidden="true"></i>
 						</span>
 					</button>
+						</div>
 				</div>
 			</form>
 		</div>
 	</div>
 
 
-<footer class="main-footer">
+
     <div class="container">
     <div class="chatbox">
         <div class="chatbox__support">
@@ -94,11 +95,11 @@
             </div>
         </div>
         <div class="chatbox__button">
-            <button><img src="{{ url_for('static', filename='images/chatbox-icon.svg') }}" /></button>
+            <button><img src="{{ url_for('static', filename='images/chatbox-icon.svg') }}" style="height: 50px;"/></button>
         </div>
     </div>
 </div>
-</footer>
+
 
 
 <!--===============================================================================================-->
