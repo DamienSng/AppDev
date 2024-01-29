@@ -118,39 +118,24 @@
         .right{
             text-align: center;
             display: inline-block;
-            text-align: center;
             top: 130px;
             right: 0;
-            margin-left: 60%; /* not working */
+            margin-left: 60%;
             margin-right: 10%;
             position: absolute;
+            width: 35%;
+            box-sizing: border-box;
         }
         .col-xl-12{
             margin: 0 -18px;
         }
 
-
-
-        @media (max-width: 1368px) {
-        .share-btn-container {
-            transform: unset;
-            top: unset;
-            left: 0;
-            bottom: 0;
-            width: 100%;
-            flex-direction: row;
-            box-shadow: 4px 0 8px rgba(0, 0, 0, 0.3);
-            padding: 16px 0;
-            justify-content: center;
-        }
-        .share-btn-container a {
-            margin: 0 32px;
-        }
         @media (max-width: 1368px) {
         body {
             padding: 0 8px 40px 4px;
-            margin: 0px;
+            margin: 0;
         }
+
         .share-btn-container {
             transform: unset;
             top: unset;
@@ -162,8 +147,19 @@
             padding: 16px 0;
             justify-content: center;
         }
+
         .share-btn-container a {
             margin: 0 32px;
+        }
+
+        .right {
+            display: block;
+            margin: 20px auto; /* Center the block */
+            width: 90%; /* Adjust the width as needed */
+            position: static;
+        }
+        .recepies_text {
+            padding-bottom: 40px;
         }
     </style>
 </head>
@@ -236,7 +232,7 @@
 
 
         <!-- /bradcam_area  -->
-        <div class="right" style="width: 35%;">
+        <div class="right">
             <div style="margin-top: 20px; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
                 <form>
                     <h3 style="display: inline-block; margin-right: 10px; color: #333;">Servings:</h3>
