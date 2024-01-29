@@ -580,10 +580,62 @@ def create_app():
         price = 0  # Initialize total price
         price_ids = []  # List to store price IDs for Stripe
         items = []  # List to store items in the cart
-        quantity = []  # List to store quantity of each item
 
-        # Loop through each item in the user's cart
-        for cart_item in auth.current_user.cart:
+        'try:'
+        CartWB = load_workbook('website/Cart.xlsx')
+        UsersCartWS = CartWB[current_user.username]
+        PriceWS = CartWB['Prices']
+
+        # get data from user's cart and structure it such that it is in a list and a nested dictionary inside
+        for row in UsersCartWS.iter_rows(min_row=2, max_col=3, values_only=True):
+            rowItems = list(row)
+            print(rowItems)
+            ingredient_dict = {'quantity': rowItems[1], 'ingredient': rowItems[2]}
+            items.append(ingredient_dict)
+            print(items)
+
+        # go through every item in the list
+        for item in items:
+            counter = 0
+            print(item)
+            # go through every item in the worksheet
+            for ingredients in PriceWS.iter_cols(max_row=1, values_only=True):
+                counter += 1
+                print(ingredients)
+                string = ingredients[0]
+                print(string)
+                # if the ingredient name matches
+                if item['ingredient'] == string:
+                    print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+                    print(ingredients)
+                    # get the column number
+                    ingredientColumn = openpyxl.utils.get_column_letter(counter)
+                    # get the look at the price in the same column
+                    quantityNumber = PriceWS[f'{ingredientColumn}{2}'].value
+                    quantityNumber = float(quantityNumber)
+                    # set default price multiplier to 1
+                    n = 1
+                    # check if the ingredient amount is >= the number on the price sheet
+                    if float(item['quantity']) >= quantityNumber:
+                        print(n)
+                        n += 1
+                        quantityNumber = float(quantityNumber) * n
+                    ingredientPrice = float(PriceWS[f'{ingredientColumn}{3}'].value) * float(n)
+                    price += ingredientPrice
+                    items[0]['ingredientPrice'] = ingredientPrice
+                    print(items)
+
+
+
+
+
+
+        '''except (KeyError, IOError):
+            pass'''
+
+
+        '''# Loop through each item in the user's cart
+        for cart_item in cart:
             items.append(cart_item.item)  # Add the item object to the items list
             quantity.append(cart_item.quantity)  # Add the item quantity to the quantity list
 
@@ -595,11 +647,11 @@ def create_app():
             price_ids.append(price_id_dict)
 
             # Update the total price
-            price += cart_item.item.price * cart_item.quantity
+            price += cart_item.item.price * cart_item.quantity'''
 
         # Render the cart template with the items, total price, price IDs, and quantities
         return render_template('cart.html', items=items, price=price,
-                               price_ids=price_ids, quantity=quantity)
+                               price_ids=price_ids)
 
     @app.route('/add-to-cart', methods=['POST'])
     def add_to_cart():
@@ -618,7 +670,7 @@ def create_app():
                 quantity, measurement, ingredient = match
                 measurement = measurement if measurement else "N/A"  # Assign "N/A" if measurement is missing
                 ingredient = ingredient.strip()  # Trim any whitespace from the ingredient
-                SplitSections.append([quantity, measurement, ingredient])
+                SplitSections.append([quantity, ingredient])
 
 # ------------------------------does the Workbook exist?-------------------------------------
         try:
@@ -637,7 +689,7 @@ def create_app():
         except KeyError:
             CartWB.create_sheet(current_user.username)
             UsersCartWS = CartWB[current_user.username]
-            Header = ['ID', 'Quantity', 'Measurement', 'Ingredient']
+            Header = ['ID', 'Quantity', 'Ingredient']
             UsersCartWS.append(Header)  # adds the headers to the first row
             for cell in UsersCartWS[1]:  # '1' refers to the first row
                 cell.font = Font(bold=True)  # makes the font bold
