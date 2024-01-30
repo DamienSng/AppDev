@@ -129,6 +129,21 @@
         .col-xl-12{
             margin: 0 -18px;
         }
+        .quantity-field {
+            padding: 8px;
+            border: 1px solid #ccc; /* Set the border */
+            border-radius: 4px;
+            font-size: 16px;
+            text-align: center;
+            margin-right: 10px;
+            outline: 1px solid #ccc;
+        }
+
+        /* Additional styling for the "servings" label */
+        h3[for="servingsInput"] {
+            margin-right: 10px;
+            color: #333;
+        }
 
         @media (max-width: 1368px) {
         body {
@@ -237,7 +252,7 @@
                 <form>
                     <h3 style="display: inline-block; margin-right: 10px; color: #333;">Servings:</h3>
                     <input type="number" step="1" value="1" name="servings" class="quantity-field border-0 text-center w-25"
-               min="0" style="width: 50px; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" id="servingsInput"> servings
+               min="0" id="servingsInput" style="1px solid border;"> servings
                 </form>
                 <h3 style="margin-bottom: 0;">Ingredients</h3>
                 <p style="margin-top: 10;">Please select the ingredients that you need.<br>Upon clicking on ‘Add To Cart’, those ingredient <br> that you have selected will be added to your cart.</p>
