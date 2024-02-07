@@ -139,6 +139,253 @@
             outline: 1px solid #ccc;
         }
 
+        .middle-wrapper {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+          height: 95vh;
+        }
+        .like-button {
+          cursor: pointer;
+          border-radius: 40px;
+          padding: 0.45rem 0;
+          color: #878787;
+          font-weight: bold;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1rem;
+          transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+          filter: grayscale(100%);
+          -webkit-user-select: none;
+             -moz-user-select: none;
+              -ms-user-select: none;
+                  user-select: none;
+        }
+        .like-button.liked {
+          color: #ff6e6f;
+          filter: grayscale(0);
+        }
+
+        .like-icon {
+          width: 24px;
+          height: 20px;
+          font-size: 1.5rem;
+          background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjEiIGhlaWdodD0iMTgiIHZpZXdCb3g9IjAgMCAyMSAxOCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTAuMTAxIDQuNDE3UzguODk1LjIwNyA1LjExMS4yMDdjLTQuNDY1IDAtMTAuOTY3IDYuODQ2IDUuMDgyIDE3LjU5MkMyNS4yMzcgNy4wMyAxOS42NjUuMjAyIDE1LjUwMS4yMDJjLTQuMTYyIDAtNS40IDQuMjE1LTUuNCA0LjIxNXoiIGZpbGw9IiNGRjZFNkYiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==") no-repeat center;
+          background-size: 100%;
+          -webkit-animation: heartUnlike 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+                  animation: heartUnlike 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+        }
+
+        .liked .like-icon {
+          -webkit-animation: heartPulse 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+                  animation: heartPulse 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+        }
+        .liked .like-icon [class^=heart-animation-] {
+          background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjEiIGhlaWdodD0iMTgiIHZpZXdCb3g9IjAgMCAyMSAxOCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTAuMTAxIDQuNDE3UzguODk1LjIwNyA1LjExMS4yMDdjLTQuNDY1IDAtMTAuOTY3IDYuODQ2IDUuMDgyIDE3LjU5MkMyNS4yMzcgNy4wMyAxOS42NjUuMjAyIDE1LjUwMS4yMDJjLTQuMTYyIDAtNS40IDQuMjE1LTUuNCA0LjIxNXoiIGZpbGw9IiNGRjZFNkYiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==") no-repeat center;
+          background-size: 100%;
+          top: 0;
+          left: 0;
+          width: 24px;
+          height: 20px;
+          opacity: 0;
+        }
+        .liked .like-icon [class^=heart-animation-]::before, .liked .like-icon [class^=heart-animation-]::after {
+          content: "";
+          background: inherit;
+          background-size: 100%;
+          width: inherit;
+          height: inherit;
+          display: inherit;
+          position: relative;
+          top: inherit;
+          left: inherit;
+          opacity: 0;
+        }
+        .liked .like-icon .heart-animation-1 {
+          -webkit-animation: heartFloatMain-1 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+                  animation: heartFloatMain-1 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+        }
+        .liked .like-icon .heart-animation-1::before, .liked .like-icon .heart-animation-1::after {
+          width: 12px;
+          height: 10px;
+          visibility: hidden;
+        }
+        .liked .like-icon .heart-animation-1::before {
+          opacity: 0.6;
+          -webkit-animation: heartFloatSub-1 1s 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+                  animation: heartFloatSub-1 1s 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+        }
+        .liked .like-icon .heart-animation-1::after {
+          -webkit-animation: heartFloatSub-2 1s 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+                  animation: heartFloatSub-2 1s 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+          opacity: 0.75;
+        }
+        .liked .like-icon .heart-animation-2 {
+          -webkit-animation: heartFloatMain-2 1s 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+                  animation: heartFloatMain-2 1s 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+        }
+        .liked .like-icon .heart-animation-2::before, .liked .like-icon .heart-animation-2::after {
+          width: 10px;
+          height: 8px;
+          visibility: hidden;
+        }
+        @-webkit-keyframes heartPulse {
+          0% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.5);
+          }
+        }
+
+        @keyframes heartPulse {
+          0% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.5);
+          }
+        }
+        @-webkit-keyframes heartUnlike {
+          50% {
+            transform: scale(0.75);
+          }
+        }
+        @keyframes heartUnlike {
+          50% {
+            transform: scale(0.75);
+          }
+        }
+        @-webkit-keyframes heartFloatMain-1 {
+          0% {
+            opacity: 0;
+            transform: translate(0) rotate(0);
+          }
+          50% {
+            opacity: 1;
+            transform: translate(0, -25px) rotate(-20deg);
+          }
+        }
+        @keyframes heartFloatMain-1 {
+          0% {
+            opacity: 0;
+            transform: translate(0) rotate(0);
+          }
+          50% {
+            opacity: 1;
+            transform: translate(0, -25px) rotate(-20deg);
+          }
+        }
+        @-webkit-keyframes heartFloatMain-2 {
+          0% {
+            opacity: 0;
+            transform: translate(0) rotate(0) scale(0);
+          }
+          50% {
+            opacity: 0.9;
+            transform: translate(-10px, -38px) rotate(25deg) scale(1);
+          }
+        }
+        @keyframes heartFloatMain-2 {
+          0% {
+            opacity: 0;
+            transform: translate(0) rotate(0) scale(0);
+          }
+          50% {
+            opacity: 0.9;
+            transform: translate(-10px, -38px) rotate(25deg) scale(1);
+          }
+        }
+        @-webkit-keyframes heartFloatSub-1 {
+          0% {
+            visibility: hidden;
+            transform: translate(0) rotate(0);
+          }
+          50% {
+            visibility: visible;
+            transform: translate(13px, -13px) rotate(30deg);
+          }
+        }
+        @keyframes heartFloatSub-1 {
+          0% {
+            visibility: hidden;
+            transform: translate(0) rotate(0);
+          }
+          50% {
+            visibility: visible;
+            transform: translate(13px, -13px) rotate(30deg);
+          }
+        }
+        @-webkit-keyframes heartFloatSub-2 {
+          0% {
+            visibility: hidden;
+            transform: translate(0) rotate(0);
+          }
+          50% {
+            visibility: visible;
+            transform: translate(18px, -10px) rotate(55deg);
+          }
+        }
+        @keyframes heartFloatSub-2 {
+          0% {
+            visibility: hidden;
+            transform: translate(0) rotate(0);
+          }
+          50% {
+            visibility: visible;
+            transform: translate(18px, -10px) rotate(55deg);
+          }
+        }
+        @-webkit-keyframes heartFloatSub-3 {
+          0% {
+            visibility: hidden;
+            transform: translate(0) rotate(0);
+          }
+          50% {
+            visibility: visible;
+            transform: translate(-10px, -10px) rotate(-40deg);
+          }
+          100% {
+            transform: translate(-50px, 0);
+          }
+        }
+        @keyframes heartFloatSub-3 {
+          0% {
+            visibility: hidden;
+            transform: translate(0) rotate(0);
+          }
+          50% {
+            visibility: visible;
+            transform: translate(-10px, -10px) rotate(-40deg);
+          }
+          100% {
+            transform: translate(-50px, 0);
+          }
+        }
+        @-webkit-keyframes heartFloatSub-4 {
+          0% {
+            visibility: hidden;
+            transform: translate(0) rotate(0);
+          }
+          50% {
+            visibility: visible;
+            transform: translate(2px, -18px) rotate(-25deg);
+          }
+        }
+        @keyframes heartFloatSub-4 {
+          0% {
+            visibility: hidden;
+            transform: translate(0) rotate(0);
+          }
+          50% {
+            visibility: visible;
+            transform: translate(2px, -18px) rotate(-25deg);
+          }
+        }
+
+
         /* Additional styling for the "servings" label */
         h3[for="servingsInput"] {
             margin-right: 10px;
@@ -197,7 +444,16 @@
                 <div class="row">
                     <div class="col-xl-12">
                         <div class="bradcam_text text-center">
-                            <h3 class="recipeTitle">{{ recipe[1] }}</h3>
+                            <h3 class="recipeTitle">{{ recipe[1] }}
+                                <form id="likeForm" method="POST" action="/retrieveFavourites">
+                                    <a class='like-button' style="margin-left: 10px; vertical-align: middle;" data-recipe-id="{{ recipe[0] }}">
+                                        <span class='like-icon' style="width: 30px; height: 30px;">
+                                            <div class='heart-animation-1'></div>
+                                            <div class='heart-animation-2'></div>
+                                        </span>
+                                    </a>
+                                </form>
+                            </h3>
                                 <!--Social Media Buttons-->
                                 <div class="rightside">
                                     <div class="share-btn-container">
@@ -330,6 +586,76 @@
 
     <script src="js/main.js"></script>
 
+    <!----------------------------------making like button persistent---------------------------------->
+    <script>
+        // Function to check if a recipe is liked (fetching from local storage)
+        function isRecipeLiked(recipeId) {
+            const likedRecipes = JSON.parse(localStorage.getItem('likedRecipes')) || [];
+            return likedRecipes.includes(recipeId);
+        }
+
+        // Function to save liked recipe to local storage
+        function saveLikedRecipe(recipeId) {
+            let likedRecipes = JSON.parse(localStorage.getItem('likedRecipes')) || [];
+            likedRecipes.push(recipeId);
+            localStorage.setItem('likedRecipes', JSON.stringify(likedRecipes));
+        }
+
+        // Function to remove liked recipe from local storage
+        function removeLikedRecipe(recipeId) {
+            let likedRecipes = JSON.parse(localStorage.getItem('likedRecipes')) || [];
+            likedRecipes = likedRecipes.filter(id => id !== recipeId);
+            localStorage.setItem('likedRecipes', JSON.stringify(likedRecipes));
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+          // Attach a click event listener to the element triggering the request
+          document.querySelectorAll('a.like-button').forEach(function (likeButton) {
+              const recipeId = likeButton.getAttribute('data-recipe-id');
+
+              // Check if the recipe is liked and update the button's appearance
+              if (isRecipeLiked(recipeId)) {
+                  likeButton.classList.add('liked');
+              }
+
+              // Attach click event handler
+              likeButton.addEventListener('click', function (e) {
+                  likeButton.classList.toggle('liked');
+
+                  if (likeButton.classList.contains('liked')) {
+                      saveLikedRecipe(recipeId);
+                  } else {
+                      removeLikedRecipe(recipeId);
+                  }
+
+                  // Make a fetch request
+                  fetch(`/retrieveFavourites?liked_recipes=${recipeId}`, {
+                      method: 'POST',
+                      headers: {
+                          'Content-Type': 'application/json',
+                      },
+                  })
+                  .then(response => response.json())
+                  .then(data => {
+                      // Handle the response data here
+                      console.log(data);
+                      // Update the UI based on the response
+                      if (data.liked) {
+                          likeButton.classList.add('liked');
+                      } else {
+                          likeButton.classList.remove('liked');
+                      }
+                  })
+                  .catch(error => {
+                      console.error('Error:', error);
+                  });
+
+              });
+          });
+      });
+    </script>
+
+
     <script>
         // Get the servings input element
         var servingsInput = document.getElementById('servingsInput');
@@ -375,8 +701,11 @@
         let postUrl = encodeURI(document.location.href);
         let postTitle = encodeURI("Hey, please check this out: ");
         facebookBtn.setAttribute("href", `https://www.facebook.com/sharer.php?u=${postUrl}`);
+        facebookBtn.setAttribute("target", "_blank");
         telegramBtn.setAttribute("href", `https://t.me/share/url?url=${postUrl}&text=${postTitle}`);
+        telegramBtn.setAttribute("target", "_blank");
         whatsappBtn.setAttribute("href", `https://api.whatsapp.com/send?text=${postTitle} ${postUrl}`);
+        whatsappBtn.setAttribute("target", "_blank");
     }
     init();
 </script>
