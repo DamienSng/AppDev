@@ -574,6 +574,18 @@ def create_app():
 
         return render_template('view_recipes.html', recipe=recipe_details)
 
+    @app.route('/checkout', methods=['POST'])
+    def checkout():
+        collection_option = request.form.get('collectionOption')
+        price = request.form.get('price')
+        print(price)
+        print(collection_option)
+        return render_template('checkout.html', price=price)
+    # TODO add shit
+    @app.route('/checkout_confirmation', methods=['POST'])
+    def checkout_confirmation():
+        return render_template('confirmation.html')
+#TODO add shit
     @app.route("/cart")
     @login_required  # This decorator ensures that only logged-in users can access this route
     def cart():
@@ -608,22 +620,27 @@ def create_app():
                     # get the column number
                     ingredientColumn = openpyxl.utils.get_column_letter(counter)
                     # get the look at the price in the same column
-                    quantityNumber = PriceWS[f'{ingredientColumn}{2}'].value
+                    quantityNumber = float(PriceWS[f'{ingredientColumn}{2}'].value)
                     print(quantityNumber)
-                    quantityNumber = float(quantityNumber)
                     # set default price multiplier to 1
                     n = 1
                     # check if the ingredient amount is >= the number on the price sheet
-                    if float(item['quantity']) >= quantityNumber:
+                    if float(item['quantity']) > quantityNumber:
                         print(n)
                         n += 1
                         quantityNumber = float(quantityNumber) * n
                     items[i]['buyingQuantity'] = n
                     ingredientPrice = float(PriceWS[f'{ingredientColumn}{3}'].value) * float(n)
-                    price += ingredientPrice
+
                     items[i]['ingredientPrice'] = ingredientPrice
+                    itemTotal = ingredientPrice * n
+                    items[i]['itemTotal'] = itemTotal
+                    price += itemTotal
+
                     print(items)
                     i += 1
+
+
 
 
         # Render the cart template with the items, total price, price IDs, and quantities

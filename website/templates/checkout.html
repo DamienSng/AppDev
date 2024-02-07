@@ -1,0 +1,75 @@
+<head>
+    <style>
+    body { font-family: Arial, sans-serif; }
+    .container { width: 300px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 5px; }
+    .form-group { margin-bottom: 10px; }
+    label { display: block; margin-bottom: 5px; }
+    input[type=text], input[type=number] {  width:25%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+    button { width: 100%; padding: 10px; border: none; border-radius: 4px; background-color: #5cb85c; color: white; cursor: pointer; }
+    button:hover { background-color: #4cae4c; }
+</style>
+</head>
+{% extends "base.html" %}
+{% block title %}Checkout{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 style="text-align:center;">Payment and Shipping Form</h2>
+    <form action="{{ url_for('checkout_confirmation') }}" method="post">
+        <fieldset>
+            <legend>Personal Information:</legend>
+            <div class="form-group">
+                <label for="name">Full Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Payment Details:</legend>
+            <div class="form-group">
+                <label for="cardNumber">Card Number:</label>
+                <input type="number" id="cardNumber" name="cardNumber" required>
+            </div>
+            <div class="form-group">
+                Expiration Date (MM/YY):
+                <input type="text" id="expDate" name="expMonth" required style="display: inline-block; width: 5%;">
+                <input type="text" id="expYear" name="expYear" required style="display: inline-block; width: 5%;" >
+            </div>
+            <div class="form-group">
+                <label for="cvv">CVV:</label>
+                <input type="number" id="cvv" name="cvv" required style="width: 5%;">
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Shipping Address:</legend>
+            <div class="form-group">
+                <label for="address">Street Address:</label>
+                <input type="text" id="address" name="address" required>
+            </div>
+            <div class="form-group">
+                <label for="city">City:</label>
+                <input type="text" id="city" name="city" required>
+            </div>
+            <div class="form-group">
+                <label for="state">State/Province:</label>
+                <input type="text" id="state" name="state">
+            </div>
+            <div class="form-group">
+                <label for="zip">Postal/Zip Code:</label>
+                <input type="text" id="zip" name="zip" required>
+            </div>
+            <div class="form-group">
+                <label for="country">Country:</label>
+                <input type="text" id="country" name="country" required>
+            </div>
+        </fieldset>
+
+        <button type="submit">Submit Payment</button>
+    </form>
+</div>
+{% endblock %}

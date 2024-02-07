@@ -1,35 +1,52 @@
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<style>
+.new-container {
+    width: 300px;
+    border: 1px solid black;
+    border-radius: 20px;
+    padding: 15px;
+    height: 0%
+}
+</style>
+</head>
+
 {% extends "base.html" %}
 {% block title %}View cart{% endblock %}
-<style>
-	.items{
-
-	}
-
-	.container{
-	height = 100%
-	}
-</style>
 
 {% block content %}
-	<div class="items">
-	{% for i in range(items|length) %}
-		<div class="item">
-			<div class="item-wrapper">
-				<b>{{ items[i]['ingredient'] }}</b>
-				<span class="right-item">${{ items[i]['ingredientPrice'] }}</span><br>
+<div class="container" style="display: flex; flex-direction: row;">
+    <div class="items" style="display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; flex: 1;">
+        {% for i in range(items|length) %}
+        <div class="item" style="margin: 5px; flex-basis: 20%;">
+            <b>{{ items[i]['ingredient'] }}</b>
+				<span class="right-item">${{ "%.2f"|format(items[i]['ingredientPrice']) }}</span><br>
 				Quantity:
 				<span class="right-item">{{ items[i]['buyingQuantity'] }}</span><br>
-				Total:
-					{{ items[i]['ingredientPrice'] }}
-					<a href="{{ url_for('remove', ingredient=items[i]['ingredient']) }}"><br>
-					<button class="remove-from-cart"> Remove from Cart </button>
+				Item Total:
+					${{ "%.2f"|format(items[i]['itemTotal']) }}
+					<a href="{{ url_for('remove', ingredient=items[i]['ingredient']) }}" ><br>
+					<button class="remove-from-cart" style="padding-left:3px; padding-right:3px"> Remove from Cart </button><br>
 				</a>
-			</div>
-		</div>
-	
-		<br>
+        </div>
+        {% endfor %}
+    </div>
+    <!-- New container for additional content -->
+    <div class="new-container">
+        <h1 style="text-align: center;">Checkout</h1>
+        <form method="POST" action="{{ url_for('checkout') }}">
+        <ul style="list-style-type: none;">
+            <li><input type="radio" id="SelfCollect" value="Self Collection" name="collectionOption" required>Self Collection</li>
+            <li><input type="radio" id="Delivery" value="Delivery" name="collectionOption" required>Delivery</li>
+        </ul>
 
-	</div>
-	{% endfor %}
+
+        <input type="hidden" value="{{ price }}" name="price">
+            Grand total: ${{ "%.2f"|format(price) }}
+        <button class="bg-success btn-block btn-primary checkout"> Checkout </button>
+    </form>
+    </div>
+</div>
+
 {% endblock %}
-				</div>
