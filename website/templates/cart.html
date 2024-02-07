@@ -1,6 +1,35 @@
 {% extends "base.html" %}
-{% block title %}Library Loan System - Contact Us{% endblock %}
+{% block title %}View cart{% endblock %}
+<style>
+	.items{
+
+	}
+
+	.container{
+	height = 100%
+	}
+</style>
 
 {% block content %}
+	<div class="items">
+	{% for i in range(items|length) %}
+		<div class="item">
+			<div class="item-wrapper">
+				<b>{{ items[i]['ingredient'] }}</b>
+				<span class="right-item">${{ items[i]['ingredientPrice'] }}</span><br>
+				Quantity:
+				<span class="right-item">{{ items[i]['buyingQuantity'] }}</span><br>
+				Total:
+					{{ items[i]['ingredientPrice'] }}
+					<a href="{{ url_for('remove', ingredient=items[i]['ingredient']) }}"><br>
+					<button class="remove-from-cart"> Remove from Cart </button>
+				</a>
+			</div>
+		</div>
+	
+		<br>
 
+	</div>
+	{% endfor %}
 {% endblock %}
+				</div>

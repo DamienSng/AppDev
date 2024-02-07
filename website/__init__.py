@@ -580,6 +580,8 @@ def create_app():
         price = 0  # Initialize total price
         price_ids = []  # List to store price IDs for Stripe
         items = []  # List to store items in the cart
+        quantity = []
+        i = 0
 
         'try:'
         CartWB = load_workbook('website/Cart.xlsx')
@@ -589,10 +591,8 @@ def create_app():
         # get data from user's cart and structure it such that it is in a list and a nested dictionary inside
         for row in UsersCartWS.iter_rows(min_row=2, max_col=3, values_only=True):
             rowItems = list(row)
-            print(rowItems)
             ingredient_dict = {'quantity': rowItems[1], 'ingredient': rowItems[2]}
             items.append(ingredient_dict)
-            print(items)
 
         # go through every item in the list
         for item in items:
@@ -601,17 +601,15 @@ def create_app():
             # go through every item in the worksheet
             for ingredients in PriceWS.iter_cols(max_row=1, values_only=True):
                 counter += 1
-                print(ingredients)
                 string = ingredients[0]
-                print(string)
                 # if the ingredient name matches
                 if item['ingredient'] == string:
-                    print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
-                    print(ingredients)
+
                     # get the column number
                     ingredientColumn = openpyxl.utils.get_column_letter(counter)
                     # get the look at the price in the same column
                     quantityNumber = PriceWS[f'{ingredientColumn}{2}'].value
+                    print(quantityNumber)
                     quantityNumber = float(quantityNumber)
                     # set default price multiplier to 1
                     n = 1
@@ -620,38 +618,53 @@ def create_app():
                         print(n)
                         n += 1
                         quantityNumber = float(quantityNumber) * n
+                    items[i]['buyingQuantity'] = n
                     ingredientPrice = float(PriceWS[f'{ingredientColumn}{3}'].value) * float(n)
                     price += ingredientPrice
-                    items[0]['ingredientPrice'] = ingredientPrice
+                    items[i]['ingredientPrice'] = ingredientPrice
                     print(items)
+                    i += 1
 
-
-
-
-
-
-        '''except (KeyError, IOError):
-            pass'''
-
-
-        '''# Loop through each item in the user's cart
-        for cart_item in cart:
-            items.append(cart_item.item)  # Add the item object to the items list
-            quantity.append(cart_item.quantity)  # Add the item quantity to the quantity list
-
-            # Create a dictionary with price ID and quantity, add to the price_ids list
-            price_id_dict = {
-                "price": cart_item.item.price_id,
-                "quantity": cart_item.quantity,
-            }
-            price_ids.append(price_id_dict)
-
-            # Update the total price
-            price += cart_item.item.price * cart_item.quantity'''
 
         # Render the cart template with the items, total price, price IDs, and quantities
-        return render_template('cart.html', items=items, price=price,
-                               price_ids=price_ids)
+        return render_template('cart.html', items=items, price=price)
+
+    @app.route("/remove/<ingredient>")
+    @login_required
+    def remove(ingredient):
+        CartWB = load_workbook('website/Cart.xlsx')
+        UsersCartWS = CartWB[current_user.username]
+
+        # Define the target ingredient you want to delete
+        target_ingredient = ingredient
+
+        # Find the column number for 'Ingredient'
+        ingredient_col_index = None
+        for col in UsersCartWS[1]:  # Assuming the first row contains headers
+            if col.value == 'Ingredient':
+                ingredient_col_index = col.column  # Get the column index
+                break
+
+        # If 'Ingredient' column is found, search for the target ingredient
+        if ingredient_col_index:
+            # Iterate over the column to find the cell with the target ingredient
+            for cell in UsersCartWS.iter_cols(min_col=ingredient_col_index, max_col=ingredient_col_index, min_row=2,
+                                        values_only=True):
+                for row_index, cell_value in enumerate(cell, start=2):  # Start at 2 to account for header row
+                    if cell_value == target_ingredient:
+                        # Delete the row
+                        UsersCartWS.delete_rows(row_index)
+                        # Save the workbook after deletion
+                        CartWB.save('website/Cart.xlsx')
+                        print(f"Row with {target_ingredient} has been deleted.")
+                        break
+        else:
+            print("Column with 'Ingredient' not found.")
+
+        # Close the workbook to release it from memory
+        wb.close()
+
+        return redirect(url_for('cart'))
 
     @app.route('/add-to-cart', methods=['POST'])
     def add_to_cart():
