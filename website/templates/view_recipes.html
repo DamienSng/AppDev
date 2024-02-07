@@ -701,8 +701,11 @@
         let postUrl = encodeURI(document.location.href);
         let postTitle = encodeURI("Hey, please check this out: ");
         facebookBtn.setAttribute("href", `https://www.facebook.com/sharer.php?u=${postUrl}`);
+        facebookBtn.setAttribute("target", "_blank");
         telegramBtn.setAttribute("href", `https://t.me/share/url?url=${postUrl}&text=${postTitle}`);
+        telegramBtn.setAttribute("target", "_blank");
         whatsappBtn.setAttribute("href", `https://api.whatsapp.com/send?text=${postTitle} ${postUrl}`);
+        whatsappBtn.setAttribute("target", "_blank");
     }
     init();
 </script>
