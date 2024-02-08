@@ -385,6 +385,19 @@
           }
         }
 
+        #addToCartButton {
+            font-size: 16px;
+            padding: 6px;
+            color: #fff;
+            background-color: #ffc000;
+            border: 2px solid #e0a800;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.5s ease;
+        }
+        #addToCartButton:hover {
+            background-color: #e0a800;
+        }
 
         /* Additional styling for the "servings" label */
         h3[for="servingsInput"] {
@@ -524,6 +537,7 @@
                             </div>
                         </li>
                         {% endfor %}
+                        <button id="addToCartButton" style="display: block; margin: 0 auto; margin-top: 10px;">Add to Cart</button>
                     </ul>
                 </form>
             </div>
@@ -548,7 +562,6 @@
                                 <li>{{ optional }}</li>
                             {% endif %}
                         {% endfor %}
-                        <button id="addToCartButton">Add to Cart</button>
                     </ul>
                 </div>
             </div>
