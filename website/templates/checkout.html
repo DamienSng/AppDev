@@ -8,40 +8,74 @@
     button { width: 100%; padding: 10px; border: none; border-radius: 4px; background-color: #5cb85c; color: white; cursor: pointer; }
     button:hover { background-color: #4cae4c; }
 </style>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const form = document.querySelector("form");
+    form.addEventListener("submit", function(event) {
+        let valid = true;
+        let errorMessage = "";
+
+        // Validate card number length
+        const cardNumber = document.getElementById('cardNumber').value;
+        if (cardNumber.length !== 16) {
+            valid = false;
+            errorMessage += "Card number must be 16 digits.\n";
+        }
+
+        // Validate expiration date
+        const expMonth = document.getElementById('expMonth').value;
+        const expYear = document.getElementById('expYear').value;
+        const currentDate = new Date();
+        const currentYear = currentDate.getFullYear() % 100;
+        const currentMonth = currentDate.getMonth() + 1;
+        if (parseInt(expYear) < currentYear || (parseInt(expYear) === currentYear && parseInt(expMonth) < currentMonth)) {
+            valid = false;
+            errorMessage += "Your card's expiration date is in the past.\n";
+        }
+
+        // Show error messages if validation fails
+        if (!valid) {
+            event.preventDefault();
+            alert(errorMessage);
+        }
+    });
+});
+</script>
 </head>
 {% extends "base.html" %}
 {% block title %}Checkout{% endblock %}
 
 {% block content %}
+{% from "includes/_formHelper.html" import render_field %}
 <div class="container">
     <h2 style="text-align:center;">Payment and Shipping Form</h2>
-    <form action="{{ url_for('checkout_confirmation') }}" method="post">
+    <form action="" method="post">
         <fieldset>
             <legend>Personal Information:</legend>
             <div class="form-group">
-                <label for="name">Full Name:</label>
-                <input type="text" id="name" name="name" required>
+                <label>Full Name:</label>
+                {{ render_field(form.name, class="form-control") }}
             </div>
             <div class="form-group">
-                <label for="email">Email Address:</label>
-                <input type="email" id="email" name="email" required>
+                <label>Email Address:</label>
+                {{ render_field(form.email, class="form-control") }}
             </div>
         </fieldset>
 
         <fieldset>
             <legend>Payment Details:</legend>
             <div class="form-group">
-                <label for="cardNumber">Card Number:</label>
-                <input type="number" id="cardNumber" name="cardNumber" required>
+                <label>Card Number:</label>
+                {{ render_field(form.card_number, class="form-control", placeholder='0000111122223333') }}
             </div>
             <div class="form-group">
-                Expiration Date (MM/YY):
-                <input type="text" id="expDate" name="expMonth" required style="display: inline-block; width: 5%;">
-                <input type="text" id="expYear" name="expYear" required style="display: inline-block; width: 5%;" >
+                <label>Expiration Date (MM/YY):</label>
+                {{ render_field(form.exp_month, class="form-control", style="display: inline-block; width: 5%;") }}/
+                {{ render_field(form.exp_year, class="form-control", style="display: inline-block; width: 5%;") }}
             </div>
             <div class="form-group">
-                <label for="cvv">CVV:</label>
-                <input type="number" id="cvv" name="cvv" required style="width: 5%;">
+                <label>CVV:</label>
+                {{ render_field(form.cvv, class="form-control", style="display: inline-block; width: 5%;") }}
             </div>
         </fieldset>
 
@@ -53,11 +87,11 @@
             </div>
             <div class="form-group">
                 <label for="city">City:</label>
-                <input type="text" id="city" name="city" required>
+                <input type="text" id="city" name="city" value="Singapore" style="color: gray;" readonly required>
             </div>
             <div class="form-group">
                 <label for="state">State/Province:</label>
-                <input type="text" id="state" name="state">
+                <input type="text" id="state" value="Singapore" style="color: gray;" readonly name="state">
             </div>
             <div class="form-group">
                 <label for="zip">Postal/Zip Code:</label>
@@ -65,11 +99,14 @@
             </div>
             <div class="form-group">
                 <label for="country">Country:</label>
-                <input type="text" id="country" name="country" required>
+                <input type="text" id="country" name="country" value="Singapore" style="color: gray;" readonly required>
             </div>
         </fieldset>
 
         <button type="submit">Submit Payment</button>
     </form>
 </div>
+
+
+
 {% endblock %}

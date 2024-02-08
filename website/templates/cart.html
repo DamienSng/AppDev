@@ -9,6 +9,50 @@
     padding: 15px;
     height: 0%
 }
+
+body { font-family: 'Arial', sans-serif; background: #f4f4f4; color: #333; }
+    h1 { color: #5cb85c; text-align: center; }
+    ul { list-style-type: none; padding: 0; }
+    li { padding: 10px; border-bottom: 1px solid #ddd; }
+    li:last-child { border-bottom: none; }
+    .button { display: inline-block; padding: 10px 15px; margin-top: 10px; border: none; border-radius: 4px; background-color: #5cb85c; color: white; cursor: pointer; text-align: center; }
+    .button:hover { background-color: #4cae4c; }
+    .checkout { width: 100%; box-sizing: border-box; }
+    .grand-total { font-weight: bold; }
+
+    li p {
+    padding: 0;
+    margin-bottom: 0;
+    }
+
+    .item {
+        flex: 1 1 calc(33.333% - 20px); /* Subtract any margin/padding */
+        box-sizing: border-box;
+        margin: 10px; /* Half of this value is subtracted in the calc() above */
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        text-align: center;
+        /* Adjust the max-width for the maximum size you want */
+        max-width: calc(33.333% - 20px);
+        min-width: calc(33.333% - 20px);
+    }
+
+    .small{
+        margin: 1rem;
+    }
+
+    .big{
+        margin: 0;
+        font-size: 1.2em;
+    }
+
+    .bigger{
+        margin: 0;
+        font-size: 1.5em;
+    }
+
+
 </style>
 </head>
 
@@ -16,7 +60,7 @@
 {% block title %}View cart{% endblock %}
 
 {% block content %}
-<div class="container" style="display: flex; flex-direction: row;">
+<div class="container" style="display: flex; flex-direction: row; margin: 20px auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
     <div class="items" style="display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; flex: 1;">
         {% for i in range(items|length) %}
         <div class="item" style="margin: 5px; flex-basis: 20%;">
@@ -34,19 +78,39 @@
     </div>
     <!-- New container for additional content -->
     <div class="new-container">
+        <form id="checkoutForm" method="GET" action="{{ url_for('checkout') }}">
         <h1 style="text-align: center;">Checkout</h1>
-        <form method="POST" action="{{ url_for('checkout') }}">
-        <ul style="list-style-type: none;">
-            <li><input type="radio" id="SelfCollect" value="Self Collection" name="collectionOption" required>Self Collection</li>
-            <li><input type="radio" id="Delivery" value="Delivery" name="collectionOption" required>Delivery</li>
-        </ul>
-
 
         <input type="hidden" value="{{ price }}" name="price">
-            Grand total: ${{ "%.2f"|format(price) }}
+            <p class="big"> Sub total</p>
+            <span id="Sub total" class="small">${{ "%.2f"|format(price) }}</span><br>
+
+
+            <p class="big">Delivery </p>
+            <span class="small">+$3</span><br>
+
+
+            <span class="bigger"> Grand total: </span>
+            <span class="bigger" id="grandTotalValue"></span><br>
+
+
         <button class="bg-success btn-block btn-primary checkout"> Checkout </button>
+            <a href="{{ url_for('views.homepage') }}" style="text-align: center; width:100%">
+					 <-- Continue browsing <br>
+				</a>
     </form>
     </div>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Assuming '{{ price }}' is rendered by your server-side template engine with the subtotal price
+    var subtotal = parseFloat('{{ price }}'); // Ensure this matches the format your server sends
+    var deliveryCost = 3; // Fixed delivery cost
+    var grandTotal = subtotal + deliveryCost;
 
+    // Display the grand total in the designated span
+    document.getElementById('grandTotalValue').textContent = '$' + grandTotal.toFixed(2);
+});
+</script>
 {% endblock %}
+

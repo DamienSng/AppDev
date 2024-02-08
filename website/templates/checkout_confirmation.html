@@ -1,3 +1,19 @@
+<style>
+	.text-bottom-right {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+
+.containers {
+
+    position: relative;
+    width: 300px; /* Example width */
+    border: 1px solid #000; /* For visualization */
+}
+</style>
+
 {% extends "base.html" %}
 {% block title %}Confirmation Page{% endblock %}
 
@@ -20,49 +36,30 @@
 	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/main.css')}}">
 <!--===============================================================================================-->
 </head>
-<br>
-<br>
-<br>
+
+<div>
 <h1 style="text-align: center;">
-	Your form has been submitted
-	<br>
-	Thank you for taking the time to complete the form.</h1>
-<br>
-<br>
-<br>
-<div style="text-align: center; margin: 0 auto;">
-<img src="{{  url_for('static', filename='confirmationTick.png')  }}" alt="IMG" height="150px;">
+	Thank you for ordering with us!<br>
+	Here is your order summary</h1></div>
+
+<div class="containers" style="text-align: center; margin-top: 5%">
+	<h1>for {{ name }} </h1>
+	<p>delivery address: <br>
+	{{ address }}
+	<span class="small"> {{ zip }} </span></p>
+	<p class="text-bottom-right"> Total: ${{ price }}</p>
+
 </div>
 
-<br>
-<br>
-<br>
-<br>
 
-<div class="container-contact1-form-btn" style="text-align: center; margin: 0 auto;">
-					<button class="contact1-form-btn" onclick="window.location.href='/';">
-						<span>
-							Return to Homepage
-							<i class="fa fa-long-arrow-right" aria-hidden="true"></i>
-						</span>
-					</button>
+<div class="container-contact1-form-btn" style="text-align: center; margin-top: 10%;">
+	<button class="contact1-form-btn" onclick="window.location.href='/';">
+		<span>
+			Return to Homepage
+			<i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+		</span>
+	</button>
 </div>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <!--===============================================================================================-->
 	<script src="{{url_for('static', filename='vendor/jquery/jquery-3.2.1.min.js')}}"></script>
 <!--===============================================================================================-->

@@ -77,6 +77,7 @@ def create_app():
     import re
     import openpyxl.utils
     from flask_login import login_required
+    from .CheckoutForm import CheckoutForm
 
     # ---------#
 
@@ -365,10 +366,6 @@ def create_app():
 
         data_to_find = int(id)
 
-        # ---------------------#
-        wb.remove(wb[str(id)])
-
-        # ---------------------#
 
         for cell in ws['A']:
             if cell.value == data_to_find:
@@ -574,18 +571,46 @@ def create_app():
 
         return render_template('view_recipes.html', recipe=recipe_details)
 
-    @app.route('/checkout', methods=['POST'])
+    @app.route('/checkout', methods=['GET', 'POST'])
     def checkout():
-        collection_option = request.form.get('collectionOption')
-        price = request.form.get('price')
-        print(price)
-        print(collection_option)
-        return render_template('checkout.html', price=price)
+        Checkout_Form = CheckoutForm(request.form)
+
+        if request.method == 'GET':
+            # Load initial data only on GET request
+            session['base_price'] = (request.args.get('price', default=None, type=float)) + 3.00
+        else:
+            # For POST, use the form data submitted by the user
+            session['base_price'] = (request.args.get('price', default=None, type=float)) + 3.00
+
+        base_price = session['base_price']  # Add delivery to the base price
+        session['price'] = "{:.2f}".format(base_price)
+
+        if request.method == 'POST' and Checkout_Form.validate():
+            session['name'] = request.form['name']
+            session['email'] = request.form['email']
+            session['address'] = request.form['address']
+            session['zip'] = request.form['zip']
+            session['country'] = request.form['country']
+            return redirect(url_for('checkout_confirmation'))
+        return render_template('checkout.html', form=Checkout_Form, user=current_user)
     # TODO add shit
-    @app.route('/checkout_confirmation', methods=['POST'])
+
+    @app.route('/checkout_confirmation')
     def checkout_confirmation():
-        return render_template('confirmation.html')
-#TODO add shit
+        price = session.get('price')
+        name = session.get('name')
+        email = session.get('email')
+        address = session.get('address')
+        zip = session.get('zip')
+
+        print(price)
+        print(name)
+        print(email)
+        print(address)
+        print(zip)
+
+        return render_template('checkout_confirmation.html', price=price, name=name, email=email, address=address, zip=zip)
+
     @app.route("/cart")
     @login_required  # This decorator ensures that only logged-in users can access this route
     def cart():
