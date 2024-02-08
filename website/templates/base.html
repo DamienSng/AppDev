@@ -67,7 +67,6 @@
                                 <div class="dropdown-menu" aria-labelledby="manageAccountDropdown">
                                     <a class="dropdown-item" href="/update-profile">Update Profile</a>
                                     <a class="dropdown-item" href="/process-preferences">Update Preferences</a>
-                                    <a class="dropdown-item" href="/cart">View Cart</a>
                                     <a class="dropdown-item" href="/logout">Logout</a>
                                     <a class="dropdown-item" href="/delete-account">Delete Account</a>
                                 </div>
@@ -85,7 +84,9 @@
                             <li class="nav-link">
                                 <a class="nav-link" href="/community-forum">Community Forum</a>
                             </li>
-
+                            <li class="nav-link">
+                                <a class="dropdown-item" href="/cart"><i class="fa-solid fa-cart-shopping"></i></a>
+                            </li>
                         {% elif current_user.is_authenticated and not verifying and staff %}
                             <li class="nav-link dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="manageAccountDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
