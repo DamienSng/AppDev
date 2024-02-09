@@ -318,27 +318,10 @@ def create_app():
             wb.save('website/DB.xlsx')
             #####################################################################################################################
 
-            '''db['Recipes'] = recipes_dict
-            db.close()'''
 
             return redirect(url_for('retrieve_recipes'))
         # on initial load, perform the following code
         else:
-            '''recipes_dict = {}
-            db = shelve.open('recipe.db', 'r')
-            recipes_dict = db['Recipes']
-            db.close()'''
-
-            '''recipe = recipes_dict.get(id)
-            update_recipe_form.title.data = recipe.title
-            update_recipe_form.skill.data = recipe.skill
-            update_recipe_form.time.data = recipe.time
-            update_recipe_form.cuisine.data = recipe.cuisine
-            update_recipe_form.instruction.data = recipe.instruction
-            update_recipe_form.ingredient.data = recipe.ingredient
-            update_recipe_form.alt.data = recipe.alt
-            update_recipe_form.optional.data = recipe.optional
-            update_recipe_form.image.data = recipe.image'''
             ###################################################################################################################
             # order of which the recipes are shown in updateRecipes.html
             update_recipe_form.title.data = recipedata[1]
@@ -355,14 +338,6 @@ def create_app():
 
     @app.route('/deleteRecipe/<int:id>', methods=['POST'])
     def delete_recipe(id):
-        '''recipes_dict = {}
-        db = shelve.open('recipe.db', 'w')
-        recipes_dict = db['Recipes']
-
-        recipes_dict.pop(id)
-
-        db['Recipes'] = recipes_dict
-        db.close()'''
 
         data_to_find = int(id)
 
@@ -507,7 +482,7 @@ def create_app():
             wb = Workbook()
             ws = wb.active
             print('rename title')
-            ws.title = 'Fav'  # rename sheet 1 to 'Fav'
+            ws.title = 'Fav'  # rename sheet to 'Fav'
             Head = ['ID', 'Title']
             ws.append(Head)  # adds the headers to the first row
 
@@ -548,18 +523,6 @@ def create_app():
 
         return render_template("search_results.html", results=results)
 
-    '''#Search fn
-    @app.route("/search")
-    def search():
-        q = request.args.get("q")
-        print(q)
-
-        if q:
-            results = Recipe.search_recipes(q)
-        else:
-            results = []
-
-        return render_template("search_results.html", results=results)'''
 
     @app.route('/view_recipe/<int:recipe_id>')
     def view_recipe(recipe_id):
