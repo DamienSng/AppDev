@@ -62,42 +62,44 @@ body { font-family: 'Arial', sans-serif; background: #f4f4f4; color: #333; }
 {% block content %}
 <div class="container" style="display: flex; flex-direction: row; margin: 20px auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
     <div class="items" style="display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; flex: 1;">
-        {% for i in range(items|length) %}
-        <div class="item" style="margin: 5px; flex-basis: 20%;">
-            <b>{{ items[i]['ingredient'] }}</b>
-				<span class="right-item">${{ "%.2f"|format(items[i]['ingredientPrice']) }}</span><br>
-				Quantity:
-				<span class="right-item">{{ items[i]['buyingQuantity'] }}</span><br>
-				Item Total:
-					${{ "%.2f"|format(items[i]['itemTotal']) }}
-					<a href="{{ url_for('remove', ingredient=items[i]['ingredient']) }}" ><br>
-					<button class="remove-from-cart" style="padding-left:3px; padding-right:3px"> Remove from Cart </button><br>
-				</a>
-        </div>
-        {% endfor %}
-    </div>
-    <!-- New container for additional content -->
-    <div class="new-container">
-        <form id="checkoutForm" method="GET" action="{{ url_for('checkout') }}">
-        <h1 style="text-align: center;">Checkout</h1>
+        {% if items %}
+            {% for i in range(items|length) %}
+                <div class="item" style="margin: 5px; flex-basis: 20%;">
+                    <b>{{ items[i]['ingredient'] }}</b>
+                        <span class="right-item">${{ "%.2f"|format(items[i]['ingredientPrice']) }}</span><br>
+                        Quantity:
+                        <span class="right-item">{{ items[i]['buyingQuantity'] }}</span><br>
+                        Item Total:
+                            ${{ "%.2f"|format(items[i]['itemTotal']) }}
+                            <a href="{{ url_for('remove', ingredient=items[i]['ingredient']) }}" ><br>
+                            <button class="remove-from-cart" style="padding-left:3px; padding-right:3px"> Remove from Cart </button><br>
+                        </a>
+                </div>
+            {% endfor %}
+            </div>
+            <!-- New container for additional content -->
+            <div class="new-container">
+                <form id="checkoutForm" method="GET" action="{{ url_for('checkout') }}">
+                <h1 style="text-align: center;">Checkout</h1>
 
-        <input type="hidden" value="{{ price }}" name="price">
-            <p class="big"> Sub total</p>
-            <span id="Sub total" class="small">${{ "%.2f"|format(price) }}</span><br>
+                <input type="hidden" value="{{ price }}" name="price">
+                    <p class="big"> Sub total</p>
+                    <span id="Sub total" class="small">${{ "%.2f"|format(price) }}</span><br>
 
+                    <p class="big">Delivery </p>
+                    <span class="small">+$3</span><br>
 
-            <p class="big">Delivery </p>
-            <span class="small">+$3</span><br>
+                    <span class="bigger"> Grand total: </span>
+                    <span class="bigger" id="grandTotalValue"></span><br>
+                    <button class="bg-success btn-block btn-primary checkout"> Checkout </button>
+        {% else %}
+            <p>Your cart is empty.</p>
+        {% endif %}
 
+                    <a href="{{ url_for('views.homepage') }}" style="text-align: center; width:100%">
+                         <-- Continue browsing <br>
+                    </a>
 
-            <span class="bigger"> Grand total: </span>
-            <span class="bigger" id="grandTotalValue"></span><br>
-
-
-        <button class="bg-success btn-block btn-primary checkout"> Checkout </button>
-            <a href="{{ url_for('views.homepage') }}" style="text-align: center; width:100%">
-					 <-- Continue browsing <br>
-				</a>
     </form>
     </div>
 </div>

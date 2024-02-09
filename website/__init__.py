@@ -279,7 +279,7 @@ def create_app():
                 for cell in IngredientWS[1]:  # '1' refers to the first row
                     cell.font = Font(bold=True)  # makes the font bold
                 print('no worksheet found')
-                wb.save('DB.xlsx')
+                wb.save('website/DB.xlsx')
 
             # The text containing various ingredients with quantities and measurements
             text = str(update_recipe_form.ingredient.data)
@@ -554,25 +554,32 @@ def create_app():
             session['address'] = request.form['address']
             session['zip'] = request.form['zip']
             session['country'] = request.form['country']
+            session['card_number'] = request.form['card_number']
+            session['city'] = request.form['city']
             return redirect(url_for('checkout_confirmation'))
         return render_template('checkout.html', form=Checkout_Form, user=current_user)
-    # TODO add shit
+
 
     @app.route('/checkout_confirmation')
     def checkout_confirmation():
         price = session.get('price')
         name = session.get('name')
-        email = session.get('email')
+        #email = session.get('email')
         address = session.get('address')
         zip = session.get('zip')
+        items = session.get('items')
+        city = session.get('city')
+        card_number = session.get('card_number')
 
-        print(price)
-        print(name)
-        print(email)
-        print(address)
-        print(zip)
+        masked_credit_card = '*' * 12 + card_number[-4:]
 
-        return render_template('checkout_confirmation.html', price=price, name=name, email=email, address=address, zip=zip)
+        # delete their cart on confirmation
+        CartWB = load_workbook('website/Cart.xlsx')
+        UsersCartWS = CartWB[current_user.username]
+        CartWB.remove(UsersCartWS)
+        CartWB.save('website/Cart.xlsx')
+
+        return render_template('checkout_confirmation.html', price=price, name=name, address=address, zip=zip, items=items, city=city, card_number=masked_credit_card)
 
     @app.route("/cart")
     @login_required  # This decorator ensures that only logged-in users can access this route
@@ -581,52 +588,55 @@ def create_app():
         price_ids = []  # List to store price IDs for Stripe
         items = []  # List to store items in the cart
         quantity = []
-        i = 0
 
-        'try:'
-        CartWB = load_workbook('website/Cart.xlsx')
-        UsersCartWS = CartWB[current_user.username]
-        PriceWS = CartWB['Prices']
+        try:
+            CartWB = load_workbook('website/Cart.xlsx')
+            UsersCartWS = CartWB[current_user.username]
+            PriceWS = CartWB['Prices']
 
-        # get data from user's cart and structure it such that it is in a list and a nested dictionary inside
-        for row in UsersCartWS.iter_rows(min_row=2, max_col=3, values_only=True):
-            rowItems = list(row)
-            ingredient_dict = {'quantity': rowItems[1], 'ingredient': rowItems[2]}
-            items.append(ingredient_dict)
+            # get data from user's cart and structure it such that it is in a list and a nested dictionary inside
+            for row in UsersCartWS.iter_rows(min_row=2, max_col=3, values_only=True):
+                rowItems = list(row)
+                ingredient_dict = {'quantity': rowItems[1], 'ingredient': rowItems[2]}
+                items.append(ingredient_dict)
 
-        # go through every item in the list
-        for item in items:
-            counter = 0
-            print(item)
-            # go through every item in the worksheet
-            for ingredients in PriceWS.iter_cols(max_row=1, values_only=True):
-                counter += 1
-                string = ingredients[0]
-                # if the ingredient name matches
-                if item['ingredient'] == string:
+            # go through every item in the list
+            for item in items:
+                counter = 0
+                print(item)
+                # go through every item in the worksheet
+                for ingredients in PriceWS.iter_cols(max_row=1, values_only=True):
+                    counter += 1
+                    string = ingredients[0]
+                    # if the ingredient name matches
+                    if ((item['ingredient']).lower()).replace(" ", "") == ((string.lower()).replace(" ", "")):
 
-                    # get the column number
-                    ingredientColumn = openpyxl.utils.get_column_letter(counter)
-                    # get the look at the price in the same column
-                    quantityNumber = float(PriceWS[f'{ingredientColumn}{2}'].value)
-                    print(quantityNumber)
-                    # set default price multiplier to 1
-                    n = 1
-                    # check if the ingredient amount is >= the number on the price sheet
-                    if float(item['quantity']) > quantityNumber:
-                        print(n)
-                        n += 1
-                        quantityNumber = float(quantityNumber) * n
-                    items[i]['buyingQuantity'] = n
-                    ingredientPrice = float(PriceWS[f'{ingredientColumn}{3}'].value) * float(n)
+                        # get the column number
+                        ingredientColumn = openpyxl.utils.get_column_letter(counter)
+                        # get the look at the price in the same column
+                        quantityNumber = float(PriceWS[f'{ingredientColumn}{2}'].value)
+                        print(quantityNumber)
+                        # set default price multiplier to 1
+                        n = 1
+                        # check if the ingredient amount is >= the number on the price sheet
+                        while float(item['quantity']) > quantityNumber:
+                            print(n)
+                            n += 1
+                            quantityNumber = float(quantityNumber) * n
+                        item['buyingQuantity'] = n
+                        ingredientPrice = float(PriceWS[f'{ingredientColumn}{3}'].value) * float(n)
 
-                    items[i]['ingredientPrice'] = ingredientPrice
-                    itemTotal = ingredientPrice * n
-                    items[i]['itemTotal'] = itemTotal
-                    price += itemTotal
+                        item['ingredientPrice'] = ingredientPrice
+                        itemTotal = ingredientPrice * n
+                        item['itemTotal'] = itemTotal
+                        price += itemTotal
 
-                    print(items)
-                    i += 1
+                        print(items)
+                        session['items'] = items
+        except KeyError:
+            items = None
+            price = None
+
 
 
 
