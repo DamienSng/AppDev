@@ -63,9 +63,7 @@ def login():
 
                 # redirect to OTP verification page
 
-                return redirect(url_for('views.homepage', email=email))
-                # change to this when done
-                # return redirect(url_for('auth.verify_otp', email=email))
+                return redirect(url_for('auth.verify_otp', email=email))
             else:
                 flash('Incorrect password, try again.', category='error')
         else:
@@ -157,9 +155,7 @@ def sign_up():
 
                 # redirect to OTP verification page
 
-                return redirect(url_for('views.homepage', email=email))
-                # change to this when done
-                # return redirect(url_for('auth.verify_otp', email=email))
+                return redirect(url_for('auth.verify_otp', email=email))
                 # add user to database
 
     return render_template("sign_up.html", user=current_user, site_key=SITE_KEY)

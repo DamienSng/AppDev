@@ -70,7 +70,6 @@ def create_app():
     import os
     from werkzeug.utils import secure_filename
 
-    #####################################################################################################################
     from openpyxl import Workbook, load_workbook
     from openpyxl.styles import Font
     # ---------#
@@ -108,7 +107,6 @@ def create_app():
         for cell in ws[1]:  # '1' refers to the first row
             cell.font = Font(bold=True)  # makes the font bold
 
-    #####################################################################################################################
 
 
     @app.route('/createRecipe', methods=['GET', 'POST'])
@@ -116,30 +114,6 @@ def create_app():
     def create_recipe():
         create_recipe_form = CreateRecipeForm(request.form)
         if request.method == 'POST' and create_recipe_form.validate():
-            '''recipes_dict = {}
-            db = shelve.open('recipe.db', 'c')
-
-            try:
-                recipes_dict = db['Recipes']
-            except:
-                print("Error in retrieving Recipes from recipes.db.")'''
-
-            '''recipes_dict[recipe.id] = recipe
-            db['Recipes'] = recipes_dict
-
-            db.close()'''
-
-            ###################################################################################################################
-            # rows_with_gaps = []
-
-            '''# Column to check for gaps
-            column_to_check = 'A'
-
-            for row, cell in enumerate(ws[column_to_check], start=1):
-                if cell.value is None or cell.value == '':
-                    open_space = row
-                    break'''
-
             # Column to check (e.g., 'A', 'B', etc.)
             column_to_check = 'A'  # Change as needed
 
@@ -159,12 +133,6 @@ def create_app():
             except ValueError:
                 id = last_row
 
-            '''# compiles all the class attributes into a list
-            product_data = list(vars(recipe).values())'''
-
-            '''# adds 'row_count' to the start of the list 'product_data'
-            product_data.insert(0, id)'''
-
             # made the order match that of the Recipe class
             recipe = Recipe(id, create_recipe_form.title.data, create_recipe_form.image.data,
                             create_recipe_form.skill.data,
@@ -177,46 +145,24 @@ def create_app():
             ws.append(product_data)
             Recipe.recipes.append(product_data)
 
-
-
             wb.save('website/DB.xlsx')
-            ###################################################################################################################
             return redirect(url_for('retrieve_recipes'))
         return render_template('createRecipe.html', form=create_recipe_form, user=current_user, staff=True)
 
     @app.route('/retrieveRecipes')
     @login_required
     def retrieve_recipes():
-        '''recipes_dict = {}
-        db = shelve.open('recipe.db', 'r')
-        recipes_dict = db['Recipes']
-        db.close()'''
-
-        '''recipes_list = []
-        for key in recipes_dict:
-            recipe = recipes_dict.get(key)
-            recipes_list.append(recipe)
-        print(recipes_list)'''
-
-        '''recipes_list = []
-        for row in ws.iter_rows(min_row=2, values_only=True):
-            row_data = [cell for cell in row]
-            recipes_list.append(row_data)'''
-
-        #####################################################################################################################
         recipes_list = []
         for key in ws.iter_rows(min_row=2, values_only=True):  # start reading from row 2 onwards
             recipe = [cell for cell in key]  # look through every cell
             recipes_list.append(recipe)  # add the data from the cell into a list
         print(recipes_list)
-        #####################################################################################################################
         return render_template('retrieveRecipes.html', count=len(recipes_list), recipes_list=recipes_list, user=current_user, staff=True)
 
     @app.route('/updateRecipe/<int:id>/', methods=['GET', 'POST'])
     @login_required
     def update_recipe(id):
         update_recipe_form = CreateRecipeForm(request.form)
-        ###################################################################################################################
         # Data to find
         data_to_find = int(id)
         recipedata = []
@@ -229,24 +175,9 @@ def create_app():
                     recipedata.append(row_cell.value)  # or store the value for further processing
 
                 break  # Exit the loop after processing the row
-        ###################################################################################################################
+
         # if they filled out the form properly, update the page
         if request.method == 'POST' and update_recipe_form.validate():
-            '''recipes_dict = {}
-            db = shelve.open('recipe.db', 'w')
-            recipes_dict = db['Recipes']'''
-
-            '''recipe = recipes_dict.get(id)
-            recipe.set_title(update_recipe_form.title.data)
-            recipe.set_skill(update_recipe_form.skill.data)
-            recipe.set_time(update_recipe_form.time.data)
-            recipe.set_cuisine(update_recipe_form.cuisine.data)
-            recipe.set_instruction(update_recipe_form.instruction.data)
-            recipe.set_ingredient(update_recipe_form.ingredient.data)
-            recipe.set_alt(update_recipe_form.alt.data)
-            recipe.set_optional(update_recipe_form.optional.data)
-            recipe.set_image(update_recipe_form.image.data)'''
-            #####################################################################################################################
             # concatenate all the updated data from the form into a list
             updated_data = [data_to_find, (update_recipe_form.title.data), (update_recipe_form.skill.data),
                             (update_recipe_form.time.data), (update_recipe_form.cuisine.data),
@@ -265,11 +196,9 @@ def create_app():
                                 value=new_value)  # this line just tells the program which cells should be updated
                         # it does this through getting which row and column the cell is located at
                     break
-            # --------------------------------------------------------------------------------------------------------------#
             try:
                 IngredientWS = wb[str(data_to_find)]
                 print(f'found existing worksheet')
-
 
             # if DB doesn't exist, create one
             except (IOError, KeyError):
@@ -314,15 +243,11 @@ def create_app():
                         pass
                     cell_ref = f"{openpyxl.utils.get_column_letter(col_index)}{row_index}"
                     IngredientWS[cell_ref] = item
-            # --------------------------------------------------------------------------------------------------------------#
             wb.save('website/DB.xlsx')
-            #####################################################################################################################
-
 
             return redirect(url_for('retrieve_recipes'))
         # on initial load, perform the following code
         else:
-            ###################################################################################################################
             # order of which the recipes are shown in updateRecipes.html
             update_recipe_form.title.data = recipedata[1]
             update_recipe_form.skill.data = recipedata[2].lower()
@@ -333,7 +258,6 @@ def create_app():
             update_recipe_form.alt.data = recipedata[7].split(', ')
             update_recipe_form.optional.data = recipedata[8].split(', ')
             update_recipe_form.image.data = recipedata[9]
-            ###################################################################################################################
             return render_template('updateRecipe.html', form=update_recipe_form, user=current_user, staff=True)
 
     @app.route('/deleteRecipe/<int:id>', methods=['POST'])
@@ -443,7 +367,6 @@ def create_app():
         print(collected_data)  # not sorted yet
         print(sortedlist)
 
-        # -----------------------------------------------------------------------------------------------------#
         # now that we know the order, match the order of Recipe.recipes to the order of sortedlist
         # Example lists
         list_a = sortedlist
@@ -456,11 +379,9 @@ def create_app():
         ordered_list_b = [dict_b[dic['id']] for dic in list_a if dic['id'] in dict_b]
 
         print(ordered_list_b)
-        # -----------------------------------------------------------------------------------------------------#
 
         return render_template("filterDifficulty.html", recipes=ordered_list_b)
 
-#ugh
     @app.route('/filterFavourites')
     def favourites():
         fav_recipes = [recipe for recipe in Recipe.recipes if str(recipe[0]) in fav_list]
@@ -564,7 +485,6 @@ def create_app():
     def checkout_confirmation():
         price = session.get('price')
         name = session.get('name')
-        #email = session.get('email')
         address = session.get('address')
         zip = session.get('zip')
         items = session.get('items')
@@ -603,7 +523,6 @@ def create_app():
             # go through every item in the list
             for item in items:
                 counter = 0
-                print(item)
                 # go through every item in the worksheet
                 for ingredients in PriceWS.iter_cols(max_row=1, values_only=True):
                     counter += 1
@@ -615,12 +534,10 @@ def create_app():
                         ingredientColumn = openpyxl.utils.get_column_letter(counter)
                         # get the look at the price in the same column
                         quantityNumber = float(PriceWS[f'{ingredientColumn}{2}'].value)
-                        print(quantityNumber)
                         # set default price multiplier to 1
                         n = 1
                         # check if the ingredient amount is >= the number on the price sheet
                         while float(item['quantity']) > quantityNumber:
-                            print(n)
                             n += 1
                             quantityNumber = float(quantityNumber) * n
                         item['buyingQuantity'] = n
@@ -631,15 +548,11 @@ def create_app():
                         item['itemTotal'] = itemTotal
                         price += itemTotal
 
-                        print(items)
                         session['items'] = items
+
         except KeyError:
             items = None
             price = None
-
-
-
-
 
         # Render the cart template with the items, total price, price IDs, and quantities
         return render_template('cart.html', items=items, price=price)
@@ -742,9 +655,6 @@ def create_app():
                 UsersCartWS[add_to_first_col] = int(data['id'])
         CartWB.save('website/Cart.xlsx')
 # ----------------------------------add the data to the worksheet of the respective users----------------------------
-
-            #print(fav_list)
-
         # Respond to the client
         return jsonify({'status': 'success', 'message': 'Ingredients added to cart'})
 
