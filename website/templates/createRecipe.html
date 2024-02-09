@@ -24,7 +24,12 @@
         {{ render_field(form.image, class="form-control", type="file") }}
     </div>
     <div class="form-group">
-        {{ render_field(form.skill, class="form-control") }}
+        {{ render_field(form.skill, class="form-check", style="list-style-type:none") }}
+        {% if form.skill.errors %}
+            {% if form.skill.flags.required %}
+                <div class="alert alert-danger">Please select a skill level.</div>
+            {% endif %}
+        {% endif %}
     </div>
     <div class="form-group">
         {{ render_field(form.time, class="form-control") }}
