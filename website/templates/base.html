@@ -42,17 +42,6 @@
                 <div class="collapse navbar-collapse" id="navbar">
                     <ul class="navbar-nav ml auto">
 
-                        <!----YC NAVBAR
-                        <li class="nav-item dropdown">
-                          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Manage Recipes</a>
-                          <ul class="dropdown-menu">
-                           <li><a class="dropdown-item" href="/createRecipe">Create Recipe</a></li>
-                           <li><a class="dropdown-item" href="/retrieveRecipes">Retrieve Recipes</a></li>
-                              <li><a class="dropdown-item" href="/retrieveFavourites">Retrieve Favourites</a></li>
-                           <li><a class="dropdown-item" href="/Recipes">View Recipes</a></li>
-                           </ul>
-                         </li>
-                        YC NAVBAR----->
                         {% if current_user.is_authenticated and not verifying and not staff %}
                             <li class="nav-link">
                                 <a class="nav-link" href="/homepage">Home</a>
