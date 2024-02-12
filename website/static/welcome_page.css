@@ -1,0 +1,333 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500&family=Poppins:wght@300;400;500&display=swap');
+
+/* Body */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    font-family: 'Poppins', sans-serif;
+}
+
+/* background section 1 */
+.background-section1 {
+    background-image: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.5)), url(welcomeIMG1.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* top left logo */
+.logo {
+    font-family: 'Oswald', sans-serif;
+    font-size: 250%;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+/* navigation menu */
+.topnav {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    background: #1b5e20;
+    border-radius: 60px;
+    padding-left: 50px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* navbar items */
+.navbar {
+    display: flex;
+}
+
+.navbar a {
+    display: block;
+    color: #ffffff;
+    text-align: center;
+    padding: 40px;
+    text-decoration: none;
+    font-size: 20px;
+    transition: 0.3s;
+    margin-right: 40px;
+}
+
+.navbar a:hover {
+    background-color: #388e3c;
+    color: white;
+}
+
+
+/* bs 2 heading */
+.heading {
+    color: white;
+    text-align: center;
+    margin: auto;
+    padding: 50px;
+    background-color: rgba(0,0,0,0.827);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 60%;
+    height: auto;
+}
+
+.heading h1 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 400%;
+}
+
+.heading p{
+    font-family: 'Poppins', sans-serif;
+    font-size: 230%;
+}
+
+.button{
+    font-family: 'Oswald', sans-serif;
+    font-weight: bold;
+    border-radius: 4px;
+    background-color: transparent;
+    border: #388e3c solid 7px;
+    text-align: center;
+    font-size: 200%;
+    padding: 10px;
+    width: 230px;
+    transition: all 0.5s;
+    cursor: pointer;
+    display: block;
+    margin: auto; /* Add this to center the button horizontally */
+    margin-top: 20px;
+}
+
+.button a {
+  color: #388e3c;
+  text-decoration: none;
+}
+
+.button:hover {
+  background-color: #388e3c;
+}
+
+.button:hover a {
+  color: white;
+}
+
+/* about us */
+.aboutUs {
+    display: flex;
+    flex-direction: row;
+    background-color: #eae7dc;
+}
+
+.image-container {
+    flex: 0 0 50%;
+    max-height: 700px;
+    overflow: hidden;
+}
+
+.welcomeIMG2 {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.paragraphContent {
+    flex: 1;
+    text-align: left;
+    margin: auto;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: left;
+    font-size: 150%;
+}
+
+.aboutUs h2 {
+    font-family: 'Oswald', sans-serif;
+}
+
+
+/* missions */
+.Missions {
+    padding: 50px 80px;
+    background-color: #1b5e20;
+    color: black;
+
+}
+
+.Missions h2 {
+    font-family: 'Oswald', sans-serif;
+    text-align: center;
+    font-size: 350%;
+}
+
+
+.paragraphContent1 {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: nowrap;
+}
+
+.paragraphContent1 .missionContent {
+    width: 23%;
+    margin: 10px;
+    box-sizing: border-box;
+    text-align: center;
+    font-size: 120%;
+    background-color: #eae7dc;
+    border-radius: 10px;
+    outline: 5px solid black;
+    box-shadow: 15px 15px 0px black;
+}
+
+.paragraphContent1 .missionContent p {
+    padding: 20px;
+}
+
+.paragraphContent1 .missionTitle {
+    border-bottom: 4px solid #000;
+    padding-bottom: 10px;
+}
+
+.paragraphContent1 .missionTitle {
+    height: 100px;
+    border-bottom: 4px solid #000;
+    padding-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 130%;
+}
+
+@media (max-width: 768px) {
+    .paragraphContent1 {
+        flex-wrap: wrap;
+    }
+}
+
+/* background-section4 */
+.background-section4 {
+    background-color: #000000;
+}
+
+:root {
+	--cards: 4;
+	--cardHeight: 70vh;
+	--cardTopPadding: 1.5em;
+	--cardMargin: 4vw;
+}
+
+.container {
+	width: 95%;
+	margin: 0 auto;
+}
+
+#cards {
+	list-style: none;
+	padding-left: 0;
+	padding-bottom: 100%
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-template-rows: repeat(var(--cards), var(--cardHeight));
+	gap: var(--cardMargin);
+	padding-bottom: calc(var(--cards) * var(--cardTopPadding));
+	margin-bottom: 0px;
+	margin-top: 0px;
+}
+
+#card1 {
+	--index: 1;
+}
+#card2 {
+	--index: 2;
+}
+#card3 {
+	--index: 3;
+}
+#card4 {
+	--index: 4;
+}
+
+.card {
+	position: sticky;
+	top: 0;
+	padding-top: calc(var(--index) * var(--cardTopPadding));
+}
+
+#card1 .card-body, #card2 .card-body, #card3 .card-body, #card4 .card-body {
+	background-color: #eae7dc;
+}
+
+.card-body {
+	box-sizing: border-box;
+	border-radius: 50px;
+	box-shadow: 0 0 30px 0 rgba(0,0,0,0.3);
+	height: var(--cardHeight);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	transition: all 0.5s;
+	overflow: hidden;
+}
+
+.goalsContent h2 {
+    font-family: 'Oswald', sans-serif;
+	font-size: 300%;
+}
+
+.goalsContent {
+    padding: 0px 30px;
+    font-size: 150%;
+}
+
+.goals-image-container {
+    flex: 0 0 50%;
+    height: 100%;
+    display: flex;
+    overflow: hidden;
+}
+
+.welcomeIMG3 {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+/* footer */
+footer {
+    background-color: #1b5e20;
+    color: #eae7dc;
+    padding: 20px;
+    text-align: center;
+    font-size: 130%;
+}
+
+.contact-info {
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.contact-info p {
+    margin: 0;
+    margin-right: 10px;
+}
+
+.contact-info a {
+    color: #eae7dc;
+    text-decoration: none;
+}

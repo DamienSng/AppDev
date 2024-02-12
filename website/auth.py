@@ -17,6 +17,11 @@ mail = Mail()
 otp = None
 
 
+@auth.route('/welcome-page', methods=['GET', 'POST'])
+def welcome_page():
+    return render_template('welcome_page.html')
+
+
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     global otp
@@ -57,6 +62,7 @@ def login():
                 send_otp_email(email, otp)
 
                 # redirect to OTP verification page
+
                 return redirect(url_for('auth.verify_otp', email=email))
             else:
                 flash('Incorrect password, try again.', category='error')
@@ -148,6 +154,7 @@ def sign_up():
                 send_otp_email(email, otp)
 
                 # redirect to OTP verification page
+
                 return redirect(url_for('auth.verify_otp', email=email))
                 # add user to database
 
@@ -179,7 +186,7 @@ def verify_otp():
                     # If preferences are set, redirect to landing page
                     login_user(user, remember=True)
                     flash('Email verification successful! You are now logged in.', category='success')
-                    return redirect(url_for('views.landing_page'))
+                    return redirect(url_for('views.homepage'))
                 else:
                     # If preferences are not set, redirect to user preferences form
                     login_user(user, remember=True)
@@ -375,3 +382,4 @@ def update_profile():
 
     return render_template('update_profile.html', user=current_user)
 
+# ignore this comment

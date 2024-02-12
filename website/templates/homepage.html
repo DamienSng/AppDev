@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}Eco-Eats Landing Page{% endblock %}
+
+{% block content %}
+
+<head>
+  <style>
+    .rounded-image-container {
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .rounded-image-container img {
+        width: 100%;
+        height: 250px;
+    }
+    .recepie_area {
+        margin-top: 80px;
+        padding-bottom: 40px;
+    }
+    .single_recepie {
+        margin-bottom: 40px;
+    }
+    .line_btn {
+        display: inline-block;
+        padding: 10px 20px;
+        margin-top: 10px;
+        font-size: 1em;
+        text-align: center;
+        text-decoration: none;
+        color: #000;
+        border: 2px solid #ffc000;
+        border-radius: 20px;
+        transition: background-color 0.3s;
+    }
+    .line_btn:hover {
+        background-color: #ffc000;
+        color: #fff;
+    }
+    .middle-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 95vh;
+    }
+    .like-button {
+      cursor: pointer;
+      border-radius: 40px;
+      padding: 0.45rem 0;
+      color: #878787;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      filter: grayscale(100%);
+      -webkit-user-select: none;
+         -moz-user-select: none;
+          -ms-user-select: none;
+              user-select: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container mt-5">
+      <h1>Welcome to Eco-Eats, {{ current_user.username }}!</h1>
+
+      {% if recipes %}
+        <h2>Recommended Recipes</h2>
+        <div class="recepie_area plus_padding">
+          <div class="container">
+            <div class="row">
+              {% for recipe in recipes %}
+              <div class="col-xl-4 col-lg-4 col-md-6">
+                <div class="single_recepie text-center">
+                  <div class="rounded-image-container">
+                    <img src="{{ url_for('static', filename='uploads/' + recipe['Image']) }}" alt="{{ recipe[1] }}" width="400px">
+                  </div>
+                  <h4 style="margin-top: 20px; display: flex; align-items: center; justify-content: center;">{{ recipe['Title'] }}
+                  </h4>
+                  <span>Skill Level: {{ recipe['Skill'] }}</span>
+                  <p>Time Needed: {{ recipe['Time'] }}</p>
+                  <a href="{{ url_for('view_recipe', recipe_id=recipe['ID']) }}" class="line_btn">View Full Recipe</a>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      {% else %}
+        <p>No recommendations available.</p>
+      {% endif %}
+    </div>
+</body>
+<!---ignore this comment--->
+
+{% endblock %}
+
+

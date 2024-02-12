@@ -25,6 +25,7 @@
         object-fit: cover;
         border-radius: 8px;
     }
+
     .line_btn {
         display: inline-block;
         padding: 10px 20px;
@@ -41,6 +42,7 @@
         background-color: #ffc000;
         color: #fff;
     }
+
 </style>
 
 <link rel="stylesheet" href="{{url_for('static',filename='css/bootstrap.min.css')}}">
@@ -69,6 +71,6 @@
 <p style="margin-top: 20px; text-align: center;">No results found.</p>
 {% endif %}
 <div class="col-xl-12 text-center mt-4">
-    <a href="{{ url_for('recipes') }}" class="btn btn-primary">Back to Recipe List</a>
+    <a href="{{ url_for('recipes') }}" class="btn btn-primary" style="background-color: #ffc000; border: #ffc000; color: #fff;">Back to Recipe List</a>
 </div>
 {% endblock %}

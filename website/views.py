@@ -2,19 +2,21 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 from .models import Post, User, Comment, Like, Preference
 from . import db
-from .Kforms import UserPreferencesForm
+import openpyxl
+from fuzzywuzzy import fuzz
+
 
 views = Blueprint('views', __name__)
 
 
-@views.route('/landing-page', methods=['GET', 'POST'])
+@views.route('/homepage', methods=['GET', 'POST'])
 @login_required
-def landing_page():
+def homepage():
     # Fetch user preferences from the database
     username = current_user.username
     recipes = get_recommendations(username)
 
-    return render_template('landing_page.html', recipes=recipes)
+    return render_template('homepage.html', recipes=recipes)
 
 
 @views.route('/process-preferences', methods=['POST', 'GET'])
@@ -27,6 +29,23 @@ def process_preferences():
         top_cuisines = request.form.getlist('top_cuisines')
         dietary_restrictions = request.form.get('dietary_restrictions')
 
+        # Validate the form inputs
+        if not top_preferences:
+            flash('Please choose at least one checkbox for Top 3 Ingredients.', 'error')
+            return redirect(url_for('views.process_preferences'))
+
+        if not top_cuisines:
+            flash('Please choose at least one checkbox for Top 3 Cuisines.', 'error')
+            return redirect(url_for('views.process_preferences'))
+
+        if len(top_preferences) > 3:
+            flash('Please choose a maximum of 3 checkboxes for Top 3 Ingredients.', 'error')
+            return redirect(url_for('views.process_preferences'))
+
+        if len(top_cuisines) > 3:
+            flash('Please choose a maximum of 3 checkboxes for Top 3 Cuisines.', 'error')
+            return redirect(url_for('views.process_preferences'))
+
         # Store preferences in the database
         preferences = Preference.query.filter_by(username=username).first()
         if preferences is None:
@@ -36,12 +55,11 @@ def process_preferences():
         preferences.top_cuisines = ', '.join(top_cuisines)
         preferences.dietary_restrictions = dietary_restrictions
 
-        print(preferences)
         db.session.add(preferences)
         db.session.commit()
 
-        flash('Preferences updated successfully.', category='success')
-        return redirect(url_for('views.landing_page'))
+        flash('Preferences updated successfully.', 'success')
+        return redirect(url_for('views.homepage'))
 
     return render_template('preferences_form.html')
 
@@ -54,12 +72,11 @@ def get_recommendations(username):
 
     if preferences:
         top_preferences = preferences.top_preferences.split(', ')
-        recipes_based_on_preferences = get_dummy_recipes(top_preferences)
+        recipes_based_on_preferences = get_recipes_based_on_preferences(top_preferences)
 
     if preferences:
         top_cuisines = preferences.top_cuisines.split(', ')
-        print(top_cuisines)
-        recipes_based_on_cuisines = get_dummy_recipes_cuisine(top_cuisines)
+        recipes_based_on_cuisines = get_recipes_based_on_cuisines(top_cuisines)
 
     # Combine the results
     recipes = recipes_based_on_preferences + recipes_based_on_cuisines
@@ -74,30 +91,64 @@ def get_recommendations(username):
     return recommended_recipe
 
 
-def get_dummy_recipes(top_preferences):
-    # Placeholder function to generate recommendations based on top preferences
-    dummy_recipes = [
-        {'name': 'Recipe 1', 'ingredients': ['Tomato', 'Chicken'], 'cuisine': 'Western'},
-        {'name': 'Recipe 2', 'ingredients': ['Egg', 'Spinach'], 'cuisine': 'Chinese'},
-        {'name': 'Recipe 3', 'ingredients': ['Mushroom', 'Beef'], 'cuisine': 'Italian'},
-        {'name': 'Recipe 4', 'ingredients': ['Mushroom', 'Potato'], 'cuisine': 'Chinese'},
-        {'name': 'Recipe 5', 'ingredients': ['Egg', 'Potato'], 'cuisine': 'Japanese'},
-        {'name': 'Recipe 6', 'ingredients': ['Tomato', 'Beef'], 'cuisine': 'Western'}
-    ]
-    return [recipe for recipe in dummy_recipes if any(ingredient in top_preferences for ingredient in recipe['ingredients'])]
+def get_recipes_based_on_preferences(top_preferences):
+    all_recipes = read_recipes_from_excel()
+
+    # Threshold for fuzzy matching
+    threshold = 80
+
+    matched_recipes = []
+    for recipe in all_recipes:
+        recipe_ingredients = recipe['ingredients']
+        for preference in top_preferences:
+            # Check if any ingredient in the recipe is similar to the preference
+            if any(fuzz.partial_ratio(preference, ingredient) >= threshold for ingredient in recipe_ingredients):
+                matched_recipes.append(recipe)
+                break  # Break out of the inner loop if a match is found
+
+    return matched_recipes
 
 
-def get_dummy_recipes_cuisine(top_cuisines):
-    # Placeholder function to generate recommendations based on top preferences
-    dummy_recipes = [
-        {'name': 'Recipe 1', 'ingredients': ['Tomato', 'Chicken'], 'cuisine': 'Western'},
-        {'name': 'Recipe 2', 'ingredients': ['Egg', 'Spinach'], 'cuisine': 'Chinese'},
-        {'name': 'Recipe 3', 'ingredients': ['Mushroom', 'Beef'], 'cuisine': 'Italian'},
-        {'name': 'Recipe 4', 'ingredients': ['Mushroom', 'Potato'], 'cuisine': 'Chinese'},
-        {'name': 'Recipe 5', 'ingredients': ['Egg', 'Potato'], 'cuisine': 'Japanese'},
-        {'name': 'Recipe 6', 'ingredients': ['Tomato', 'Beef'], 'cuisine': 'Western'}
-    ]
-    return [recipe for recipe in dummy_recipes if recipe['cuisine'] in top_cuisines]
+def get_recipes_based_on_cuisines(top_cuisines):
+    all_recipes = read_recipes_from_excel()
+
+    # Threshold for fuzzy matching
+    threshold = 80
+
+    matched_recipes = []
+    for recipe in all_recipes:
+        recipe_cuisine = recipe['cuisine']
+        for cuisine in top_cuisines:
+            # Check if the cuisine in the recipe is similar to the preference
+            if fuzz.partial_ratio(cuisine, recipe_cuisine) >= threshold:
+                matched_recipes.append(recipe)
+                break  # Break out of the inner loop if a match is found
+
+    return matched_recipes
+
+
+def read_recipes_from_excel(file_path='website/DB.xlsx'):
+    wb = openpyxl.load_workbook(file_path)
+    ws = wb.worksheets[0]  # Get the first sheet
+
+    recipes = []
+    for row in ws.iter_rows(min_row=2, values_only=True):
+        recipe = {
+            'ID': row[0],
+            'Title': row[1],
+            'cuisine': row[2],
+            'Skill': row[3],
+            'Time': row[4],
+            'Instruction': row[5],
+            'ingredients': row[6].split(', '),  # Split ingredients based on comma
+            'Alt': row[7],
+            'Optional': row[8],
+            'Image': row[9]
+
+        }
+        recipes.append(recipe)
+
+    return recipes
 
 
 @views.route('/')
@@ -213,3 +264,5 @@ def like(post_id):
         db.session.commit()
 
     return redirect(url_for('views.community_forum'))
+
+# ignore this comment

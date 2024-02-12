@@ -2,27 +2,47 @@
 {% block title %}Eco-Eats Home{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-    <h1 class="text-center">Make a Post</h1>
+<head>
+    <style>
+        .custom-button {
+            background-color: #1b5e20; /* Set your desired background color */
+            color: #ffffff; /* Set your desired text color */
+        }
 
-    <form method="POST" action="">
-        <div class="mb-3">
-            <label for="title" class="form-label">Post Title:</label>
-            <input type="text" id="title" name="title" class="form-control" required>
+        .custom-button:hover {
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header custom-button text-white text-center">
+                <h1>Make a Post</h1>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Post Title:</label>
+                        <input type="text" id="title" name="title" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="text" class="form-label">Post Content:</label>
+                        <textarea name="text" id="text" class="form-control" cols="30" rows="10" required></textarea>
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-lg custom-button">Post</button>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer text-center">
+                <a href="{{ url_for('views.community_forum') }}" class="btn btn-secondary btn-lg">Back</a>
+            </div>
         </div>
-
-        <div class="mb-3">
-            <label for="text" class="form-label">Post Content:</label>
-            <textarea name="text" id="text" class="form-control" cols="30" rows="10" required></textarea>
-        </div>
-
-        <div class="text-center">
-            <button type="submit" class="btn btn-lg btn-primary">Post</button>
-        </div>
-    </form>
-
-    <div class="text-center mt-3">
-        <a href="{{ url_for('views.community_forum') }}" class="btn btn-secondary btn-lg">Back</a>
     </div>
-</div>
+</body>
+
 {% endblock %}
+

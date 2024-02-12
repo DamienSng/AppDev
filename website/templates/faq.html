@@ -1,0 +1,210 @@
+{% extends "base.html" %}
+{% block title %} Feedback Form {% endblock %}
+
+{% block content %}
+{% from "includes/_formHelper.html" import render_field %}
+
+<head>
+	<title>FAQ</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <script>document.getElementsByTagName("html")[0].className += " js";</script>
+	<style>
+	section {
+  position: relative;  /* Create a stacking context */
+   z-index:0;        /* Place this section above others with lower z-index */
+}
+	</style>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='fonts/font-awesome-4.7.0/css/font-awesome.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='vendor/animate/animate.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='vendor/css-hamburgers/hamburgers.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='vendor/select2/select2.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/util.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/main.css')}}">
+<!--===============================================================================================-->
+</head>
+
+<body>
+
+
+<section class="cd-faq js-cd-faq container max-width-md margin-top-lg margin-bottom-lg">
+	<ul class="cd-faq__categories">
+		<li><a class="cd-faq__category truncate" href="#basics">Basics</a></li>
+		<li><a class="cd-faq__category truncate" href="#payments">Payments</a></li>
+		<li><a class="cd-faq__category truncate" href="#delivery">Delivery</a></li>
+	</ul> <!-- cd-faq__categories -->
+<div class="cd-faq__items">
+		<ul id="account" class="cd-faq__group">
+			<li class="cd-faq__title"><h2>Basics</h2></li>
+			<li class="cd-faq__item">
+				<a class="cd-faq__trigger" href="#0"><span>What is Eco-Eats?</span></a>
+				<div class="cd-faq__content">
+          <div class="text-component">
+            <p>Eco-Eats is an online cookbook recipe where you are able to recreate recipes based on ingredients that you already have at home. Additionally, if you are lacking the ingredients, you can place an order with us and we can deliver it right to your doorstep.</p>
+          </div>
+				</div> <!-- cd-faq__content -->
+			</li>
+
+
+			<li class="cd-faq__item">
+				<a class="cd-faq__trigger" href="#0"><span>How do I use the search function?</span></a>
+				<div class="cd-faq__content">
+          <div class="text-component">
+            <p>You simply type in the textbox of the ingredient that you have at home and they will display all the recipes that have the ingredients that you have keyed in the textbox.</p>
+          </div>
+				</div> <!-- cd-faq__content -->
+			</li>
+
+			<li class="cd-faq__item">
+				<a class="cd-faq__trigger" href="#0"><span>How can I suggest recipes that I would want to be added to the website?</span></a>
+				<div class="cd-faq__content">
+          <div class="text-component">
+            <p>Yes there is a way for you to do that. Head to our <a href="/SurveyForm">survey form</a> and you would be able to suggest what kind of cuisines and recipes you would like to be added to our website</p>
+          </div>
+				</div> <!-- cd-faq__content -->
+			</li>
+
+
+			<li class="cd-faq__item">
+				<a class="cd-faq__trigger" href="#0"><span>Is there a way to see reviews on the website?</span></a>
+				<div class="cd-faq__content">
+          <div class="text-component">
+            <p>Yes you can. Head to our community forum to check out other customer's reviews of our website. Additionally, you can post your own forum for others to see.</p>
+          </div>
+				</div> <!-- cd-faq__content -->
+			</li>
+		</ul> <!-- cd-faq__group -->
+
+		<ul id="payments" class="cd-faq__group">
+			<li class="cd-faq__title"><h2>Payments</h2></li>
+			<li class="cd-faq__item">
+				<a class="cd-faq__trigger" href="#0"><span>What kind of payments do you offer?</span></a>
+				<div class="cd-faq__content">
+          <div class="text-component">
+            <p>We offer payments like Mastercard, Visa, and American Express</p>
+          </div>
+				</div> <!-- cd-faq__content -->
+			</li>
+
+			<li class="cd-faq__item">
+				<a class="cd-faq__trigger" href="#0"><span>Am I able to pay with Cash?</span></a>
+				<div class="cd-faq__content">
+          <div class="text-component">
+            <p>Our apologies but we are only accepting payment through online transactions</p>
+          </div>
+				</div> <!-- cd-faq__content -->
+			</li>
+
+			<li class="cd-faq__item">
+				<a class="cd-faq__trigger" href="#0"><span>Do you accept PayNow or PayLah?</span></a>
+				<div class="cd-faq__content">
+          <div class="text-component">
+            <p>Our apologies but we are only accepting payment through online transactions</p>
+          </div>
+				</div> <!-- cd-faq__content -->
+			</li>
+
+			<li class="cd-faq__item">
+				<a class="cd-faq__trigger" href="#0"><span>Why can't I make a payment?</span></a>
+				<div class="cd-faq__content">
+          <div class="text-component">
+            <p>If you have issues making a payment on our website. You can contact us immediately at <span style="color: blue; text-decoration: underline;"> 8123 4891</span></p>
+          </div>
+				</div> <!-- cd-faq__content -->
+			</li>
+
+			<li class="cd-faq__item">
+				<a class="cd-faq__trigger" href="#0"><span>Do you have any discounts going on?</span></a>
+				<div class="cd-faq__content">
+          <div class="text-component">
+            <p>Yes we have an ongoing discount whereby if you place an order with us on the first Wednesday of every month. You will get to enjoy free shipping when you check out.</p>
+          </div>
+				</div> <!-- cd-faq__content -->
+			</li>
+		</ul> <!-- cd-faq__group -->
+
+		<ul id="delivery" class="cd-faq__group">
+			<li class="cd-faq__title"><h2>Delivery</h2></li>
+			<li class="cd-faq__item">
+				<a class="cd-faq__trigger" href="#0"><span>What should I do if my order hasn't been delivered yet?</span></a>
+				<div class="cd-faq__content">
+          <div class="text-component">
+			  <p>They are several ways of contacting us to inquire why your order has not been received.<br>You can contact us through our <a href="/FeedbackForm"><span style="color: blue; text-decoration: underline;">feedback form</span></a> or by contacting us at <span style="color: blue; text-decoration: underline;"> 8123 4891</span></p>
+          </div>
+				</div> <!-- cd-faq__content -->
+
+				<li class="cd-faq__item">
+				<a class="cd-faq__trigger" href="#0"><span>How long does delivery takes?</span></a>
+				<div class="cd-faq__content">
+          <div class="text-component">
+			  <p>It will usually take 1-2 days for your order to arrive at your doorstep.</p>
+          </div>
+				</div>
+			</li>
+
+			<li class="cd-faq__item">
+				<a class="cd-faq__trigger" href="#0"><span>How would the order be packaged like?</span></a>
+				<div class="cd-faq__content">
+          <div class="text-component">
+			  <p>When delivering uncooked products like meat, it would be meticulous package into a vacuum-sealed bags with dry ice to preserve its freshness while hindering bacterial growth and
+			  ensure product safety during transportation. For vegetables, they will be enclosed in wraps so that they can retain moisture and prevent them from spoiling. Labels will also be attached on every product so that you would know
+			  what product is that.</p>
+          </div>
+				</div>
+			</li>
+
+
+
+
+		</ul> <!-- cd-faq__group -->
+	</div> <!-- cd-faq__items -->
+
+	<a href="#0" class="cd-faq__close-panel text-replace">Close</a>
+
+  <div class="cd-faq__overlay" aria-hidden="true"></div>
+</section> <!-- cd-faq -->
+
+
+
+    <div class="container">
+    <div class="chatbox">
+        <div class="chatbox__support">
+            <div class="chatbox__header">
+                <div class="chatbox__image--header">
+                    <img src="https://img.icons8.com/color/48/000000/circled-user-female-skin-type-5--v1.png" alt="image">
+                </div>
+                <div class="chatbox__content--header">
+                    <h4 class="chatbox__heading--header">Chat support</h4>
+                    <p class="chatbox__description--header">Hi. My name is Sam. How can I help you?</p>
+                </div>
+            </div>
+            <div class="chatbox__messages">
+                <div></div>
+            </div>
+            <div class="chatbox__footer">
+                <input type="text" placeholder="Write a message...">
+                <button class="chatbox__send--footer send__button">Send</button>
+            </div>
+        </div>
+        <div class="chatbox__button">
+            <button><img src="{{ url_for('static', filename='images/chatbox-icon.svg') }}" /></button>
+        </div>
+    </div>
+</div>
+
+<!-- util functions included in the CodyHouse framework -->
+
+<script src="{{url_for('static', filename='js/mainfaq.js')}}"></script>
+<script src="{{url_for('static', filename='js/util.js')}}"></script>
+</body>
+
+{% endblock %}

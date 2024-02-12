@@ -5,7 +5,7 @@
 <h1 class="display-4">Retrieve Favourites Recipes</h1>
 <div>
     {% if count == 0 %}
-    <p>There are no favourited recipes.</p>
+    <p>There are no favourite recipe.</p>
     {% elif count == 1 %}
     <p>There is 1 favourite.</p>
     {% else %}
@@ -31,7 +31,7 @@
         </tr>
         </thead>
         <tbody>
-        {% for recipe in recipes_list %}
+        {% for recipe in fav_list %}
         <tr>
             <!--<td>{{ recipe.id }}</td>
             <td>{{ recipe.title }}</td>
@@ -53,47 +53,12 @@
             <td>{{ recipe[7] }}</td><!--edited-->
             <td>{{ recipe[8] }}</td><!--edited-->
             <td>{{ recipe[9] }}</td><!--edited-->
-            <td><a href="/updateRecipe/{{recipe[0]}}" class="btn btn-warning">Update</a></td><!--edited-->
-            <td>
-            <td>
-                <form action="{{url_for('delete_recipe', id=recipe[0])}}" method="POST"><!--edited-->
 
-                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                            data-bs-target="#myModal_{{recipe[0]}}"><!--edited-->
-                        Delete
-                    </button>
-
-                    <!-- The Modal -->
-                    <div class="modal" id="myModal_{{recipe[0]}}">  <!--edited-->
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-
-                                <!-- Modal Header -->
-                                <div class="modal-header">
-                                    <h4 class="modal-title">Delete Confirmation</h4>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                </div>
-
-                                <!-- Modal body -->
-                                <div class="modal-body">
-                                    Are you sure you want to delete {{recipe.title}}?
-                                </div>
-
-                                <!-- Modal footer -->
-                                <div class="modal-footer">
-                                    <input type="submit" value="Delete" class="btn btn-danger">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel
-                                    </button>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </td>
-        </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    </form>
+</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
 </div>
 {% endblock %}

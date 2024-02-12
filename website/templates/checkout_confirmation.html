@@ -1,0 +1,86 @@
+<style>
+.containers {
+    margin-left: 12.5%;
+    margin-right: 12.5%;
+    text-align: center;
+    margin-top: 5%;
+    border: 1px solid #000;
+    border-radius: 20px;
+}
+
+p .black {
+
+}
+</style>
+
+{% extends "base.html" %}
+{% block title %}Confirmation Page{% endblock %}
+
+{% block content %}
+<head>
+    <!--===============================================================================================-->
+
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='fonts/font-awesome-4.7.0/css/font-awesome.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='vendor/animate/animate.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='vendor/css-hamburgers/hamburgers.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='vendor/select2/select2.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/util.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/main.css')}}">
+<!--===============================================================================================-->
+</head>
+
+<div>
+<h1 style="text-align: center;">
+	Thank you for ordering with us!<br>
+	Here is your order summary</h1></div>
+
+<div class="containers">
+
+	<div>
+		<h1> Delivery Address: </h1>
+		<p style="color: black; font-size: 1.3rem;"> {{ city }} <br>
+		{{ address }} <br>
+		{{ zip }}</p>
+
+		<h1 style="margin-top: 5%"> Billing Information: </h1>
+		<p style="color: black; font-size: 1.3rem;"> To {{ name }}<br>
+			Charged to: {{ card_number }} <br>
+		for ${{ price }}</p>
+
+	</div>
+
+	<div>
+		<h1 style="margin-top: 5%">Items ordered</h1>
+		{% for i in range(items|length) %}
+		<b>{{ items[i]['ingredient'] }}</b> x{{ items[i]['buyingQuantity'] }} <br>
+		{% endfor %}
+
+	</div>
+</div>
+
+
+<div class="container-contact1-form-btn" style="text-align: center; margin-top: 10%;">
+	<button class="contact1-form-btn" onclick="window.location.href='/homepage';">
+		<span>
+			Return to Homepage
+			<i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+		</span>
+	</button>
+</div>
+<!--===============================================================================================-->
+	<script src="{{url_for('static', filename='vendor/jquery/jquery-3.2.1.min.js')}}"></script>
+<!--===============================================================================================-->
+	<script src="{{url_for('static', filename='vendor/bootstrap/js/popper.js')}}"></script>
+	<script src="{{url_for('static', filename='vendor/bootstrap/js/bootstrap.min.js')}}"></script>
+<!--===============================================================================================-->
+	<script src="{{url_for('static', filename='vendor/select2/select2.min.js')}}"></script>
+<!--===============================================================================================-->
+	<script src="{{url_for('static', filename='vendor/tilt/tilt.jquery.min.js')}}"></script>
+{% endblock %}
