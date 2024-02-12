@@ -82,7 +82,7 @@
                   <h4 style="margin-top: 20px; display: flex; align-items: center; justify-content: center;">{{ recipe['Title'] }}
                   </h4>
                   <span>Skill Level: {{ recipe['cuisine'] }}</span>
-                  <p>Time Needed: {{ recipe['Skill'] }}</p>
+                  <p>Cuisine: {{ recipe['Time'] }}</p>
                   <a href="{{ url_for('view_recipe', recipe_id=recipe['ID']) }}" class="line_btn">View Full Recipe</a>
                 </div>
               </div>
