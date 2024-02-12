@@ -347,10 +347,10 @@ def create_app():
             RData = {}
             first_column_data = ws.cell(row=row, column=1).value  # Data from the first column
             # Data from the same row, but 3 columns to the right
-            fourth_column_data = ws.cell(row=row, column=4).value  # Assuming you need to move 3 cells to the right
+            third_column_data = ws.cell(row=row, column=3).value  # Assuming you need to move 3 cells to the right
             # Add the collected data to the list
             RData['id'] = first_column_data
-            RData['Skill'] = fourth_column_data.lower()
+            RData['Skill'] = third_column_data.lower()
             collected_data.append(RData)
 
         for item in collected_data:
